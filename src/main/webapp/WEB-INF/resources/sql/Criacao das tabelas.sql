@@ -1,7 +1,7 @@
-use SistemaGerenciamentoWEB
+use DistribuidoraAMZ
 
 CREATE TABLE Cliente(
-	id int IDENTITY,
+	id smallint IDENTITY,
 	nomeRazaoSocial VARCHAR(max),
 	cpfCnpj VARCHAR(max),
 	telefone VARCHAR(max),
@@ -11,8 +11,8 @@ CREATE TABLE Cliente(
 	CONSTRAINT pk_id_cliente PRIMARY KEY(id)
 )
 CREATE TABLE Endereco(
-	id int IDENTITY,
-	id_cliente int,
+	id smallint IDENTITY,
+	id_cliente smallint,
 	cep VARCHAR(max),
 	cidade VARCHAR(max),
 	estado VARCHAR(max),
@@ -23,7 +23,7 @@ CREATE TABLE Endereco(
 	CONSTRAINT fk_id_cliente_endereco FOREIGN KEY (id_cliente) REFERENCES Cliente(id)
 )
 CREATE TABLE FORNECEDOR(
-	id int IDENTITY,
+	id smallint IDENTITY,
 	razaoSocial VARCHAR(max),
 	cnpj VARCHAR(max),
 	inscricaoEstadual VARCHAR(max),
@@ -47,3 +47,43 @@ AS
 	 FROM Cliente c INNER JOIN Endereco e ON c.id = e.id_cliente 
 
 Exec sp_lista_clientes
+
+
+// 26/05/2022
+
+CREATE TABLE Categoria (
+	id smallint IDENTITY,
+	nome VARCHAR(max)
+	)
+
+ALTER TABLE CATEGORIA
+ADD CONSTRAINT pk_id_categoria PRIMARY KEY(id)
+
+
+CREATE TABLE Produto (
+	id smallint IDENTITY,
+	nome VARCHAR(max),
+	descricao VARCHAR(max),
+	ncmSh VARCHAR(max),
+	preco FLOAT
+	)
+
+ALTER TABLE PRODUTO
+ADD CONSTRAINT pk_id_produto PRIMARY KEY(id)
+
+CREATE Table categoria_produto(
+	id_categoria smallint,
+	id_produto smallint,
+	CONSTRAINT fk_id_categoria FOREIGN KEY (id_categoria) REFERENCES Categoria(id),
+	CONSTRAINT fk_id_produto FOREIGN KEY (id_produto) REFERENCES Produto(id)
+	)
+
+
+INSERT INTO Categoria (nome) values ('Gorje')
+INSERT INTO Categoria (nome) values ('Yale')
+INSERT INTO Categoria (nome) values ('Yale Dupla')
+INSERT INTO Categoria (nome) values ('Tetra')
+INSERT INTO Categoria (nome) values ('Pantograficas')
+INSERT INTO Categoria (nome) values ('Codificadas')
+INSERT INTO Categoria (nome) values ('Laminas de Segredo')
+
