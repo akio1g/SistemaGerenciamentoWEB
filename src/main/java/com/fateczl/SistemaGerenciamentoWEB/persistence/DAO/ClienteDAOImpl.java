@@ -103,7 +103,7 @@ public class ClienteDAOImpl implements ClienteDAO{
 	}
 
 	@Override
-	public void editarClientePorId(Cliente c) throws ClassNotFoundException {
+	public void editarClientePorId(Cliente c, Endereco e) throws ClassNotFoundException {
 		try {
 			Connection con = gDAO.getConnection();
 			PreparedStatement ps = con.prepareStatement("UPDATE Cliente SET nomeRazaoSocial = ?, cpfCnpj = ?, telefone = ?, email = ?, inscricaoEstadual = ?\r\n"
@@ -115,9 +115,23 @@ public class ClienteDAOImpl implements ClienteDAO{
 			ps.setString(5, c.getInscricaoEstadual());
 			ps.setLong(6, c.getId());
 			ps.executeUpdate();
+			
+			PreparedStatement psEnd = con.prepareStatement("UPDATE Endereco SET cep = ?, cidade = ?, estado = ?, logradouro = ?, numero = ?, complemento = ?\r\n"
+					+ "WHERE id_cliente = ?");
+			psEnd.setString(1, e.getCep());
+			psEnd.setString(2, e.getCidade());
+			psEnd.setString(3, e.getEstado());
+			psEnd.setString(4, e.getLogradouro());
+			psEnd.setString(5, e.getNumero());
+			psEnd.setString(6, e.getComplemento());
+			psEnd.setLong(7, c.getId());
+			psEnd.executeUpdate();
+			
 			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+			ps.close();
+			psEnd.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
 		}
 	}
 
