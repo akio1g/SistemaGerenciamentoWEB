@@ -36,6 +36,7 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 			ps.setDouble(4, p.getPreco()); // verificar tipo de dado no sql
 			ps.executeUpdate(); // VERIFICAR SE FUNCIONA
 			c.close();
+			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -53,6 +54,9 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 		if(rs.next()) {
 			return false;
 		}
+		c.close();
+		p.close();
+		rs.close();
 		return true;
 	}
 
@@ -71,6 +75,9 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 				Produto p = instanciarProduto(rs);
 				lista.add(p);
 			}
+			c.close();
+			ps.close();
+			rs.close();
 			return lista;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -87,6 +94,38 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 		p.setPreco(rs.getDouble("preco"));
 		return p;
 		
+	}
+
+	@Override
+	public void apagarPorId(int id) throws ClassNotFoundException {
+		try {
+			Connection c = gDAO.getConnection();
+			PreparedStatement ps = c.prepareStatement("DELETE FROM Produto WHERE id = ?");
+			ps.setInt(1, id);
+			ps.executeUpdate();
+			c.close();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void editarProduto(Produto p) throws ClassNotFoundException { // NAO FINALIZADO
+		try {
+			Connection c = gDAO.getConnection();
+			PreparedStatement ps = c.prepareStatement(
+					"UPDATE Produto SET nome = ?, descricao = ?, ncmSh = ?, preco = ?"
+							+ " WHERE id = ?");
+			// ps.setInt(1, );
+			//ps.setInt(2, );
+			//ps.setDate(3, );
+			//ps.setTime(4, );
+			//ps.setInt(5, p.getId());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
