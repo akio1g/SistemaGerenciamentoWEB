@@ -101,4 +101,37 @@ public class ClienteDAOImpl implements ClienteDAO{
 		}
 		return true;
 	}
+
+	@Override
+	public void editarClientePorId(Cliente c) throws ClassNotFoundException {
+		try {
+			Connection con = gDAO.getConnection();
+			PreparedStatement ps = con.prepareStatement("UPDATE Cliente SET nomeRazaoSocial = ?, cpfCnpj = ?, telefone = ?, email = ?, inscricaoEstadual = ?\r\n"
+					+ "WHERE Id = ?");
+			ps.setString(1, c.getNomeRazaoSocial());
+			ps.setString(2, c.getCpfCnpj());
+			ps.setString(3, c.getTelefone());
+			ps.setString(4, c.getEmail());
+			ps.setString(5, c.getInscricaoEstadual());
+			ps.setLong(6, c.getId());
+			ps.executeUpdate();
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void excluirClientePorId(Long id) throws ClassNotFoundException {
+		try {
+			Connection c = gDAO.getConnection();
+			PreparedStatement ps = c.prepareStatement("DELETE FROM Cliente WHERE id = ?");
+			ps.setLong(1, id);
+			ps.executeUpdate();
+			c.close();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

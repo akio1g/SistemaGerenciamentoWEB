@@ -26,15 +26,15 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 		try {
 			Connection c = gDAO.getConnection();
 
-			String sql = "INSERT INTO Produto (nome, descricao, ncmSh, preco) VALUES(?,?,?,?)"; // VERIFICAR SE ESSE É O NOME DA TABELA
+			String sql = "INSERT INTO Produto (nome, descricao, ncmSh, preco) VALUES(?,?,?,?)"; 
 
 			PreparedStatement ps = c.prepareStatement(sql);
 		
 			ps.setString(1, p.getNome());
 			ps.setString(2, p.getDescricao());
 			ps.setString(3, p.getNcmSh());
-			ps.setDouble(4, p.getPreco()); // verificar tipo de dado no sql
-			ps.executeUpdate(); // VERIFICAR SE FUNCIONA
+			ps.setDouble(4, p.getPreco()); 
+			ps.executeUpdate(); 
 			c.close();
 			ps.close();
 		} catch (SQLException e) {
@@ -46,7 +46,7 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 	@Override
 	public boolean verificarDuplicidade(String ncmsh) throws SQLException, ClassNotFoundException {
 		Connection c = gDAO.getConnection();
-		String sql = "SELECT ncmSh FROM Produto WHERE ncmSh = ?"; // VERIFICAR NOME DA  TABELA E DO NCMSH NO SQL
+		String sql = "SELECT ncmSh FROM Produto WHERE ncmSh = ?"; 
 		
 		PreparedStatement p = c.prepareStatement(sql);
 		p.setString(1, ncmsh);

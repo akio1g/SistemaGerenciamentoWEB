@@ -10,4 +10,6 @@ public interface ClienteDAO {
 	public List<Cliente> listaClientes() throws SQLException, ClassNotFoundException;
 	public void adicionarCliente(Cliente cliente, Endereco end) throws SQLException, ClassNotFoundException;
 	public boolean verificarDuplicidade(String cpf) throws SQLException, ClassNotFoundException;
+	public void editarClientePorId(Cliente c) throws ClassNotFoundException;
+	public void excluirClientePorId(Long id) throws ClassNotFoundException;
 	}
