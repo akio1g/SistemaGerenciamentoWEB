@@ -21,6 +21,7 @@ public class ProdutoController {
 	}
 	@RequestMapping(name="ProdutoListar", value="/ProdutoListar", method=RequestMethod.GET)
 	public ModelAndView listaProduto(ModelMap model) {
+		// pDao.listarPorCategoria(Categoria c); RETORNA UMA LISTA DE PRODUTOS -- ESSA CATEGORIA TEM QUE DAR UM JEITO D PUXAR
 		return new ModelAndView();
 	}
 }
