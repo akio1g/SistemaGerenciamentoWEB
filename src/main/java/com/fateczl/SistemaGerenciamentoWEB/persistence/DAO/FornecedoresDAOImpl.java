@@ -92,4 +92,38 @@ public class FornecedoresDAOImpl implements FornecedoresDAO{
 		return true;
 	}
 
+	@Override
+	public void editarFornecedor(Fornecedor c) throws ClassNotFoundException {
+		try {
+			Connection con = gDAO.getConnection();
+			PreparedStatement ps = con.prepareStatement("UPDATE FORNECEDOR SET razaoSocial = ?, cnpj = ?, telefone = ?, inscricaoEstadual = ?\r\n"
+					+ "WHERE Id = ?");
+			ps.setString(1, c.getRazaoSocial());
+			ps.setString(2, c.getCnpj());
+			ps.setString(3, c.getTelefone());
+			ps.setString(4, c.getInscricaoEstadual());
+			ps.setLong(5, c.getId());
+			ps.executeUpdate();
+			
+			con.close();
+			ps.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	@Override
+	public void excluirFornecedorPorId(Long id) throws ClassNotFoundException {
+		try {
+			Connection c = gDAO.getConnection();
+			PreparedStatement ps = c.prepareStatement("DELETE FROM FORNECEDOR WHERE id = ?");
+			ps.setLong(1, id);
+			ps.executeUpdate();
+			c.close();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 }
