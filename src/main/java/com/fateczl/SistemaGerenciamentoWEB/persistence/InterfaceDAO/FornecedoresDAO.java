@@ -3,7 +3,6 @@ package com.fateczl.SistemaGerenciamentoWEB.persistence.InterfaceDAO;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.fateczl.SistemaGerenciamentoWEB.model.Cliente;
 import com.fateczl.SistemaGerenciamentoWEB.model.Endereco;
 import com.fateczl.SistemaGerenciamentoWEB.model.Fornecedor;
 

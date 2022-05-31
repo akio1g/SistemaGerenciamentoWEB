@@ -6,8 +6,8 @@ import com.fateczl.SistemaGerenciamentoWEB.model.enums.Cargo;
 
 public class Usuario {
 	private Long id;
-	private String name;
-	private String login;
+	private String nome;
+	private String email;
 	private String senha;
 	private int cargo;
 
@@ -17,8 +17,8 @@ public class Usuario {
 	public Usuario(Long id, String name, String login, String senha, Cargo cargo) {
 		super();
 		this.id = id;
-		this.name = name;
-		this.login = login;
+		this.nome = name;
+		this.email = login;
 		this.senha = senha;
 		setCargo(cargo);
 	}
@@ -32,19 +32,19 @@ public class Usuario {
 	}
 
 	public String getName() {
-		return name;
+		return nome;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.nome = name;
 	}
 
 	public String getLogin() {
-		return login;
+		return email;
 	}
 
 	public void setLogin(String login) {
-		this.login = login;
+		this.email = login;
 	}
 
 	public String getSenha() {
@@ -76,10 +76,6 @@ public class Usuario {
 		return Objects.equals(id, other.id);
 	}
 
-	@Override
-	public String toString() {
-		return "Usuario [id=" + id + ", name=" + name + ", login=" + login + ", senha=" + senha + ", cargo=" + cargo
-				+ "]";
-	}
+
 
 }
