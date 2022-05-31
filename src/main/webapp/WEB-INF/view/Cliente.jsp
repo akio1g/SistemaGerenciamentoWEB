@@ -26,9 +26,9 @@
 		</ul>
 	</nav>
 		<div>
-		<form action="Clinte" method="post" class="formulario">
+		<form action="Cliente" method="post" class="formulario">
 			<div>
-				<input type="text" class="inputPesquisa" placeholder="Digite sua pesquisa">
+				<input type="text" class="inputPesquisa" id="inputPesquisa" name="inputPesquisa" placeholder="Digite sua pesquisa">
 				<table class="table">	
 					<thead>
 						<tr>
@@ -39,7 +39,7 @@
 					<tbody class="nomes">
 						<c:forEach var="cliente" items="${listaClientes}">
 							<tr>
-								<td><input type="checkbox"></td>
+								<td><input type="submit" id="botaoEditar" name="botaoEditar{}" value="Editar"></td>
 								<td><c:out value="${cliente.nomeRazaoSocial}"></c:out></td>
 							</tr>
 						</c:forEach>
@@ -47,8 +47,6 @@
 				</table>
 			<div class="botoes">
 				<a href="ClienteAdicionar">Adicionar</a>
-				<a href="ClienteVisualizar">Visualizar</a>
-				<a href="ClienteEditar">Editar</a>
 				<a href="Home">Voltar</a>
 			</div>
 		</form>

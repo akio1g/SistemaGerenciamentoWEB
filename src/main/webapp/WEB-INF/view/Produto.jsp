@@ -35,7 +35,6 @@
 				<button class="categoriasChaves">Pantográficas</button>	
 				<button class="categoriasChaves">Codificadas</button>
 				<button class="categoriasChaves">Lâminas de Segredo</button>
-				<button class="categoriasChaves">Gorje</button>
 			</div>	
 			<div class="botoes">
 				<a href="Home" class="voltarProduto">Voltar</a>

@@ -39,11 +39,16 @@ public class ClienteController {
 	}
 
 	@RequestMapping(name = "Cliente", value = "Cliente", method = RequestMethod.POST)
-	public ModelAndView ListarClientes(ModelMap model) {
+	public ModelAndView ListarClientes(ModelMap model, @RequestParam Map<String, String> param) {
 		String erro = "";
+		String botaoInput= param.get("inputPesquisa");
+		System.out.println(botaoInput);
 		List<Cliente> listaClientes = new ArrayList<Cliente>();
 		try {
 			listaClientes = cDAO.listaClientes();
+			if(!botaoInput.isEmpty()) {
+				listaClientes = cDAO.pesquisarClientesPorNome(botaoInput);
+			}
 		} catch (ClassNotFoundException | SQLException e) {
 			erro = e.getMessage();
 		} finally {
@@ -61,41 +66,79 @@ public class ClienteController {
 
 	@RequestMapping(name = "ClienteAdicionar", value = "ClienteAdicionar", method = RequestMethod.POST)
 	public ModelAndView clienteAdicionarInput(ModelMap model, @RequestParam Map<String, String> param) {
+		return new ModelAndView();
+	}
+	@RequestMapping(name = "ClienteAdicionarCPF", value="ClienteAdicionarCPF", method =RequestMethod.GET)
+	public ModelAndView clienteAdiconarCPF(ModelMap model) {
+		return new ModelAndView();
+	}
+	@RequestMapping(name = "ClienteAdicionarCPF", value="ClienteAdicionarCPF", method =RequestMethod.POST)
+	public ModelAndView clienteAdiconarCPF(ModelMap model, @RequestParam Map<String, String> param) {
+		
+		Cliente cliente = new Cliente();
+		Endereco end = new Endereco();
+			
+		cliente.setNomeRazaoSocial(param.get("Nome"));
+		cliente.setCpfCnpj(param.get("CPF"));
+		cliente.setTelefone(param.get("Telefone"));
+		cliente.setEmail(param.get("Email"));
+		cliente.setEndereco(end);
+	
+		end.setCep(param.get("CEP"));
+		end.setLogradouro(param.get("Logradouro"));
+		end.setNumero(param.get("Numero"));
+		end.setComplemento(param.get("Complemento"));
+		end.setCidade(param.get("Cidade"));
+		end.setEstado(param.get("Estado"));
+	
+		try {
+			if (cDAO.verificarDuplicidade(cliente.getCpfCnpj())) {
+				cDAO.adicionarCliente(cliente, end);
+			} else {
+				System.out.println("duplicado");
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return new ModelAndView();
+	}
+	@RequestMapping(name = "ClienteAdicionarCNPJ", value="ClienteAdicionarCNPJ", method =RequestMethod.GET)
+	public ModelAndView clienteAdiconarCNPJ(ModelMap model) {
+		return new ModelAndView();
+	}
+	@RequestMapping(name = "ClienteAdicionarCNPJ", value="ClienteAdicionarCNPJ", method =RequestMethod.POST)
+	public ModelAndView clienteAdiconarCNPJ(ModelMap model, @RequestParam Map<String, String> param) {
 		String botaoAdicionar = param.get("botaoAdicionar");
 		String erro = "";
-		try {
-			if (!botaoAdicionar.isEmpty()) {
-				Cliente cliente = new Cliente();
-				Endereco end = new Endereco();
+		if (!botaoAdicionar.equals(null) && !botaoAdicionar.isEmpty()) {
+			Cliente cliente = new Cliente();
+			Endereco end = new Endereco();
 				
-				end.setCep(param.get("CEP"));
-				end.setCidade(param.get("Cidade"));
-				end.setComplemento(param.get("Complemento"));
-				end.setEstado(param.get("Estado"));
-				end.setLogradouro(param.get("Logradouro"));
-				end.setNumero(param.get("Numero"));
-			
-				cliente.setNomeRazaoSocial(param.get("Nome"));
-				cliente.setCpfCnpj(param.get("CPF"));
-				cliente.setTelefone(param.get("Telefone"));
-				cliente.setEmail(param.get("Email"));
-				cliente.setEndereco(end);
-				cliente.setInscricaoEstadual(param.get("InscricaoEstadual"));
-
+			cliente.setNomeRazaoSocial(param.get("Nome"));
+			cliente.setCpfCnpj(param.get("CNPJ"));
+			cliente.setTelefone(param.get("Telefone"));
+			cliente.setEmail(param.get("Email"));
+			cliente.setEndereco(end);
+		
+			end.setCep(param.get("CEP"));
+			end.setLogradouro(param.get("Logradouro"));
+			end.setNumero(param.get("Numero"));
+			end.setComplemento(param.get("Complemento"));
+			end.setCidade(param.get("Cidade"));
+			end.setEstado(param.get("Estado"));
+		
+			try {
 				if (cDAO.verificarDuplicidade(cliente.getCpfCnpj())) {
 					cDAO.adicionarCliente(cliente, end);
 				} else {
 					System.out.println("duplicado");
 				}
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (ClassNotFoundException | SQLException e) {
-			erro = e.getMessage();
-		} finally {
-			model.addAttribute("erro", erro);
 		}
 		return new ModelAndView();
 	}
-
 	@RequestMapping(name = "ClienteEditar", value = "ClienteEditar", method = RequestMethod.GET)
 	public ModelAndView clienteEditar(ModelMap model, @RequestParam Map<String, String> param) {
 

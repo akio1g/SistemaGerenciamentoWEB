@@ -12,7 +12,7 @@ public class GenericDAO {
 	public Connection getConnection() throws ClassNotFoundException, SQLException {
 
 		String hostName = "127.0.0.1";
-		String dbName = "SistemaGerenciamentoWEB";
+		String dbName = "DistribuidoraAMZ";
 		String user = "sa";
 		String senha = "Hungria123";
 		Class.forName("net.sourceforge.jtds.jdbc.Driver");

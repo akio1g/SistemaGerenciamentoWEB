@@ -46,6 +46,30 @@ public class ClienteDAOImpl implements ClienteDAO{
 		c.close();
 		return listaClientes;
 	}
+	@Override
+	public List<Cliente> pesquisarClientesPorNome(String nome) throws SQLException, ClassNotFoundException {
+		Connection c = gDAO.getConnection();
+		String sql = "SELECT * FROM Cliente WHERE nome like '%?%'";
+		List<Cliente> listaClientes = new ArrayList<Cliente>();
+		
+		PreparedStatement p = c.prepareStatement(sql);
+		
+		p.setString(1, nome);
+		ResultSet rs = p.executeQuery();
+		while(rs.next()) {
+			while(rs.next()) {
+				Cliente cliente = new Cliente();
+				cliente.setId(rs.getLong("id"));
+				cliente.setNomeRazaoSocial(rs.getString("nomeRazaoSocial"));
+				cliente.setCpfCnpj(rs.getString("cpfCnpj"));
+				cliente.setTelefone(rs.getString("telefone"));
+				cliente.setEmail(rs.getString("email"));
+				cliente.setInscricaoEstadual(rs.getString("inscricaoEstadual"));
+				listaClientes.add(cliente);
+			}
+		}
+		return listaClientes;
+	}
 
 	@Override
 	public void adicionarCliente(Cliente cliente, Endereco end) throws SQLException, ClassNotFoundException {
