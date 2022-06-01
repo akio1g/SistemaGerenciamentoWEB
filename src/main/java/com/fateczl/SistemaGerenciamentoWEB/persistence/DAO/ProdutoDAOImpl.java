@@ -44,23 +44,6 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 	}
 
 	@Override
-	public boolean verificarDuplicidade(String ncmsh) throws SQLException, ClassNotFoundException {
-		Connection c = gDAO.getConnection();
-		String sql = "SELECT ncmSh FROM Produto WHERE ncmSh = ?"; 
-		
-		PreparedStatement p = c.prepareStatement(sql);
-		p.setString(1, ncmsh);
-		ResultSet rs = p.executeQuery();
-		if(rs.next()) {
-			return false;
-		}
-		c.close();
-		p.close();
-		rs.close();
-		return true;
-	}
-
-	@Override
 	public List<Produto> listarPorCategoria(Categoria cat) throws SQLException, ClassNotFoundException {
 		List<Produto> lista = new ArrayList<>();
 		try {
@@ -127,5 +110,6 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 			e.printStackTrace();
 		}
 	}
+
 	
 }
