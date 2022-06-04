@@ -28,9 +28,9 @@
 	<div class="formulario">
 		<form action="ClienteAdicionar" method="post" class="form">
 		
-			<a href="ClienteAdicionarCPF" class="categoriasChaves">CPF</a>
+			<a href="ClienteAdicionarCPF" class="categoriasChaves">Pessoa Física</a>
 			
-			<a href="ClienteAdicionarCNPJ" class="categoriasChaves">CNPJ</a>
+			<a href="ClienteAdicionarCNPJ" class="categoriasChaves">Pessoa Jurídica</a>
 			
 			<div class="botoes">
 				<a href="Home" class="voltarProduto">Voltar</a>

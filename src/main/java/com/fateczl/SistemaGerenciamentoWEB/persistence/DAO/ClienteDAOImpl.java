@@ -68,6 +68,9 @@ public class ClienteDAOImpl implements ClienteDAO{
 				listaClientes.add(cliente);
 			}
 		}
+		c.close();
+		p.close();
+		rs.close();
 		return listaClientes;
 	}
 
@@ -99,7 +102,7 @@ public class ClienteDAOImpl implements ClienteDAO{
 			pE.setString(3, end.getCidade());
 			pE.setString(4, end.getEstado());
 			pE.setString(5, end.getLogradouro());
-			pE.setString(6, end.getNumero());
+			pE.setInt(6, end.getNumero());
 			pE.setString(7, end.getComplemento());
 			
 			
@@ -123,37 +126,86 @@ public class ClienteDAOImpl implements ClienteDAO{
 		if(rs.next()) {
 			return false;
 		}
+		c.close();
+		p.close();
+		rs.close();
 		return true;
 	}
-
+	@Override
+	public Cliente buscarClientePorId(long id_cliente) throws ClassNotFoundException{
+		try {
+			Connection con = gDAO.getConnection();
+			String sql = "EXEC sp_buscar_cliente_por_id ?"; 
+			PreparedStatement ps= con.prepareStatement(sql);
+			ps.setLong(1, id_cliente);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				Cliente cliente = new Cliente();
+				cliente.setId(rs.getLong("id"));
+				cliente.setNomeRazaoSocial(rs.getString("nomeRazaoSocial"));
+				cliente.setCpfCnpj(rs.getString("cpfCnpj"));
+				cliente.setTelefone(rs.getString("telefone"));
+				cliente.setEmail(rs.getString("email"));
+				cliente.setInscricaoEstadual(rs.getString("inscricaoEstadual"));
+				return cliente;
+			}
+			con.close();
+			ps.close();
+			rs.close();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@Override
+	public Endereco buscarEnderecoPorId(long id_cliente) throws ClassNotFoundException{
+		try {
+			Connection con = gDAO.getConnection();
+			String sql = "EXEC sp_buscar_endereco_por_id_cliente ?"; 
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setLong(1, id_cliente);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				Endereco endereco = new Endereco();
+				endereco.setCep(rs.getString("cep"));
+				endereco.setCidade(rs.getString("cidade"));
+				endereco.setEstado(rs.getString("estado"));
+				endereco.setLogradouro(rs.getString("logradouro"));
+				endereco.setNumero(rs.getInt("numero"));
+				endereco.setComplemento(rs.getString("complemento"));
+				return endereco;
+			}
+			con.close();
+			ps.close();
+			rs.close();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	@Override
 	public void editarClientePorId(Cliente c, Endereco e) throws ClassNotFoundException {
 		try {
 			Connection con = gDAO.getConnection();
-			PreparedStatement ps = con.prepareStatement("UPDATE Cliente SET nomeRazaoSocial = ?, cpfCnpj = ?, telefone = ?, email = ?, inscricaoEstadual = ?\r\n"
-					+ "WHERE Id = ?");
-			ps.setString(1, c.getNomeRazaoSocial());
-			ps.setString(2, c.getCpfCnpj());
-			ps.setString(3, c.getTelefone());
-			ps.setString(4, c.getEmail());
-			ps.setString(5, c.getInscricaoEstadual());
-			ps.setLong(6, c.getId());
+			String sql = "EXEC sp_update_cliente ?,?,?,?,?,?,?,?,?,?,?,?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setLong(1, c.getId());
+			ps.setString(2, c.getNomeRazaoSocial());
+			ps.setString(3, c.getCpfCnpj());
+			ps.setString(4, c.getTelefone());
+			ps.setString(5, c.getEmail());
+			ps.setString(6, c.getInscricaoEstadual());
+			ps.setString(7, e.getCep());
+			ps.setString(8, e.getCidade());
+			ps.setString(9, e.getEstado());
+			ps.setString(10, e.getLogradouro());
+			ps.setInt(11, e.getNumero());
+			ps.setString(12, e.getComplemento());
+			
 			ps.executeUpdate();
-			
-			PreparedStatement psEnd = con.prepareStatement("UPDATE Endereco SET cep = ?, cidade = ?, estado = ?, logradouro = ?, numero = ?, complemento = ?\r\n"
-					+ "WHERE id_cliente = ?");
-			psEnd.setString(1, e.getCep());
-			psEnd.setString(2, e.getCidade());
-			psEnd.setString(3, e.getEstado());
-			psEnd.setString(4, e.getLogradouro());
-			psEnd.setString(5, e.getNumero());
-			psEnd.setString(6, e.getComplemento());
-			psEnd.setLong(7, c.getId());
-			psEnd.executeUpdate();
-			
+
 			con.close();
 			ps.close();
-			psEnd.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}

@@ -70,7 +70,7 @@ public class FornecedoresDAOImpl implements FornecedoresDAO{
 			pE.setString(3, end.getCidade());
 			pE.setString(4, end.getEstado());
 			pE.setString(5, end.getLogradouro());
-			pE.setString(6, end.getNumero());
+			pE.setInt(6, end.getNumero());
 			pE.setString(7, end.getComplemento());
 			
 			pE.executeUpdate();

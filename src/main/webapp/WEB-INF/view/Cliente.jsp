@@ -39,12 +39,14 @@
 					<tbody class="nomes">
 						<c:forEach var="cliente" items="${listaClientes}">
 							<tr>
-								<td><input type="submit" id="botaoEditar" name="botaoEditar{}" value="Editar"></td>
+								<td><a href="ClienteEditar" name="cliente.id{}"> Editar </a></td>
+								
 								<td><c:out value="${cliente.nomeRazaoSocial}"></c:out></td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
+			</div>
 			<div class="botoes">
 				<a href="ClienteAdicionar">Adicionar</a>
 				<a href="Home">Voltar</a>

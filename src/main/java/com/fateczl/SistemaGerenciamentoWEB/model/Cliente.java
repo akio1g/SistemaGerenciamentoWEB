@@ -5,21 +5,19 @@ public class Cliente {
 	private String nomeRazaoSocial;
 	private String cpfCnpj;
 	private String telefone;
-	private Endereco endereco;
 	private String email;
 	private String inscricaoEstadual;
 
 	public Cliente() {
 	}
 
-	public Cliente(Long id, String nomeRazaoSocial, String cpfCnpj, String telefone, Endereco endereco, String email,
+	public Cliente(Long id, String nomeRazaoSocial, String cpfCnpj, String telefone, String email,
 			String inscricaoEstadual) {
 		super();
 		this.id = id;
 		this.nomeRazaoSocial = nomeRazaoSocial;
 		this.cpfCnpj = cpfCnpj;
 		this.telefone = telefone;
-		this.endereco = endereco;
 		this.email = email;
 		this.inscricaoEstadual = inscricaoEstadual;
 
@@ -56,15 +54,6 @@ public class Cliente {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -84,7 +73,7 @@ public class Cliente {
 	@Override
 	public String toString() {
 		return "Cliente [id=" + id + ", nomeRazaoSocial=" + nomeRazaoSocial + ", cpfCnpj=" + cpfCnpj + ", telefone="
-				+ telefone + ", endereco=" + endereco + ", email=" + email + ", inscricaoEstadual=" + inscricaoEstadual
+				+ telefone + ", email=" + email + ", inscricaoEstadual=" + inscricaoEstadual
 				+ "]";
 	}
 

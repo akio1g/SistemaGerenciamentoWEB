@@ -59,7 +59,7 @@ public class FornecedoresController {
 				end.setComplemento(param.get("Complemento"));
 				end.setEstado(param.get("Estado"));
 				end.setLogradouro(param.get("Logradouro"));
-				end.setNumero(param.get("Numero"));
+				end.setNumero(Integer.parseInt(param.get("Numero")));
 		
 				if (fDAO.verificarDuplicidade(fornecedor.getCnpj())) {
 					fDAO.adicionarFornecedor(fornecedor, end);

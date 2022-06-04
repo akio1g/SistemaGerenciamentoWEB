@@ -29,16 +29,16 @@
 		<form action="ClienteAdicionarCNPJ" method="post" class="form">
 			<div class="posicionarCheck">
 				<div class="bordaTabelaAdicionar">
-					<input type="text" class="tabelaAdicionar" placeholder="Razao Social"> 
-					<input type="text" class="tabelaAdicionar" placeholder="CNPJ">
-					<input type="text" class="tabelaAdicionar" placeholder="Telefone">
-					<input type="text" class="tabelaAdicionar" placeholder="Email">
-					<input type="text" class="tabelaAdicionar" placeholder="CEP">
-					<input type="text" class="tabelaAdicionar" placeholder="Logradouro">
-					<input type="text" class="tabelaAdicionar" placeholder="Numero">
-					<input type="text" class="tabelaAdicionar" placeholder="Complemento">
-					<input type="text" class="tabelaAdicionar" placeholder="Cidade">
-					<input type="text" class="tabelaAdicionar" placeholder="Estado">
+				<input type="text" class="tabelaAdicionar" id="Nome" name="Nome" placeholder="Nome"> 
+					<input type="text" class="tabelaAdicionar" id="CNPJ" name="CNPJ" placeholder="CNPJ">
+					<input type="text" class="tabelaAdicionar" id="Telefone" name="Telefone" placeholder="Telefone">
+					<input type="text" class="tabelaAdicionar" id="Email" name="Email" placeholder="Email">
+					<input type="text" class="tabelaAdicionar" id="CEP"  name="CEP" placeholder="CEP">
+					<input type="text" class="tabelaAdicionar" id="Logradouro" name="Logradouro" placeholder="Logradouro">
+					<input type="text" class="tabelaAdicionar" id="Numero"  name="Numero" placeholder="Numero">
+					<input type="text" class="tabelaAdicionar" id="Complemento" name="Complemento" placeholder="Complemento">
+					<input type="text" class="tabelaAdicionar" id="Cidade" name="Cidade" placeholder="Cidade">
+					<input type="text" class="tabelaAdicionar" id="Estado" name="Estado" placeholder="Estado">
 				</div>
 			</div>
 			<div class="botoes">

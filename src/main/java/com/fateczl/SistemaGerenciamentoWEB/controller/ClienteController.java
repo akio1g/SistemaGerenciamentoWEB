@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +25,7 @@ public class ClienteController {
 	ClienteDAO cDAO;
 
 	@RequestMapping(name = "Cliente", value = "Cliente", method = RequestMethod.GET)
-	public ModelAndView init(ModelMap model) {
+	public ModelAndView listarCliente(ModelMap model) {
 		String erro = "";
 		List<Cliente> listaClientes = new ArrayList<Cliente>();
 		try {
@@ -39,13 +40,17 @@ public class ClienteController {
 	}
 
 	@RequestMapping(name = "Cliente", value = "Cliente", method = RequestMethod.POST)
-	public ModelAndView ListarClientes(ModelMap model, @RequestParam Map<String, String> param) {
+	public ModelAndView listarClientes(ModelMap model, @RequestParam Map<String, String> param, @RequestParam MultiValueMap<String, String> paramValorado) {
 		String erro = "";
+		String botaoEditar = param.get("botaoEditar");
 		String botaoInput= param.get("inputPesquisa");
+		List<String> listaIdEditar = paramValorado.get("cliente.id{}");
 		System.out.println(botaoInput);
 		List<Cliente> listaClientes = new ArrayList<Cliente>();
 		try {
-			listaClientes = cDAO.listaClientes();
+			listaClientes = cDAO.listaClientes();if(!botaoEditar.equals("null") && !botaoEditar.isEmpty()){
+				clienteEditar(model);
+			}
 			if(!botaoInput.isEmpty()) {
 				listaClientes = cDAO.pesquisarClientesPorNome(botaoInput);
 			}
@@ -82,11 +87,10 @@ public class ClienteController {
 		cliente.setCpfCnpj(param.get("CPF"));
 		cliente.setTelefone(param.get("Telefone"));
 		cliente.setEmail(param.get("Email"));
-		cliente.setEndereco(end);
 	
 		end.setCep(param.get("CEP"));
 		end.setLogradouro(param.get("Logradouro"));
-		end.setNumero(param.get("Numero"));
+		end.setNumero(Integer.parseInt(param.get("Numero")));
 		end.setComplemento(param.get("Complemento"));
 		end.setCidade(param.get("Cidade"));
 		end.setEstado(param.get("Estado"));
@@ -107,7 +111,7 @@ public class ClienteController {
 		return new ModelAndView();
 	}
 	@RequestMapping(name = "ClienteAdicionarCNPJ", value="ClienteAdicionarCNPJ", method =RequestMethod.POST)
-	public ModelAndView clienteAdiconarCNPJ(ModelMap model, @RequestParam Map<String, String> param) {
+	public ModelAndView clienteAdicionarCNPJ(ModelMap model, @RequestParam Map<String, String> param) {
 		String botaoAdicionar = param.get("botaoAdicionar");
 		String erro = "";
 		if (!botaoAdicionar.equals(null) && !botaoAdicionar.isEmpty()) {
@@ -118,15 +122,13 @@ public class ClienteController {
 			cliente.setCpfCnpj(param.get("CNPJ"));
 			cliente.setTelefone(param.get("Telefone"));
 			cliente.setEmail(param.get("Email"));
-			cliente.setEndereco(end);
 		
 			end.setCep(param.get("CEP"));
 			end.setLogradouro(param.get("Logradouro"));
-			end.setNumero(param.get("Numero"));
+			end.setNumero(Integer.parseInt(param.get("Numero")));
 			end.setComplemento(param.get("Complemento"));
 			end.setCidade(param.get("Cidade"));
 			end.setEstado(param.get("Estado"));
-		
 			try {
 				if (cDAO.verificarDuplicidade(cliente.getCpfCnpj())) {
 					cDAO.adicionarCliente(cliente, end);
@@ -140,13 +142,49 @@ public class ClienteController {
 		return new ModelAndView();
 	}
 	@RequestMapping(name = "ClienteEditar", value = "ClienteEditar", method = RequestMethod.GET)
-	public ModelAndView clienteEditar(ModelMap model, @RequestParam Map<String, String> param) {
-
+	public ModelAndView clienteEditar(ModelMap model) {
+		Cliente cliente = new Cliente();
+		Endereco endereco = new Endereco();
+		long id_cliente = 1001;
+		try {
+			cliente = cDAO.buscarClientePorId(id_cliente);
+			endereco = cDAO.buscarEnderecoPorId(id_cliente);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}finally {
+			model.addAttribute("cliente", cliente);
+			model.addAttribute("endereco", endereco);
+		}
+		
 		return new ModelAndView();
 	}
-
-	@RequestMapping(name = "ClienteVisualizar", value = "ClienteVisualizar", method = RequestMethod.GET)
-	public ModelAndView clienteVisualizar(ModelMap model) {
+	@RequestMapping(name="ClienteEditar", value="ClienteEditar", method = RequestMethod.POST)
+	public ModelAndView clienteEditar(ModelMap model, @RequestParam Map<String,String> param) {
+		String botaoSalvar = param.get("botaoSalvar");
+		if(!botaoSalvar.equals(null) && !botaoSalvar.isEmpty()) {
+			Cliente cliente = new Cliente();
+			Endereco end = new Endereco();
+			
+			cliente.setId((long) 1001);
+			cliente.setNomeRazaoSocial((param.get("Nome")));
+			cliente.setCpfCnpj(param.get("CPF/CNPJ"));
+			cliente.setTelefone(param.get("Telefone"));
+			cliente.setEmail(param.get("Email"));
+		
+			end.setCep(param.get("CEP"));
+			end.setLogradouro(param.get("Logradouro"));
+			end.setNumero(Integer.parseInt(param.get("Numero")));
+			end.setComplemento(param.get("Complemento"));
+			end.setCidade(param.get("Cidade"));
+			end.setEstado(param.get("Estado"));
+			try {
+				cDAO.editarClientePorId(cliente, end);
+				listarCliente(model);
+				
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return new ModelAndView();
 	}
 }

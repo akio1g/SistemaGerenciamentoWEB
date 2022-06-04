@@ -13,4 +13,6 @@ public interface ClienteDAO {
 	public void editarClientePorId(Cliente c, Endereco e)throws SQLException, ClassNotFoundException;
 	public void excluirClientePorId(Long id) throws SQLException, ClassNotFoundException;
 	List<Cliente> pesquisarClientesPorNome(String nome) throws SQLException, ClassNotFoundException;
+	public Cliente buscarClientePorId(long id_cliente) throws ClassNotFoundException;
+	public Endereco buscarEnderecoPorId(long id_cliente) throws ClassNotFoundException;
 	}
