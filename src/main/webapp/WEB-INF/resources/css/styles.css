@@ -47,12 +47,12 @@ li a:hover{
     align-items: center;
     display: flex;
     justify-content: center;
+    text-align: center;
 }
 .inputPesquisa{
-	margin-bottom: 20px;
-    width: 80%;
-    margin-left: 50px;
-    margin-right: 50px;
+	display: flex;
+    margin-bottom: 20px;
+    width: 100%;
     text-align: center;
 }
 .table{
@@ -67,12 +67,16 @@ li a:hover{
     margin: 10px;
     text-align: center;
 }
-.posicionarCheck{
-	display: flex;
+.posicionarCheck {
+    display: inline-block;
     text-align: end;
+}
+.posicionarCheck h2{
+	margin-bottom: 30px;
 }
 .bordaTabelaAdicionar{
 	border: 0.5px solid black;
+	display: grid;
 }
 .botoes{
 	padding-top: 20%;

@@ -28,6 +28,7 @@
 	<div class="formulario">
 		<form action="ClienteAdicionarCNPJ" method="post" class="form">
 			<div class="posicionarCheck">
+				<h2>Adicionar Pessoa Jurídica</h2>
 				<div class="bordaTabelaAdicionar">
 				<input type="text" class="tabelaAdicionar" id="Nome" name="Nome" placeholder="Nome"> 
 					<input type="text" class="tabelaAdicionar" id="CNPJ" name="CNPJ" placeholder="CNPJ">
@@ -42,7 +43,7 @@
 				</div>
 			</div>
 			<div class="botoes">
-				<input type="submit" class="categoriasChaves" id="botaoAdicionar" name="botaoAdicionar" value="Adicionar">
+				<input type="submit" id="botaoAdicionar" name="botaoAdicionar" value="Adicionar">
 				<a href="ClienteAdicionar" class="voltarProduto">Voltar</a>
 			</div>
 		</form>

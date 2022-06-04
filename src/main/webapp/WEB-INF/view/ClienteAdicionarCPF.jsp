@@ -28,6 +28,7 @@
 	<div class="formulario">
 		<form action="ClienteAdicionarCPF" method="post" class="form">
 			<div class="posicionarCheck">
+			<h2>Adicionar Pessoa Física</h2>
 			<div class="bordaTabelaAdicionar">
 					<input type="text" class="tabelaAdicionar" id="Nome" name="Nome" placeholder="Nome"> 
 					<input type="text" class="tabelaAdicionar" id="CPF" name="CPF" placeholder="CPF">

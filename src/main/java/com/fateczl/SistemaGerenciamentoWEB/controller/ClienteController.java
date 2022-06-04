@@ -44,7 +44,6 @@ public class ClienteController {
 		String erro = "";
 		String botaoEditar = param.get("botaoEditar");
 		String botaoInput= param.get("inputPesquisa");
-		String botaoExcluir = param.get("botaoExcluir");
 		
 		List<Cliente> listaClientes = new ArrayList<Cliente>();
 		try {

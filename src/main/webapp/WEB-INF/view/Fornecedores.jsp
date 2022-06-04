@@ -25,9 +25,10 @@
 			<li><a href="GerenciarUsuarios">Gerenciar Usuários</a></li>
 		</ul>
 	</nav>
-		<form action="Fornecedor" method="post" class="formulario">
+		<form action="Fornecedores" method="post" class="formulario">
 			<div>
-				<input type="text" class="inputPesquisa" placeholder="Digite sua pesquisa">
+				<h2>Lista de Fornecedores</h2>
+				<input type="text" class="inputPesquisa"  id="inputPesquisa" name="inputPesquisa"  placeholder="Digite sua pesquisa">
 				<table class="table">	
 					<thead>
 						<tr>
@@ -38,7 +39,7 @@
 					<tbody class="nomes">
 						<c:forEach var="fornecedor" items="${listaFornecedores}">
 							<tr>
-								<td><input type="checkbox"></td>
+								<td><a href="FornecedorEditar" id="botaoEditar" name="botaoEditar" value="${fornecedor.id}">Editar</a></td>
 								<td><c:out value="${fornecedor.razaoSocial}"></c:out></td>
 							</tr>
 						</c:forEach>
@@ -46,7 +47,6 @@
 				</table>
 			<div class="botoes">
 				<a href="FornecedorAdicionar">Adicionar</a>
-				<a href="FornecedorEditar">Editar</a>
 				<a href="Home">Voltar</a>
 			</div>
 			</div>

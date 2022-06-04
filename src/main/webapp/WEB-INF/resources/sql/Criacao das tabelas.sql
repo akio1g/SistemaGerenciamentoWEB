@@ -23,10 +23,24 @@ CREATE TABLE Endereco(
 	numero INT,
 	complemento VARCHAR(max),
 	
-	CONSTRAINT fk_id_cliente_endereco FOREIGN KEY (id_cliente) REFERENCES Cliente(id)
+	CONSTRAINT fk_id_cliente_endereco FOREIGN KEY (id_cliente) REFERENCES Cliente(id),
+	CONSTRAINT pk_id_endereco PRIMARY KEY(id)
+)
+CREATE TABLE Endereco_Fornecedor(
+	id INT IDENTITY(1,1),
+	id_fornecedor INT,
+	cep VARCHAR(max),
+	cidade VARCHAR(max),
+	estado VARCHAR(max),
+	logradouro VARCHAR(max),
+	numero INT,
+	complemento VARCHAR(max),
+	
+	CONSTRAINT fk_id_fornecedor_endereco FOREIGN KEY (id_fornecedor) REFERENCES Fornecedor(id),
+	CONSTRAINT pk_id_endereco_fornecedor PRIMARY KEY(id)
 )
 CREATE TABLE FORNECEDOR(
-	id INT IDENTITY,
+	id INT IDENTITY (1,1),
 	razaoSocial VARCHAR(max),
 	cnpj VARCHAR(max),
 	inscricaoEstadual VARCHAR(max),
@@ -76,15 +90,22 @@ INSERT INTO Cliente (nomeRazaoSocial,cpfCnpj,telefone,email,inscricaoEstadual) V
 INSERT INTO Endereco (id_cliente,cep,cidade,estado,logradouro,numero,complemento) VALUES 
 (1005,'40623315','Sao Paulo','SP','rua da Arvore','152',null),
 (1004,'50421343','Sao Paulo','SP','rua da Macieira','23',null),
-(1001,'12958585','Sao Paulo','SP','Av. Seu Jorge','567',null),
+(1002,'12958585','Sao Paulo','SP','Av. Seu Jorge','567',null),
 (1003,'43964392','Sao Paulo','SP','rua Erivaldo Rossi','125',null),
 (1000,'12521689','Sao Paulo','SP','Pra�a Dom Luiz','13',null),
-(1002,'50354103','Sao Paulo','SP','rua Cachoeira da Luz','1252',null)
+(1001,'50354103','Sao Paulo','SP','rua Cachoeira da Luz','1252',null)
+
+INSERT INTO Endereco_Fornecedor(id_fornecedor,cep,cidade,estado,logradouro,numero,complemento) VALUES 
+(5,'40623315','Sao Paulo','SP','rua da Arvore','152',null),
+(6,'50421343','Sao Paulo','SP','rua da Macieira','23',null),
+(7,'12958585','Sao Paulo','SP','Av. Seu Jorge','567',null)
+
 
 INSERT INTO FORNECEDOR (razaoSocial, cnpj, inscricaoEstadual, telefone) VALUES
 ('3F CHAVES LTDA','14842903000124', 'MG', '2225250030'),
 ('PADO SA','61144150000678', 'PR', '1121251400'),
 ('STAM METALURGICA SA','30560205000192', 'RJ', '2225251006')
+
 
 INSERT INTO Produto (nome,descricao,ncmSh,preco) VALUES
 ('Chave Pado Original 2',null,'83017000',7.9),

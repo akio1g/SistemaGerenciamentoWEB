@@ -1,7 +1,7 @@
 package com.fateczl.SistemaGerenciamentoWEB.model;
 
 public class Fornecedor {
-	private long id; 
+	private int id; 
 	private String razaoSocial;
 	private String cnpj;
 	private String inscricaoEstadual;
@@ -9,7 +9,7 @@ public class Fornecedor {
 	private Endereco endereco;
 	
 	public Fornecedor(){}
-	public Fornecedor(long id, String razaoSocial, String cnpj, String incricaoEstadual,
+	public Fornecedor(int id, String razaoSocial, String cnpj, String incricaoEstadual,
 			String telefone, Endereco endereco) {
 		super();
 		this.id=id;
@@ -19,10 +19,10 @@ public class Fornecedor {
 		this.razaoSocial=razaoSocial;
 		this.telefone=telefone;
 	}
-	public long getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getRazaoSocial() {

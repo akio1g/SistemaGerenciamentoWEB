@@ -10,6 +10,9 @@ public interface FornecedoresDAO {
 	public List<Fornecedor> listaFornecedor() throws SQLException, ClassNotFoundException;
 	public void adicionarFornecedor(Fornecedor fornecedor, Endereco end) throws SQLException, ClassNotFoundException;
 	public boolean verificarDuplicidade(String cnpj) throws SQLException, ClassNotFoundException;
-	public void editarFornecedor(Fornecedor c) throws ClassNotFoundException;
-	public void excluirFornecedorPorId(Long id) throws ClassNotFoundException;
+	public void editarFornecedor(Fornecedor c, Endereco e) throws SQLException, ClassNotFoundException;
+	public void excluirFornecedorPorId(int id) throws SQLException, ClassNotFoundException;
+	public List<Fornecedor> pesquisarFornecedoresPorNome(String nome_fornecedor) throws SQLException, ClassNotFoundException;
+	public Fornecedor buscarFornecedorPorId(int id_fornecedor) throws SQLException, ClassNotFoundException;
+	public Endereco buscarEnderecoFornecedorPorId(int id_fornecedor) throws SQLException, ClassNotFoundException;
 }

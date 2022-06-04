@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.fateczl.SistemaGerenciamentoWEB.model.Cliente;
 import com.fateczl.SistemaGerenciamentoWEB.model.Endereco;
 import com.fateczl.SistemaGerenciamentoWEB.model.Fornecedor;
 import com.fateczl.SistemaGerenciamentoWEB.persistence.GenericDAO;
@@ -20,15 +21,40 @@ public class FornecedoresDAOImpl implements FornecedoresDAO{
 
 	@Autowired
 	GenericDAO gDAO;
-	
+
+	@Override
+	public void adicionarFornecedor(Fornecedor fornecedor, Endereco end) throws SQLException, ClassNotFoundException {
+		Connection c = gDAO.getConnection();
+		
+		
+		PreparedStatement p = c.prepareStatement("EXEC sp_adicionar_fornecedores ?,?,?,?,?,?,?,?,?,?");
+		p.setString(1, fornecedor.getRazaoSocial());
+		p.setString(2, fornecedor.getCnpj());
+		p.setString(3, fornecedor.getInscricaoEstadual());
+		p.setString(4, fornecedor.getTelefone());
+
+		p.setString(5, end.getCep());
+		p.setString(6, end.getCidade());
+		p.setString(7, end.getEstado());
+		p.setString(8, end.getLogradouro());
+		p.setInt(9, end.getNumero());
+		p.setString(10, end.getComplemento());
+		
+		p.executeUpdate();
+		
+		p.close();
+		c.close();
+	}
+
 	@Override
 	public List<Fornecedor> listaFornecedor() throws SQLException, ClassNotFoundException {
 
 		Connection c = gDAO.getConnection();
 		
 		List<Fornecedor> listaFornecedores = new ArrayList<Fornecedor>();
-		String sql = "EXEC sp_lista_fornecedores";
-		PreparedStatement p = c.prepareStatement(sql);
+		
+		PreparedStatement p = c.prepareStatement("EXEC sp_lista_fornecedores");
+		
 		ResultSet rs = p.executeQuery();
 		while(rs.next()) {
 			Fornecedor fornecedor = new Fornecedor();
@@ -43,45 +69,119 @@ public class FornecedoresDAOImpl implements FornecedoresDAO{
 		c.close();
 		return listaFornecedores;
 	}
-
 	@Override
-	public void adicionarFornecedor(Fornecedor fornecedor, Endereco end) throws SQLException, ClassNotFoundException {
+	public List<Fornecedor> pesquisarFornecedoresPorNome(String nome_fornecedor) throws SQLException, ClassNotFoundException {
+		
 		Connection c = gDAO.getConnection();
 		
-		String sql = "INSERT INTO Fornecedor VALUES(?,?,?,?)";
-		PreparedStatement p = c.prepareStatement(sql);
-		p.setString(1, fornecedor.getRazaoSocial());
-		p.setString(2, fornecedor.getCnpj());
-		p.setString(3, fornecedor.getInscricaoEstadual());
-		p.setString(4, fornecedor.getTelefone());
+		List<Fornecedor> listaFornecedores = new ArrayList<Fornecedor>();
+		PreparedStatement p = c.prepareStatement("EXEC sp_buscar_fornecedor_por_nome ?");
+		
+		p.setString(1, nome_fornecedor);
+		ResultSet rs = p.executeQuery();
+		while(rs.next()) {
+			Fornecedor fornecedor = new Fornecedor();
+			fornecedor.setId(rs.getInt("id"));
+			fornecedor.setRazaoSocial(rs.getString("razaoSocial"));
+			fornecedor.setCnpj(rs.getString("cnpj"));
+			fornecedor.setInscricaoEstadual(rs.getString("telefone"));
+			fornecedor.setTelefone(rs.getString("telefone"));
+			
+			listaFornecedores.add(fornecedor);
+		}
+		c.close();
+		p.close();
+		rs.close();
+		
+		return listaFornecedores;
+	}
+	@Override
+	public Fornecedor buscarFornecedorPorId(int id_fornecedor) throws SQLException, ClassNotFoundException {
+		Connection c = gDAO.getConnection();
+		
+		PreparedStatement ps= c.prepareStatement("EXEC sp_buscar_fornecedor_por_id ?");
+		
+		ps.setInt(1, id_fornecedor);
+		ResultSet rs = ps.executeQuery();
+		if(rs.next()) {
+			Fornecedor fornecedor = new Fornecedor();
+			fornecedor.setId(rs.getInt("id"));
+			fornecedor.setRazaoSocial(rs.getString("razaoSocial"));
+			fornecedor.setCnpj(rs.getString("cnpj"));
+			fornecedor.setInscricaoEstadual(rs.getString("telefone"));
+			fornecedor.setTelefone(rs.getString("telefone"));
+			
+			return fornecedor;
+		}
+		c.close();
+		ps.close();
+		rs.close();
+		return null;
+	}
+	@Override
+	public Endereco buscarEnderecoFornecedorPorId(int id_fornecedor) throws SQLException, ClassNotFoundException {
+		Connection c = gDAO.getConnection();
+		
+		PreparedStatement ps= c.prepareStatement("EXEC sp_buscar_endereco_por_id_fornecedor ?");
+		
+		ps.setInt(1, id_fornecedor);
+		ResultSet rs = ps.executeQuery();
+		if(rs.next()) {
+			Endereco endereco = new Endereco();
+			endereco.setCep(rs.getString("cep"));
+			endereco.setCidade(rs.getString("cidade"));
+			endereco.setEstado(rs.getString("estado"));
+			endereco.setLogradouro(rs.getString("logradouro"));
+			endereco.setNumero(rs.getInt("numero"));
+			endereco.setComplemento(rs.getString("complemento"));
+			return endereco;
+		}
+		c.close();
+		ps.close();
+		rs.close();
+		return null;
+	}
+	@Override
+	public void editarFornecedor(Fornecedor f, Endereco e)  throws SQLException, ClassNotFoundException {
+	
+		Connection c = gDAO.getConnection();
+		PreparedStatement p = c.prepareStatement("EXEC sp_update_fornecedor ?,?,?,?,?,?,?,?,?,?,?");
+		p.setInt(1, f.getId());
+		p.setString(2, f.getRazaoSocial());
+		p.setString(3, f.getCnpj());
+		p.setString(4, f.getTelefone());
+		p.setString(5, f.getInscricaoEstadual());
+		
+		p.setString(6, e.getCep());
+		p.setString(7, e.getCidade());
+		p.setString(8, e.getEstado());
+		p.setString(9, e.getLogradouro());
+		p.setInt(10, e.getNumero());
+		p.setString(11, e.getComplemento());
 		
 		p.executeUpdate();
 		
-		String sqlEndeco = "INSERT INTO Endereco VALUES(?,?,?,?,?,?,?)";
-		PreparedStatement pE = c.prepareStatement(sqlEndeco);
-		
-		String buscaId = "SELECT id FROM Cliente WHERE cpfCnpj = ?";
-		PreparedStatement pB = c.prepareStatement(buscaId);
-		pB.setString(1, fornecedor.getCnpj());
-		ResultSet rs = pB.executeQuery();
-		if(rs.next()) {
-			pE.setInt(1, rs.getInt("id"));
-			pE.setString(2, end.getCep());
-			pE.setString(3, end.getCidade());
-			pE.setString(4, end.getEstado());
-			pE.setString(5, end.getLogradouro());
-			pE.setInt(6, end.getNumero());
-			pE.setString(7, end.getComplemento());
-			
-			pE.executeUpdate();
-		}
-		p.close();
 		c.close();
+		p.close();
 	}
 
 	@Override
+	public void excluirFornecedorPorId(int id_fornecedor) throws SQLException, ClassNotFoundException {
+		
+		Connection c = gDAO.getConnection();
+		
+		PreparedStatement ps = c.prepareStatement("EXEC sp_excluir_fornecedor_por_id ?");
+		
+		ps.setLong(1, id_fornecedor);
+		ps.executeUpdate();
+		c.close();
+		ps.close();
+	}
+	
+	@Override
 	public boolean verificarDuplicidade(String cnpj) throws SQLException, ClassNotFoundException {
 		Connection c = gDAO.getConnection();
+		
 		String sql = "SELECT cnpj FROM Fornecedor WHERE cnpj = ?";
 		PreparedStatement p = c.prepareStatement(sql);
 		p.setString(1, cnpj);
@@ -91,39 +191,4 @@ public class FornecedoresDAOImpl implements FornecedoresDAO{
 		}
 		return true;
 	}
-
-	@Override
-	public void editarFornecedor(Fornecedor c) throws ClassNotFoundException {
-		try {
-			Connection con = gDAO.getConnection();
-			PreparedStatement ps = con.prepareStatement("UPDATE FORNECEDOR SET razaoSocial = ?, cnpj = ?, telefone = ?, inscricaoEstadual = ?\r\n"
-					+ "WHERE Id = ?");
-			ps.setString(1, c.getRazaoSocial());
-			ps.setString(2, c.getCnpj());
-			ps.setString(3, c.getTelefone());
-			ps.setString(4, c.getInscricaoEstadual());
-			ps.setLong(5, c.getId());
-			ps.executeUpdate();
-			
-			con.close();
-			ps.close();
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	@Override
-	public void excluirFornecedorPorId(Long id) throws ClassNotFoundException {
-		try {
-			Connection c = gDAO.getConnection();
-			PreparedStatement ps = c.prepareStatement("DELETE FROM FORNECEDOR WHERE id = ?");
-			ps.setLong(1, id);
-			ps.executeUpdate();
-			c.close();
-			ps.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 }

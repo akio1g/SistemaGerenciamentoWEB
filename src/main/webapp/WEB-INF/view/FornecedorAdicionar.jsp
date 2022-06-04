@@ -28,8 +28,8 @@
 	<div class="formulario">
 		<form action="FornecedorAdicionar" method="post" class="form">
 			<div class="posicionarCheck">
+				<h2>Adicionar Fornecedor</h2>
 				<div class="bordaTabelaAdicionar">
-					<input type="checkbox">
 					<input type="text" class="tabelaAdicionar" id="razaoSocial" name="razaoSocial" placeholder="razaoSocial"> 
 					<input type="text" class="tabelaAdicionar" id="cnpj" name="cnpj" placeholder="cnpj">
 					<input type="text" class="tabelaAdicionar" id="inscricaoEstadual" name="inscricaoEstadual" placeholder="inscricaoEstadual">
@@ -44,7 +44,7 @@
 			</div>
 			<div class="botoes">
 				<input type="submit" id="botao" name="botaoAdicionar" value="Adicionar">
-				<a href="Home">Voltar</a>
+				<a href="Fornecedores">Voltar</a>
 			</div>
 		</form>
 	</div>

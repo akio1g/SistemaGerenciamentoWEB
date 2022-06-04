@@ -28,6 +28,7 @@
 		<div>
 		<form action="Cliente" method="post" class="formulario">
 			<div>
+				<h2>Lista de Clientes</h2>
 				<input type="text" class="inputPesquisa" id="inputPesquisa" name="inputPesquisa" placeholder="Digite sua pesquisa">
 				<table class="table">	
 					<thead>
@@ -40,7 +41,7 @@
 						<c:forEach var="cliente" items="${listaClientes}">
 							<tr>
 								<td>
-									<a href="ClienteEditar" id="botaoExcluir" name="botaoEditar" value="${cliente.id}"> Editar </a>
+									<a href="ClienteEditar" id="botaoEditar" name="botaoEditar" value="${cliente.id}"> Editar </a>
 								</td>
 								
 								<td><c:out value="${cliente.nomeRazaoSocial}"></c:out></td>
@@ -48,10 +49,10 @@
 						</c:forEach>
 					</tbody>
 				</table>
-			</div>
-			<div class="botoes">
+				<div class="botoes">
 				<a href="ClienteAdicionar">Adicionar</a>
 				<a href="Home">Voltar</a>
+			</div>
 			</div>
 		</form>
 	</div>
