@@ -32,16 +32,16 @@
 					<thead>
 						<tr>
 							<th>Quantidade</th>
-							<th>Descrição do produto</th>
-							<th>Valor</th>
+							<th>Nome</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
-							<td>1</td>
-							<td>2</td>
-							<td>3</td>
-						</tr>
+					<tbody class="nomes">
+						<c:forEach var="produto" items="${listaProduto}">
+							<tr>
+								<td><c:out value="${produto.quantidade}"></c:out></td>
+								<td><c:out value="${produto.nome}"></c:out></td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 				<div class="botoes">

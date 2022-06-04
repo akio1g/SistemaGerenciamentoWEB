@@ -58,18 +58,19 @@ CREATE TABLE Produto (
 	nome VARCHAR(max),
 	descricao VARCHAR(max),
 	ncmSh VARCHAR(max),
-	preco FLOAT
+	preco DECIMAL(7,2),
+	id_categoria INT
 
+	CONSTRAINT fk_categoria FOREIGN KEY (id_categoria) REFERENCES Categoria(id),
 	CONSTRAINT pk_produto PRIMARY KEY (id)
 	)
-CREATE Table categoria_produto(
+CREATE DROP Table categoria_produto(
 	id_categoria INT,
 	id_produto INT,
 	CONSTRAINT fk_id_categoria FOREIGN KEY (id_categoria) REFERENCES Categoria(id),
 	CONSTRAINT fk_id_produto FOREIGN KEY (id_produto) REFERENCES Produto(id),
 	CONSTRAINT pk_id_categoria_produto PRIMARY KEY(id_categoria, id_produto)
 	)
-
 
 INSERT INTO Categoria (nome) values ('Gorje')
 INSERT INTO Categoria (nome) values ('Yale')
@@ -107,13 +108,14 @@ INSERT INTO FORNECEDOR (razaoSocial, cnpj, inscricaoEstadual, telefone) VALUES
 ('STAM METALURGICA SA','30560205000192', 'RJ', '2225251006')
 
 
-INSERT INTO Produto (nome,descricao,ncmSh,preco) VALUES
-('Chave Pado Original 2',null,'83017000',7.9),
-('Chave Pado 682',null,'83017000',1.75),
-('Chave Stam 799',null,'83017000',1.75),
-('Chave Tetram Niquelada Fechadura 1201',null,'83017000',6.30),
-('Chave 3F 1040 Gold',null,'83017000',1.79),
-('Chave 3F 1125.1',null,'83017000',0.97)
+INSERT INTO Produto (nome,descricao,ncmSh,preco, id_categoria) VALUES
+('Chave Pado Original 2',null,'83017000',7.9, 2),
+('Chave Pado 682',null,'83017000',1.75, 1),
+('Chave Stam 799',null,'83017000',1.75, 3),
+('Chave Tetram Niquelada Fechadura 1201',null,'83017000',6.30,1),
+('Chave 3F 1040 Gold',null,'83017000',1.79, 2),
+('Chave 3F 1125.1',null,'83017000',0.97, 1),
+('Chave 3F 1125.1',null,'83017000',0.97, 1)
 
-INSERT INTO categoria_produto VALUES
-(2,1),(2,2),(2,3),(4,4),(2,5),(2,6)
+
+SELECT * FROM Produto

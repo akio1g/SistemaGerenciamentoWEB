@@ -1,34 +1,32 @@
 package com.fateczl.SistemaGerenciamentoWEB.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class Produto {
-	private Long id;
+	private int id;
 	private String nome;
 	private String descricao;
 	private String ncmSh;
 	private double preco;
+	private String categoria;
 
-	private Set<Categoria> categorias = new HashSet<>();
 
 	public Produto() {
 	}
 
-	public Produto(Long id, String nome, String descricao, String ncmSh, double preco) {
+	public Produto(int id, String nome, String descricao, String ncmSh, double preco, String categoria) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.ncmSh = ncmSh;
 		this.preco = preco;
+		this.categoria = categoria;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -63,19 +61,18 @@ public class Produto {
 	public void setPreco(double preco) {
 		this.preco = preco;
 	}
-
-	public Set<Categoria> getCategorias() {
-		return categorias;
+	public String getCategoria() {
+		return categoria;
 	}
 
-	public void setCategorias(Set<Categoria> categorias) {
-		this.categorias = categorias;
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 
 	@Override
 	public String toString() {
 		return "Produto [id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", ncmSh=" + ncmSh + ", preco="
-				+ preco + ", categorias=" + categorias + "]";
+				+ preco + ", categoria=" + categoria + "]";
 	}
 
 }

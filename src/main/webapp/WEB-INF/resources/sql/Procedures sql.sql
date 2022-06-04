@@ -160,4 +160,52 @@ CREATE PROC sp_excluir_fornecedor_por_id (@id_fornecedor INT)
 AS
 	DELETE FROM Endereco_Fornecedor WHERE id_fornecedor = @id_fornecedor
 	DELETE FROM FORNECEDOR WHERE id = @id_fornecedor
-	 
+--******************************************************************************--	
+
+
+
+					--FUNÇÕES DO PRODUTO
+CREATE PROC sp_adicionar_produto (@nome VARCHAR(max), @descricao VARCHAR(max), @ncmSh VARCHAR(max), @preco Decimal(7,2), @categoria INT)
+AS
+	INSERT INTO Produto VALUES(@nome, @descricao, @ncmSh, @preco, @categoria)
+--******************************************************************************--
+CREATE PROC sp_listar_produto
+AS
+	SELECT SUBSTRING(nome, 6, 15) as nome,count(nome) as quantidade
+	FROM Produto
+	GROUP BY nome
+
+--******************************************************************************--
+CREATE PROC sp_listar_produto_por_categoria(@id_categoria INT)
+AS
+	SELECT p.* FROM Produto as p
+	INNER JOIN categoria_produto as cp 
+	ON  p.id = cp.id_produto
+	WHERE cp.id_categoria = @id_categoria
+--******************************************************************************--
+CREATE PROC sp_editar_produto(@nome VARCHAR(max), @descricao VARCHAR(max), @ncmSh VARCHAR(max), @preco DECIMAL(7,2), @categoria INT, @id_produto INT)
+AS
+	IF(@nome != '')
+	BEGIN
+		UPDATE Produto SET nome = @nome WHERE id = @id_produto
+	END
+	IF(@descricao != '')
+	BEGIN
+		UPDATE Produto SET descricao = @descricao WHERE id = @id_produto
+	END
+	IF(@ncmSh != '')
+	BEGIN
+		UPDATE Produto SET ncmSh = @ncmSh WHERE id = @id_produto
+	END
+	IF(@preco != '')
+	BEGIN
+		UPDATE Produto SET preco = @preco WHERE id = @id_produto
+	END
+	IF(@categoria != '')
+	BEGIN
+		UPDATE Produto SET id_categoria = @categoria WHERE id = @id_produto
+	END
+--******************************************************************************--
+CREATE PROC sp_excluir_produto_por_id (@id_produto INT)
+AS
+	DELETE FROM Produto WHERE id = @id_produto

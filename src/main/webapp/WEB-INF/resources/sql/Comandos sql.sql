@@ -15,3 +15,8 @@ EXEC sp_buscar_fornecedor_por_id
 EXEC sp_buscar_endereco_por_id_fornecedor 
 EXEC sp_update_fornecedor  --y,x,x,x,x,x,x,x,x,x (y = id de referencia) -- Usada para realizar o update do fornecedor limitando a colunas validas
 EXEC sp_excluir_fornecedor_por_id --x-- (x = id_fornecedor) Usada para excluir um fornecedor
+
+EXEC sp_adicionar_produto --x,x,x,x Usada para adicionar um novo produto
+EXEC sp_listar_produto_por_categoria --x (x = id_categoria) Usada pra listar os produtos por categoria
+EXEC sp_editar_produto --x,x,x,x,y (y = id_produto) Usada para editar um produto pelo id
+EXEC sp_excluir_produto_por_id --x (X = id_produto) Usada para excluir um produto pelo id
