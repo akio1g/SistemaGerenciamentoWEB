@@ -11,8 +11,8 @@ public interface ClienteDAO {
 	public void adicionarCliente(Cliente cliente, Endereco end) throws SQLException, ClassNotFoundException;
 	public boolean verificarDuplicidade(String cpf) throws SQLException, ClassNotFoundException;
 	public void editarClientePorId(Cliente c, Endereco e)throws SQLException, ClassNotFoundException;
-	public void excluirClientePorId(Long id) throws SQLException, ClassNotFoundException;
+	public void excluirClientePorId(int id) throws SQLException, ClassNotFoundException;
 	List<Cliente> pesquisarClientesPorNome(String nome) throws SQLException, ClassNotFoundException;
-	public Cliente buscarClientePorId(long id_cliente) throws ClassNotFoundException;
-	public Endereco buscarEnderecoPorId(long id_cliente) throws ClassNotFoundException;
+	public Cliente buscarClientePorId(int id_cliente) throws ClassNotFoundException;
+	public Endereco buscarEnderecoPorId(int id_cliente) throws ClassNotFoundException;
 	}

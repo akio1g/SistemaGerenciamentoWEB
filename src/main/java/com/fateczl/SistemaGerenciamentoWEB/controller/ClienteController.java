@@ -44,15 +44,30 @@ public class ClienteController {
 		String erro = "";
 		String botaoEditar = param.get("botaoEditar");
 		String botaoInput= param.get("inputPesquisa");
-		List<String> listaIdEditar = paramValorado.get("cliente.id{}");
-		System.out.println(botaoInput);
+		String botaoExcluir = param.get("botaoExcluir");
+		
 		List<Cliente> listaClientes = new ArrayList<Cliente>();
 		try {
-			listaClientes = cDAO.listaClientes();if(!botaoEditar.equals("null") && !botaoEditar.isEmpty()){
-				clienteEditar(model);
-			}
-			if(!botaoInput.isEmpty()) {
+			if(botaoInput.isEmpty()) {
+				listaClientes = cDAO.listaClientes();
+			}else {
 				listaClientes = cDAO.pesquisarClientesPorNome(botaoInput);
+				if(listaClientes.isEmpty()) {
+					listaClientes = cDAO.listaClientes();
+					model.addAttribute("erro", erro);
+					model.addAttribute("listaClientes", listaClientes);
+					return new ModelAndView("Cliente");
+				}else {
+					model.addAttribute("erro", erro);
+					model.addAttribute("listaClientes", listaClientes);
+					return new ModelAndView("Cliente");
+				}
+			}
+			if(botaoEditar != null && !botaoEditar.isEmpty()){
+				clienteEditar(model);
+				model.addAttribute("erro", erro);
+				model.addAttribute("listaClientes", listaClientes);
+				return new ModelAndView("Cliente");
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			erro = e.getMessage();
@@ -145,7 +160,7 @@ public class ClienteController {
 	public ModelAndView clienteEditar(ModelMap model) {
 		Cliente cliente = new Cliente();
 		Endereco endereco = new Endereco();
-		long id_cliente = 1001;
+		int id_cliente = 1003; //lugar onde vai substituir o id passado por parametro da tela de listar cliente.
 		try {
 			cliente = cDAO.buscarClientePorId(id_cliente);
 			endereco = cDAO.buscarEnderecoPorId(id_cliente);
@@ -161,29 +176,36 @@ public class ClienteController {
 	@RequestMapping(name="ClienteEditar", value="ClienteEditar", method = RequestMethod.POST)
 	public ModelAndView clienteEditar(ModelMap model, @RequestParam Map<String,String> param) {
 		String botaoSalvar = param.get("botaoSalvar");
-		if(!botaoSalvar.equals(null) && !botaoSalvar.isEmpty()) {
+		String botaoExcluir = param.get("botaoExcluir");
+		String erro = "";
+		try {		
 			Cliente cliente = new Cliente();
-			Endereco end = new Endereco();
+			Endereco endereco = new Endereco();
 			
-			cliente.setId((long) 1001);
+			cliente.setId(Integer.parseInt(param.get("Id")));
 			cliente.setNomeRazaoSocial((param.get("Nome")));
 			cliente.setCpfCnpj(param.get("CPF/CNPJ"));
 			cliente.setTelefone(param.get("Telefone"));
 			cliente.setEmail(param.get("Email"));
 		
-			end.setCep(param.get("CEP"));
-			end.setLogradouro(param.get("Logradouro"));
-			end.setNumero(Integer.parseInt(param.get("Numero")));
-			end.setComplemento(param.get("Complemento"));
-			end.setCidade(param.get("Cidade"));
-			end.setEstado(param.get("Estado"));
-			try {
-				cDAO.editarClientePorId(cliente, end);
-				listarCliente(model);
-				
-			} catch (ClassNotFoundException | SQLException e) {
-				e.printStackTrace();
+			endereco.setCep(param.get("CEP"));
+			endereco.setLogradouro(param.get("Logradouro"));
+			endereco.setNumero(Integer.parseInt(param.get("Numero")));
+			endereco.setComplemento(param.get("Complemento"));
+			endereco.setCidade(param.get("Cidade"));
+			endereco.setEstado(param.get("Estado"));
+			
+			if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
+				cDAO.editarClientePorId(cliente, endereco);
+				return new ModelAndView("Cliente");
 			}
+			if(botaoExcluir != null && !botaoExcluir.isEmpty()) {
+				cDAO.excluirClientePorId(cliente.getId());
+				return new ModelAndView("Cliente");
+			}
+			
+		}catch (ClassNotFoundException | SQLException e) {
+			erro = e.getMessage();
 		}
 		return new ModelAndView();
 	}

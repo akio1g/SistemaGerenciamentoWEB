@@ -39,7 +39,9 @@
 					<tbody class="nomes">
 						<c:forEach var="cliente" items="${listaClientes}">
 							<tr>
-								<td><a href="ClienteEditar" name="cliente.id{}"> Editar </a></td>
+								<td>
+									<a href="ClienteEditar" id="botaoExcluir" name="botaoEditar" value="${cliente.id}"> Editar </a>
+								</td>
 								
 								<td><c:out value="${cliente.nomeRazaoSocial}"></c:out></td>
 							</tr>

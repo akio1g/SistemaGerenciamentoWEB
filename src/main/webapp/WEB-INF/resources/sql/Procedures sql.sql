@@ -1,4 +1,13 @@
-﻿CREATE PROC sp_lista_clientes -- Usada para listar os clientes
+﻿USE DistribuidoraAMZ
+CREATE PROC sp_adicionar_cliente @nomeRazaoSocial VARCHAR(max), @CpfCnpj VARCHAR(max), @Telefone VARCHAR(max), 
+							     @Email VARCHAR(max), @InscricaoEstadual VARCHAR(max),
+							     @Cep VARCHAR(max), @cidade VARCHAR(max), @estado VARCHAR(max), 
+							     @logradouro VARCHAR(max), @numero INT, @complemento VARCHAR(max)
+AS
+	INSERT INTO Cliente VALUES(@nomeRazaoSocial, @CpfCnpj, @Telefone, @Email, @InscricaoEstadual)
+	INSERT INTO Endereco VALUES((SELECT id FROM Cliente WHERE cpfCnpj = @CpfCnpj), @Cep, @cidade, @estado, @logradouro, @numero, @complemento)
+--******************************************************************************--
+CREATE PROC sp_lista_clientes -- Usada para listar os clientes
 AS
 	SELECT c.id, c.nomeRazaoSocial, c.cpfCnpj,c.telefone, c.email, c.inscricaoEstadual,
 	 e.cep,  e.estado,e.cidade,e.logradouro, e.numero, e.complemento
@@ -8,6 +17,10 @@ CREATE PROC sp_lista_fornecedores
 AS
 	SELECT * FROM FORNECEDOR
 --******************************************************************************--
+CREATE PROC sp_buscar_cliente_por_nome (@nome VARCHAR(50))
+AS
+	SELECT * FROM Cliente WHERE nomeRazaoSocial like '%'+@nome+'%'
+--******************************************************************************--
 CREATE PROC sp_buscar_cliente_por_id(@id INT)
 AS
 	SELECT * FROM Cliente WHERE id = @id
@@ -16,12 +29,10 @@ CREATE PROC sp_buscar_endereco_por_id_cliente(@id_cliente INT)
 AS
 	SELECT * FROM Endereco WHERE id_cliente = @id_cliente
 --******************************************************************************--
-
-	 1001,'Roberto Freitas','12682957294','11987460692','rfreitas@outlook.com.br',null,'50421343','S�o Paulo','SP','rua da Macieira','23',null
 CREATE PROC sp_update_cliente @id INT, @nomeRazaoSocial VARCHAR(max), @CpfCnpj VARCHAR(max), @Telefone VARCHAR(max), 
 							  @Email VARCHAR(max), @InscricaoEstadual VARCHAR(max),
 							  @Cep VARCHAR(max), @cidade VARCHAR(max), @estado VARCHAR(max), 
-							  @logradouro VARCHAR(max), @numero VARCHAR(max), @complemento VARCHAR(max)
+							  @logradouro VARCHAR(max), @numero INT, @complemento VARCHAR(max)
 AS
 	IF (@nomeRazaoSocial != '')
 	BEGIN
@@ -67,5 +78,11 @@ AS
 	BEGIN
 		UPDATE Endereco SET complemento = @complemento WHERE id_cliente = @id
 	END
-	
+--******************************************************************************--
+CREATE PROC sp_excluir_cliente(@id_cliente int) 
+AS
+	BEGIN
+		DELETE FROM	Endereco WHERE id_cliente = @id_cliente		
+		DELETE FROM Cliente WHERE id = @id_cliente
+	END
 

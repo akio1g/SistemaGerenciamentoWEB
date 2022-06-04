@@ -1,7 +1,7 @@
 package com.fateczl.SistemaGerenciamentoWEB.model;
 
 public class Cliente {
-	private Long id;
+	private int id;
 	private String nomeRazaoSocial;
 	private String cpfCnpj;
 	private String telefone;
@@ -11,7 +11,7 @@ public class Cliente {
 	public Cliente() {
 	}
 
-	public Cliente(Long id, String nomeRazaoSocial, String cpfCnpj, String telefone, String email,
+	public Cliente(int id, String nomeRazaoSocial, String cpfCnpj, String telefone, String email,
 			String inscricaoEstadual) {
 		super();
 		this.id = id;
@@ -23,11 +23,11 @@ public class Cliente {
 
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

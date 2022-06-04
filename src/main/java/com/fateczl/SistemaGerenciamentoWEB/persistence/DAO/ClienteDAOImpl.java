@@ -33,7 +33,7 @@ public class ClienteDAOImpl implements ClienteDAO{
 		ResultSet rs = p.executeQuery();
 		while(rs.next()) {
 			Cliente cliente = new Cliente();
-			cliente.setId(rs.getLong("id"));
+			cliente.setId(rs.getInt("id"));
 			cliente.setNomeRazaoSocial(rs.getString("nomeRazaoSocial"));
 			cliente.setCpfCnpj(rs.getString("cpfCnpj"));
 			cliente.setTelefone(rs.getString("telefone"));
@@ -49,7 +49,7 @@ public class ClienteDAOImpl implements ClienteDAO{
 	@Override
 	public List<Cliente> pesquisarClientesPorNome(String nome) throws SQLException, ClassNotFoundException {
 		Connection c = gDAO.getConnection();
-		String sql = "SELECT * FROM Cliente WHERE nome like '%?%'";
+		String sql = "EXEC sp_buscar_cliente_por_nome ?";
 		List<Cliente> listaClientes = new ArrayList<Cliente>();
 		
 		PreparedStatement p = c.prepareStatement(sql);
@@ -57,16 +57,14 @@ public class ClienteDAOImpl implements ClienteDAO{
 		p.setString(1, nome);
 		ResultSet rs = p.executeQuery();
 		while(rs.next()) {
-			while(rs.next()) {
-				Cliente cliente = new Cliente();
-				cliente.setId(rs.getLong("id"));
-				cliente.setNomeRazaoSocial(rs.getString("nomeRazaoSocial"));
-				cliente.setCpfCnpj(rs.getString("cpfCnpj"));
-				cliente.setTelefone(rs.getString("telefone"));
-				cliente.setEmail(rs.getString("email"));
-				cliente.setInscricaoEstadual(rs.getString("inscricaoEstadual"));
-				listaClientes.add(cliente);
-			}
+			Cliente cliente = new Cliente();
+			cliente.setId(rs.getInt("id"));
+			cliente.setNomeRazaoSocial(rs.getString("nomeRazaoSocial"));
+			cliente.setCpfCnpj(rs.getString("cpfCnpj"));
+			cliente.setTelefone(rs.getString("telefone"));
+			cliente.setEmail(rs.getString("email"));
+			cliente.setInscricaoEstadual(rs.getString("inscricaoEstadual"));
+			listaClientes.add(cliente);
 		}
 		c.close();
 		p.close();
@@ -79,38 +77,22 @@ public class ClienteDAOImpl implements ClienteDAO{
 		
 		Connection c = gDAO.getConnection();
 		
-		String sql = "INSERT INTO Cliente VALUES(?,?,?,?,?)";
-		String sqlEndeco = "INSERT INTO Endereco VALUES(?,?,?,?,?,?,?)";
+		PreparedStatement ps = c.prepareStatement("EXEC sp_adicionar_cliente ?,?,?,?,?,?,?,?,?,?,?");
+		
+		ps.setString(1, cliente.getNomeRazaoSocial());
+		ps.setString(2, cliente.getCpfCnpj());
+		ps.setString(3, cliente.getTelefone());
+		ps.setString(4, cliente.getEmail());
+		ps.setString(5, cliente.getInscricaoEstadual());
+		ps.setString(6, end.getCep());
+		ps.setString(7, end.getCidade());
+		ps.setString(8, end.getEstado());
+		ps.setString(9, end.getLogradouro());
+		ps.setInt(10, end.getNumero());
+		ps.setString(11, end.getComplemento());
 	
-		PreparedStatement p = c.prepareStatement(sql);
-		PreparedStatement pE = c.prepareStatement(sqlEndeco);
-		p.setString(1, cliente.getNomeRazaoSocial());
-		p.setString(2, cliente.getCpfCnpj());
-		p.setString(3, cliente.getTelefone());
-		p.setString(4, cliente.getEmail());
-		p.setString(5, cliente.getInscricaoEstadual());
-		p.executeUpdate();
-		
-		
-		String buscaId = "SELECT id FROM Cliente WHERE cpfCnpj = ?";
-		PreparedStatement pB = c.prepareStatement(buscaId);
-		pB.setString(1, cliente.getCpfCnpj());
-		ResultSet rs = pB.executeQuery();
-		if(rs.next()) {
-			pE.setInt(1, rs.getInt("id"));
-			pE.setString(2, end.getCep());
-			pE.setString(3, end.getCidade());
-			pE.setString(4, end.getEstado());
-			pE.setString(5, end.getLogradouro());
-			pE.setInt(6, end.getNumero());
-			pE.setString(7, end.getComplemento());
-			
-			
-			pE.executeUpdate();
-		}
-		
-		pE.close();
-		p.close();
+		ps.executeUpdate();
+		ps.close();
 		c.close();
 	
 	}
@@ -132,16 +114,16 @@ public class ClienteDAOImpl implements ClienteDAO{
 		return true;
 	}
 	@Override
-	public Cliente buscarClientePorId(long id_cliente) throws ClassNotFoundException{
+	public Cliente buscarClientePorId(int id_cliente) throws ClassNotFoundException{
 		try {
 			Connection con = gDAO.getConnection();
-			String sql = "EXEC sp_buscar_cliente_por_id ?"; 
-			PreparedStatement ps= con.prepareStatement(sql);
-			ps.setLong(1, id_cliente);
+			
+			PreparedStatement ps= con.prepareStatement("EXEC sp_buscar_cliente_por_id ?");
+			ps.setInt(1, id_cliente);
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
 				Cliente cliente = new Cliente();
-				cliente.setId(rs.getLong("id"));
+				cliente.setId(rs.getInt("id"));
 				cliente.setNomeRazaoSocial(rs.getString("nomeRazaoSocial"));
 				cliente.setCpfCnpj(rs.getString("cpfCnpj"));
 				cliente.setTelefone(rs.getString("telefone"));
@@ -158,12 +140,12 @@ public class ClienteDAOImpl implements ClienteDAO{
 		return null;
 	}
 	@Override
-	public Endereco buscarEnderecoPorId(long id_cliente) throws ClassNotFoundException{
+	public Endereco buscarEnderecoPorId(int id_cliente) throws ClassNotFoundException{
 		try {
 			Connection con = gDAO.getConnection();
-			String sql = "EXEC sp_buscar_endereco_por_id_cliente ?"; 
-			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setLong(1, id_cliente);
+		
+			PreparedStatement ps = con.prepareStatement("EXEC sp_buscar_endereco_por_id_cliente ?");
+			ps.setInt(1, id_cliente);
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
 				Endereco endereco = new Endereco();
@@ -187,8 +169,8 @@ public class ClienteDAOImpl implements ClienteDAO{
 	public void editarClientePorId(Cliente c, Endereco e) throws ClassNotFoundException {
 		try {
 			Connection con = gDAO.getConnection();
-			String sql = "EXEC sp_update_cliente ?,?,?,?,?,?,?,?,?,?,?,?";
-			PreparedStatement ps = con.prepareStatement(sql);
+		
+			PreparedStatement ps = con.prepareStatement("EXEC sp_update_cliente ?,?,?,?,?,?,?,?,?,?,?,?");
 			ps.setLong(1, c.getId());
 			ps.setString(2, c.getNomeRazaoSocial());
 			ps.setString(3, c.getCpfCnpj());
@@ -212,11 +194,11 @@ public class ClienteDAOImpl implements ClienteDAO{
 	}
 
 	@Override
-	public void excluirClientePorId(Long id) throws ClassNotFoundException {
+	public void excluirClientePorId(int id) throws ClassNotFoundException {
 		try {
 			Connection c = gDAO.getConnection();
-			PreparedStatement ps = c.prepareStatement("DELETE FROM Cliente WHERE id = ?");
-			ps.setLong(1, id);
+			PreparedStatement ps = c.prepareStatement("EXEC sp_excluir_cliente ?");
+			ps.setInt(1, id);
 			ps.executeUpdate();
 			c.close();
 			ps.close();
@@ -224,4 +206,5 @@ public class ClienteDAOImpl implements ClienteDAO{
 			e.printStackTrace();
 		}
 	}
+
 }
