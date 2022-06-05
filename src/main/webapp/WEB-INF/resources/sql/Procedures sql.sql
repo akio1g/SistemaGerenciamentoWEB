@@ -178,10 +178,10 @@ AS
 --******************************************************************************--
 CREATE PROC sp_listar_produto_por_categoria(@id_categoria INT)
 AS
-	SELECT p.* FROM Produto as p
-	INNER JOIN categoria_produto as cp 
-	ON  p.id = cp.id_produto
-	WHERE cp.id_categoria = @id_categoria
+	SELECT DISTINCT p.* FROM Produto as p
+	INNER JOIN Categoria as cp 
+	ON  p.id_categoria = cp.id
+	WHERE cp.id = @id_categoria
 --******************************************************************************--
 CREATE PROC sp_editar_produto(@nome VARCHAR(max), @descricao VARCHAR(max), @ncmSh VARCHAR(max), @preco DECIMAL(7,2), @categoria INT, @id_produto INT)
 AS

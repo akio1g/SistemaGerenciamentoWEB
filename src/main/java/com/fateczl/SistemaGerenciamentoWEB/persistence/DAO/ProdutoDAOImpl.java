@@ -39,7 +39,7 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 	}
 
 	@Override
-	public List<Produto> listarPorCategoria(Categoria categoria) throws SQLException, ClassNotFoundException {
+	public List<Produto> listarPorCategoria(int id) throws SQLException, ClassNotFoundException {
 		
 		List<Produto> lista = new ArrayList<>();
 		
@@ -47,7 +47,7 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 		
 		PreparedStatement ps = c.prepareStatement("EXEC sp_listar_produto_por_categoria ?");
 		
-		ps.setLong(1, categoria.getId());
+		ps.setLong(1, id);
 		ResultSet rs = ps.executeQuery();
 		while(rs.next()) {
 			Produto p = instanciarProduto(rs);
@@ -72,7 +72,7 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 	}
 
 	@Override
-	public void apagarPorId(int id) throws SQLException, ClassNotFoundException {
+	public void excluirPorId(int id) throws SQLException, ClassNotFoundException {
 		
 		Connection c = gDAO.getConnection();
 		

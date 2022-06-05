@@ -9,7 +9,7 @@
 	<meta charset="ISO-8859-1">
 	<link rel="stylesheet" type="text/css"
 		href='<c:url value="./resources/css/styles.css"/>'>
-	<title>Produto</title>
+	<title>Adicionar Produto</title>
 </head>
 
 <body>
@@ -26,32 +26,20 @@
 		</ul>
 	</nav>
 	<div class="formulario">
-		<form action="ProdutoListar" method="post" class="form">
-			<div>
-				<input type="text" class="inputPesquisa" placeholder="Digite sua pesquisa">
-				<table class="table">	
-					<thead>
-						<tr>
-							<th></th>
-							<th>ID</th>
-							<th>Nome do Produto</th>
-							<th>Preco</th>
-						</tr>
-					</thead>
-					<tbody class="nomes">
-						<c:forEach var="Produto" items="${listaProduto}">
-							<tr>
-								<td><a href="ProdutoEditar">Editar</a></td>
-								<td><c:out value="${Produto.id}"></c:out></td>
-								<td><c:out value="${Produto.nome}"></c:out></td>
-								<td><c:out value="${Produto.preco}"></c:out></td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
+		<form action="ProdutoAdicionar" method="post" class="form">
+			<div class="posicionarCheck">
+				<h2>Adicionar Produto</h2>
+				<div class="bordaTabelaAdicionar">
+					<input type="text" class="tabelaAdicionar" id="Nome" name="Nome" placeholder="Nome">
+					<input type="text" class="tabelaAdicionar" id="Descricao" name="Descricao" placeholder="Descricao">
+					<input type="text" class="tabelaAdicionar" id="ncmSh" name="ncmSh" placeholder="ncmSh">
+					<input type="text" class="tabelaAdicionar" id="preco" name="preco"placeholder="Preço">
+					<input type="text" class="tabelaAdicionar" id="categoria"  name="categoria" placeholder="Categoria">
+				</div>
 			</div>
 			<div class="botoes">
-				<a href="Home">Voltar</a>
+				<input type="submit" id="botao" name="botaoSalvar" value="Salvar">
+				<a href="Produto">Voltar</a>
 			</div>
 		</form>
 	</div>
