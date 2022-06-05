@@ -77,7 +77,7 @@ public class ProdutoController {
 			produto.setDescricao(param.get("Descricao"));
 			produto.setNcmSh(param.get("ncmSh"));
 			produto.setPreco(Double.parseDouble(param.get("preco")));
-			//produto.setCategoria(botaoSalvar); //Adicionar a categoria do produto
+			produto.setCategoria(param.get("categoria"));
 			
 			if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
 				pDAO.adicionarProduto(produto);

@@ -85,7 +85,7 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 	}
 
 	@Override
-	public void editarProduto(Produto produto) throws SQLException, ClassNotFoundException { // NAO FINALIZADO
+	public void editarProduto(Produto produto) throws SQLException, ClassNotFoundException { 
 		
 		Connection c = gDAO.getConnection();
 		
@@ -101,5 +101,23 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 	
 		ps.close();
 		c.close();
+	}
+	@Override
+	public List<Categoria> listarCategorias()  throws SQLException, ClassNotFoundException {
+		Connection c = gDAO.getConnection();
+		
+		List<Categoria> listaCategorias = new ArrayList<>();
+		
+		PreparedStatement ps = c.prepareStatement("EXEC sp_listar_categorias");
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()) {
+			Categoria categoria = new Categoria();
+			categoria.setId(rs.getInt("id"));
+			categoria.setNome(rs.getString("nome"));
+			
+			listaCategorias.add(categoria);
+		}
+		
+		return listaCategorias;
 	}
 }

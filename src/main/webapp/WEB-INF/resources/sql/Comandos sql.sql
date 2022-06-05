@@ -17,6 +17,17 @@ EXEC sp_update_fornecedor  --y,x,x,x,x,x,x,x,x,x (y = id de referencia) -- Usada
 EXEC sp_excluir_fornecedor_por_id --x-- (x = id_fornecedor) Usada para excluir um fornecedor
 
 EXEC sp_adicionar_produto --x,x,x,x Usada para adicionar um novo produto
-EXEC sp_listar_produto_por_categoria --x (x = id_categoria) Usada pra listar os produtos por categoria
+EXEC sp_listar_produto_por_categoria 1 --x (x = id_categoria) Usada pra listar os produtos por categoria
 EXEC sp_editar_produto --x,x,x,x,y (y = id_produto) Usada para editar um produto pelo id
 EXEC sp_excluir_produto_por_id --x (X = id_produto) Usada para excluir um produto pelo id
+
+
+EXEC sp_listar_categorias -- Usada para listar categorias
+
+
+EXEC sp_adicionar_usuario --x,x,x,x,x Usada pra adicionar um usuario
+EXEC sp_listar_usuarios -- Usada para listar os usuarios
+EXEC sp_excluir_usuario_por_id --x Usada para excluir o usuario pelo id
+EXEC sp_editar_usuario --x,x,x Usada para editar o usuario
+EXEC sp_verificar_duplicidade --x,x Usada para verificar duplicidade
+EXEC sp_pesquisar_Usuario_Por_Nome --x Usada para pesquisar usuario pelo nome

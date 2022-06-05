@@ -1,50 +1,56 @@
 package com.fateczl.SistemaGerenciamentoWEB.model;
 
-import java.util.Objects;
-
-import com.fateczl.SistemaGerenciamentoWEB.model.enums.Cargo;
-
 public class Usuario {
-	private Long id;
+	private int id;
 	private String nome;
+	private String login;
 	private String email;
 	private String senha;
-	private int cargo;
+	private int tipo_usuario;
 
 	public Usuario() {
 	}
 
-	public Usuario(Long id, String name, String login, String senha, Cargo cargo) {
+	public Usuario(int id, String name, String email, String login, String senha, int tipo_usuario) {
 		super();
 		this.id = id;
 		this.nome = name;
-		this.email = login;
+		this.login = login;
+		this.email = email;
 		this.senha = senha;
-		setCargo(cargo);
+		this.tipo_usuario = tipo_usuario;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public String getName() {
+	public String getNome() {
 		return nome;
 	}
 
-	public void setName(String name) {
-		this.nome = name;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public String getLogin() {
-		return email;
+		return login;
 	}
 
 	public void setLogin(String login) {
-		this.email = login;
+		this.login = login;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getSenha() {
@@ -55,27 +61,19 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public int getCargo() {
-		return cargo;
+	public int getTipo_usuario() {
+		return tipo_usuario;
 	}
 
-	public void setCargo(Cargo cargo) {
-		if (cargo != null) {
-			this.cargo = cargo.getCodigo();
-		}
+	public void setTipo_usuario(int tipo_usuario) {
+		this.tipo_usuario = tipo_usuario;
 	}
 
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-	public boolean equals(Object obj) {
-		if(this == obj) {return true;}
-		if(obj == null) {return false;}
-		if(getClass() != obj.getClass()) {return false;}
-		Usuario other = (Usuario) obj;
-		return Objects.equals(id, other.id);
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", nome=" + nome + ", login=" + login + ", email=" + email + ", senha=" + senha
+				+ ", tipo_usuario=" + tipo_usuario + "]";
 	}
 
-
-
+	
 }

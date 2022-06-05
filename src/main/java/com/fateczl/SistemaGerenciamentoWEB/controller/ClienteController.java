@@ -196,11 +196,11 @@ public class ClienteController {
 			
 			if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
 				cDAO.editarClientePorId(cliente, endereco);
-				return new ModelAndView("Cliente");
+				return new ModelAndView("ClienteEditar");
 			}
 			if(botaoExcluir != null && !botaoExcluir.isEmpty()) {
 				cDAO.excluirClientePorId(cliente.getId());
-				return new ModelAndView("Cliente");
+				return new ModelAndView("ClienteEditar");
 			}
 			
 		}catch (ClassNotFoundException | SQLException e) {

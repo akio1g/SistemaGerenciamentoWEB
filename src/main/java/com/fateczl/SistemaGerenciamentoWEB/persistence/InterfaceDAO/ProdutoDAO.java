@@ -11,4 +11,5 @@ public interface ProdutoDAO {
 	public List<Produto> listarPorCategoria(int i) throws SQLException, ClassNotFoundException;
 	public void excluirPorId(int id) throws SQLException, ClassNotFoundException;
 	public void editarProduto(Produto p) throws ClassNotFoundException, SQLException;
+	List<Categoria> listarCategorias() throws SQLException, ClassNotFoundException;
 }

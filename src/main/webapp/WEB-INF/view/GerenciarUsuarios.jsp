@@ -28,6 +28,7 @@
 	</nav>
 	<div class="formulario">
 		<form action="GerenciarUsuarios" method="post" class="form">
+			<h2>Lista de Usuarios</h2>
 			<input type="text" class="inputPesquisa" placeholder="Digite sua pesquisa">
 			<table class="table">	
 						<thead>
@@ -39,15 +40,14 @@
 						<tbody class="nomes">
 							<c:forEach var="usuario" items="${listaUsuarios}">
 								<tr>
-									<td><button>editar</button></td>
+									<td><a href="UsuarioEditar" id="botaoEditar" name="botaoEditar" value="${usuario.id}"> Editar </a></td>
 									<td><c:out value="${usuario.nome}"></c:out></td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
 				<div class="botoes">
-					<a href="ClienteAdicionar">Adicionar</a>
-					<a href="ClienteEditar">Editar</a>
+					<a href="UsuarioAdicionar">Adicionar</a>
 					<a href="Home">Voltar</a>
 				</div>
 		</form>

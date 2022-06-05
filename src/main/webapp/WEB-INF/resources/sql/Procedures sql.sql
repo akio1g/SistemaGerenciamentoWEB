@@ -209,3 +209,61 @@ AS
 CREATE PROC sp_excluir_produto_por_id (@id_produto INT)
 AS
 	DELETE FROM Produto WHERE id = @id_produto
+
+--******************************************************************************--
+CREATE PROC sp_listar_categorias
+AS
+	SELECT * FROM Categoria
+--******************************************************************************--
+
+							--FUNÇÕES USUARIO--
+CREATE PROC sp_listar_usuarios
+AS
+	SELECT usuario.id, usuario.nome, tipo.nome as tipo_de_usuario
+	FROM Usuario usuario 
+	INNER JOIN Tipo_De_Usuario tipo 
+	ON usuario.id_tipoDeUsuario = tipo.id
+--******************************************************************************--
+CREATE PROC sp_adicionar_usuario(@nome VARCHAR(50), @login_usuario VARCHAR(30), @senha_usuario VARCHAR(30), @email VARCHAR(100), @id_tipoDeUsuario INT)	
+AS
+	INSERT INTO Usuario VALUES(@nome, @login_usuario, @senha_usuario, @email, @id_tipoDeUsuario)
+	 
+--******************************************************************************--
+CREATE PROC sp_excluir_usuario_por_id (@id_usuario INT)
+AS
+	DELETE FROM Usuario WHERE id = @id_usuario
+--******************************************************************************--
+CREATE PROC sp_editar_usuario(@id_usuario INT, @nome VARCHAR(50), @email VARCHAR(100), @id_tipoDeUsuario INT)
+AS
+	IF(@nome != '')
+	BEGIN
+		UPDATE Usuario
+		SET nome = @nome
+		WHERE id = @id_usuario
+	END
+
+	IF(@email != '')
+	BEGIN
+		UPDATE Usuario
+		SET email = @email
+		WHERE id = @id_usuario
+	END
+
+	IF(@id_tipoDeUsuario != '')
+	BEGIN
+		UPDATE Usuario
+		SET id_tipoDeUsuario = @id_tipoDeUsuario
+		WHERE id = @id_usuario
+	END
+--******************************************************************************--
+CREATE PROC sp_verificar_duplicidade(@login_usuario VARCHAR(30), @email VARCHAR(100))
+AS
+	SELECT login_usuario, email FROM Usuario WHERE login_usuario = @login_usuario AND email = @email
+--******************************************************************************--
+CREATE PROC sp_pesquisar_Usuario_Por_Nome (@nome VARCHAR(30))
+AS
+	SELECT u.id, u.nome, t.nome as tipo_de_usuario FROM Usuario u 
+	INNER JOIN Tipo_de_Usuario t 
+	ON u.id_tipoDeUsuario = t.id 
+	WHERE u.nome like '%'+@nome+'%'
+
