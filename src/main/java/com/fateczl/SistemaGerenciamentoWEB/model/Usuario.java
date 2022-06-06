@@ -6,12 +6,12 @@ public class Usuario {
 	private String login;
 	private String email;
 	private String senha;
-	private int tipo_usuario;
+	private String tipo_usuario;
 
 	public Usuario() {
 	}
 
-	public Usuario(int id, String name, String email, String login, String senha, int tipo_usuario) {
+	public Usuario(int id, String name, String email, String login, String senha, String tipo_usuario) {
 		super();
 		this.id = id;
 		this.nome = name;
@@ -61,11 +61,11 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public int getTipo_usuario() {
+	public String getTipo_usuario() {
 		return tipo_usuario;
 	}
 
-	public void setTipo_usuario(int tipo_usuario) {
+	public void setTipo_usuario(String tipo_usuario) {
 		this.tipo_usuario = tipo_usuario;
 	}
 
@@ -75,5 +75,4 @@ public class Usuario {
 				+ ", tipo_usuario=" + tipo_usuario + "]";
 	}
 
-	
 }

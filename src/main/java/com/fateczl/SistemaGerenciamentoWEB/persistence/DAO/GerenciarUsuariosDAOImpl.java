@@ -48,7 +48,7 @@ public class GerenciarUsuariosDAOImpl implements GerenciarUsuariosDAO{
 		p.setString(2, usuario.getLogin());
 		p.setString(3, usuario.getSenha());
 		p.setString(4, usuario.getEmail());
-		p.setInt(5, usuario.getTipo_usuario());
+		p.setString(5, usuario.getTipo_usuario());
 		
 		p.executeUpdate();
 		p.close();
@@ -84,7 +84,7 @@ public class GerenciarUsuariosDAOImpl implements GerenciarUsuariosDAO{
 		p.setInt(1, usuario.getId());
 		p.setString(2, usuario.getNome());
 		p.setString(3, usuario.getEmail());
-		p.setInt(4, usuario.getTipo_usuario());
+		p.setString(4, usuario.getTipo_usuario());
 		
 		p.executeUpdate();
 		
@@ -148,7 +148,7 @@ public class GerenciarUsuariosDAOImpl implements GerenciarUsuariosDAO{
 		try {
 			usuario.setId(rs.getInt("id"));
 			usuario.setNome(rs.getString("nome"));
-			usuario.setLogin(rs.getString("login_usuario"));
+			usuario.setTipo_usuario(rs.getString("tipo_de_usuario"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

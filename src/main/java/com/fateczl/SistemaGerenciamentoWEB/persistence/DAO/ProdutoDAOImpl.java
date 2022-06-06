@@ -26,12 +26,13 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 		
 		Connection c = gDAO.getConnection();
 
-		PreparedStatement p = c.prepareStatement("EXEC sp_adicionar_produto ?,?,?,?");
+		PreparedStatement p = c.prepareStatement("EXEC sp_adicionar_produto ?,?,?,?,?");
 	
 		p.setString(1, produto.getNome());
 		p.setString(2, produto.getDescricao());
 		p.setString(3, produto.getNcmSh());
 		p.setDouble(4, produto.getPreco()); 
+		p.setString(5, produto.getCategoria());
 		p.executeUpdate(); 
 		
 		c.close();
@@ -117,7 +118,29 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 			
 			listaCategorias.add(categoria);
 		}
-		
+		rs.close();
+		ps.close();
+		c.close();
 		return listaCategorias;
+	}
+	@Override
+	public List<Produto> pesquisarProdutoPorNome(String nome) throws SQLException, ClassNotFoundException{
+		
+		Connection c = gDAO.getConnection();
+		
+		List<Produto> listaProduto = new ArrayList<>();
+		
+		PreparedStatement ps = c.prepareStatement("Exec sp_pesquisar_produto_por_nome ?");
+		
+		ps.setString(1, nome);
+		ResultSet rs = ps.executeQuery();
+		
+		while(rs.next()) {
+			listaProduto.add(instanciarProduto(rs));
+		}
+		ps.close();
+		rs.close();
+		c.close();
+		return listaProduto;
 	}
 }

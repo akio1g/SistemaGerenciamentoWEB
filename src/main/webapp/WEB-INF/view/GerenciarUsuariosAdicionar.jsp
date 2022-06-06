@@ -26,7 +26,7 @@
 		</ul>
 	</nav>
 	<div class="formulario">
-		<form action="UsuarioAdicionar" method="post" class="form">
+		<form action="GerenciarUsuariosAdicionar" method="post" class="form">
 			<div class="posicionarCheck">
 			<h2>Adicionar Usuario</h2>
 			<div class="bordaTabelaAdicionar">
@@ -34,7 +34,13 @@
 					<input type="text" class="tabelaAdicionar" id="login_usuario" name="login_usuario" placeholder="CPF">
 					<input type="text" class="tabelaAdicionar" id="senha_usuario" name="senha_usuario" placeholder="Telefone">
 					<input type="text" class="tabelaAdicionar" id="email" name="email" placeholder="Email">
-					<input type="text" class="tabelaAdicionar" id="tipoDeUsuario"  name="tipoDeUsuario" placeholder="tipoDeUsuario">
+					<label class="dropbox" for="tipoDeUsuario">Tipo De Usuario</label>
+						<select class="selectDrop"name="tipoDeUsuario" id="tipoDeUsuario">
+						  <option value="Administrador">Administrador</option>
+						  <option value="Estoquista">Estoquista</option>
+						  <option value="Vendedor">Vendedor</option>
+						</select>
+					
 				</div>
 			</div>
 			<div class="botoes">

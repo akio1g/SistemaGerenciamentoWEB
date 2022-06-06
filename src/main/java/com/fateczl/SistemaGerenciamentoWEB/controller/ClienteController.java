@@ -159,7 +159,7 @@ public class ClienteController {
 	public ModelAndView clienteEditar(ModelMap model) {
 		Cliente cliente = new Cliente();
 		Endereco endereco = new Endereco();
-		int id_cliente = 1003; //lugar onde vai substituir o id passado por parametro da tela de listar cliente.
+		int id_cliente = 3; //lugar onde vai substituir o id passado por parametro da tela de listar cliente.
 		try {
 			cliente = cDAO.buscarClientePorId(id_cliente);
 			endereco = cDAO.buscarEnderecoPorId(id_cliente);

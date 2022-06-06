@@ -25,14 +25,14 @@ public class GerenciarUsuariosController {
 	@RequestMapping(name="GerenciarUsuarios", value="/GerenciarUsuarios", method=RequestMethod.GET)
 	public ModelAndView listarUsuario(ModelMap model) {
 		String erro="";
-		List<Usuario> listaUsuario = new ArrayList<Usuario>();
+		List<Usuario> listarUsuario = new ArrayList<Usuario>();
 		try {
-			listaUsuario = guDAO.listaUsuario();
+			listarUsuario = guDAO.listaUsuario();
 		}catch (ClassNotFoundException | SQLException e) {
 			erro = e.getMessage();
 		}finally {
 			model.addAttribute("erro", erro);
-			model.addAttribute("listarUsuario", listaUsuario);
+			model.addAttribute("listarUsuario", listarUsuario);
 		}
 		return new ModelAndView();
 	}
@@ -50,10 +50,8 @@ public class GerenciarUsuariosController {
 				listaUsuario = guDAO.pesquisarUsuarioPorNome(botaoInput);
 				if(listaUsuario.isEmpty()) {
 					listaUsuario = guDAO.listaUsuario();
-					model.addAttribute("listaUsuario", listaUsuario);
+					model.addAttribute("listarUsuario", listaUsuario);
 					return new ModelAndView("GerenciarUsuarios");
-				}else {
-					model.addAttribute("listaUsuario", listaUsuario);
 				}
 			}
 			if(botaoEditar != null && !botaoEditar.isEmpty()) {
@@ -63,33 +61,32 @@ public class GerenciarUsuariosController {
 		} catch (ClassNotFoundException | SQLException e) {
 			erro = e.getMessage();
 		}finally{
-			model.addAttribute("listaUsuario", listaUsuario);
+			model.addAttribute("listarUsuario", listaUsuario);
 		}
-		return new ModelAndView("GerenciarUsuarios");
+		return new ModelAndView();
 	}
 	
-	@RequestMapping(name="GerenciarUsuariosAdicionar", value="/GerenciarUsuarios", method=RequestMethod.GET)
+	@RequestMapping(name="GerenciarUsuariosAdicionar", value="/GerenciarUsuariosAdicionar", method=RequestMethod.GET)
 	public ModelAndView adicionarUsuario(ModelMap model) {
 		return new ModelAndView();
 	}
-	@RequestMapping(name="GerenciarUsuariosAdicionar", value="/GerenciarUsuarios", method=RequestMethod.POST)
+	@RequestMapping(name="GerenciarUsuariosAdicionar", value="/GerenciarUsuariosAdicionar", method=RequestMethod.POST)
 	public ModelAndView adicionarUsuario(ModelMap model, @RequestParam Map<String, String> param) {
 		Usuario usuario = new Usuario();
 		
-		usuario.setNome(param.get("Nome"));
-		usuario.setLogin(param.get("Login"));
-		usuario.setSenha(param.get("Senha"));
-		usuario.setEmail(param.get("Email"));
-		
+		usuario.setNome(param.get("nome"));
+		usuario.setLogin(param.get("login_usuario"));
+		usuario.setSenha(param.get("senha_usuario"));
+		usuario.setEmail(param.get("email"));
 		switch (param.get("tipoDeUsuario")) {
 			case "Administrador":
-				usuario.setTipo_usuario(1);
+				usuario.setTipo_usuario("Administrador");
 				break;
 			case "Estoquista":
-				usuario.setTipo_usuario(2);
+				usuario.setTipo_usuario("Estoquista");
 				break;
 			case "Vendedor":
-				usuario.setTipo_usuario(3);
+				usuario.setTipo_usuario("Vendedor");
 		}
 		
 		try {
@@ -104,11 +101,11 @@ public class GerenciarUsuariosController {
 		return new ModelAndView();
 	}
 	
-	@RequestMapping(name="GerenciarUsuariosEditar", value="/GerenciarUsuarios", method=RequestMethod.GET)
+	@RequestMapping(name="GerenciarUsuariosEditar", value="/GerenciarUsuariosEditar", method=RequestMethod.GET)
 	public ModelAndView editarUsuario(ModelMap model) {
 		Usuario usuario = new Usuario();
 		
-		int id_usuario = 1;
+		int id_usuario = 1; //lugar onde vai substituir o id passado por parametro da tela de listar usuario.
 		try {
 			usuario = guDAO.pesquisarUsuarioPorId(id_usuario);
 		}catch (ClassNotFoundException | SQLException e) {
@@ -118,7 +115,7 @@ public class GerenciarUsuariosController {
 		}
 		return new ModelAndView();
 	}
-	@RequestMapping(name="GerenciarUsuariosEditar", value="/GerenciarUsuarios", method=RequestMethod.POST)
+	@RequestMapping(name="GerenciarUsuariosEditar", value="/GerenciarUsuariosEditar", method=RequestMethod.POST)
 	public ModelAndView editarUsuario(ModelMap model, @RequestParam Map<String, String> param) {
 		String botaoSalvar = param.get("botaoSalvar");
 		String botaoExcluir = param.get("botaoExcluir");
@@ -127,22 +124,23 @@ public class GerenciarUsuariosController {
 		try {
 			Usuario usuario = new Usuario();
 			
-			usuario.setNome(param.get("Nome"));
-			usuario.setLogin(param.get("Login"));
+			usuario.setId(Integer.parseInt(param.get("id")));
+			usuario.setNome(param.get("nome"));
+			usuario.setLogin(param.get("email"));
 			
 			switch (param.get("tipoDeUsuario")) {
 			case "Administrador":
-				usuario.setTipo_usuario(1);
+				usuario.setTipo_usuario("Administrador");
 				break;
 			case "Estoquista":
-				usuario.setTipo_usuario(2);
+				usuario.setTipo_usuario("Estoquista");
 				break;
 			case "Vendedor":
-				usuario.setTipo_usuario(3);
+				usuario.setTipo_usuario("Vendedor");
 			}
 			if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
 				guDAO.editarUsuarioPorId(usuario);
-				return new ModelAndView("UsuarioEditar");
+				return new ModelAndView("GerenciarUsuariosEditar");
 			}
 			if(botaoExcluir != null && !botaoSalvar.isEmpty()) {
 				guDAO.excluirUsuarioPorId(usuario.getId());

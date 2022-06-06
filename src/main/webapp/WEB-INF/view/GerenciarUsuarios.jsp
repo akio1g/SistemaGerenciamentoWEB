@@ -29,25 +29,27 @@
 	<div class="formulario">
 		<form action="GerenciarUsuarios" method="post" class="form">
 			<h2>Lista de Usuarios</h2>
-			<input type="text" class="inputPesquisa" placeholder="Digite sua pesquisa">
+			<input type="text" class="inputPesquisa" id="inputPesquisa" name="inputPesquisa" placeholder="Digite sua pesquisa">
 			<table class="table">	
 						<thead>
 							<tr>
 								<th></th>
 								<th>Usuários</th>
+								<th>Cargo</th>
 							</tr>
 						</thead>
 						<tbody class="nomes">
-							<c:forEach var="usuario" items="${listaUsuarios}">
+							<c:forEach var="usuario" items="${listarUsuario}">
 								<tr>
-									<td><a href="UsuarioEditar" id="botaoEditar" name="botaoEditar" value="${usuario.id}"> Editar </a></td>
+									<td><a href="GerenciarUsuariosEditar" id="botaoEditar" name="botaoEditar" value="${usuario.id}"> Editar </a></td>
 									<td><c:out value="${usuario.nome}"></c:out></td>
+									<td><c:out value="${usuario.tipo_usuario}"></c:out>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
 				<div class="botoes">
-					<a href="UsuarioAdicionar">Adicionar</a>
+					<a href="GerenciarUsuariosAdicionar">Adicionar</a>
 					<a href="Home">Voltar</a>
 				</div>
 		</form>

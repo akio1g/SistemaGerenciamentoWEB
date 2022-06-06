@@ -30,11 +30,20 @@
 			<div class="posicionarCheck">
 				<h2>Editar Produto</h2>
 				<div class="bordaTabelaAdicionar">
-					<input type="text" class="tabelaAdicionar" id="Nome" name="Nome" value="<c:out value="${produto.nome}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="Descricao" name="Descricao" value="<c:out value="${produto.descricao}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="ncmSh" name="ncmSh" value="<c:out value="${produto.ncmSh}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="preco" name="preco" value="<c:out value="${produto.preco}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="categoria"  name="categoria" value="<c:out value="${produto.categoria}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Nome" name="Nome" placeholder="Nome" value="<c:out value="${produto.nome}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Descricao" name="Descricao" placeholder="Descricao" value="<c:out value="${produto.descricao}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="ncmSh" name="ncmSh" placeholder="Ncm/Sh" value="<c:out value="${produto.ncmSh}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="preco" name="preco" placeholder="Preço" value="<c:out value="${produto.preco}"></c:out>">
+					<label class="dropbox" for="Categoria">Categoria</label>
+						<select class="selectDrop"name="categoria" id="categoria">
+						  <option value="Gorje">Gorje</option>
+						  <option value="Yale">Yale</option>
+						  <option value="Yale Dupla">Yale Dupla</option>
+						  <option value="Tetra">Tetra</option>
+						  <option value="Pantograficas">Pantograficas</option>
+						  <option value="Codificadas">Codificadas</option>
+						   <option value="Laminas de Segredo">Laminas de Segredo</option>
+						</select>
 				</div>
 			</div>
 			<div class="botoes">

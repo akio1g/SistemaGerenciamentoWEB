@@ -34,15 +34,15 @@
 					<input type="text" class="tabelaAdicionar" id="Descricao" name="Descricao" placeholder="Descricao">
 					<input type="text" class="tabelaAdicionar" id="ncmSh" name="ncmSh" placeholder="ncmSh">
 					<input type="text" class="tabelaAdicionar" id="preco" name="preco"placeholder="Preço">
-					<label for="Categoria">Categoria</label>
-						<select name="categoria" id="categoria">
+					<label class="dropbox" for="Categoria">Categoria</label>
+						<select class="selectDrop"name="categoria" id="categoria">
 						  <option value="Gorje">Gorje</option>
 						  <option value="Yale">Yale</option>
 						  <option value="Yale Dupla">Yale Dupla</option>
 						  <option value="Tetra">Tetra</option>
 						  <option value="Pantograficas">Pantograficas</option>
 						  <option value="Codificadas">Codificadas</option>
-						   <option value="Laminas de Segredo">Laminas de Segredo</option>
+						  <option value="Laminas de Segredo">Laminas de Segredo</option>
 						</select>
 				</div>
 			</div>

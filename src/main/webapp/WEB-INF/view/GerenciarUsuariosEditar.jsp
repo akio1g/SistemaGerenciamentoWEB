@@ -26,15 +26,15 @@
 		</ul>
 	</nav>
 	<div class="formulario">
-		<form action="UsuarioEditar" method="post" class="form">
+		<form action="GerenciarUsuariosEditar" method="post" class="form">
 			<div class="posicionarCheck">
 				<div class="bordaTabelaAdicionar">
-					<input type="hidden" id="id" name="Id" value="${usuario.id}">
+					<input type="hidden" id="id" name="id" value="${usuario.id}">
 		
-					<input type="text" class="tabelaAdicionar" id="nome" name="nome" value="<c:out value="${usuario.nome}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="email" name="email" value="<c:out value="${usuario.email}"></c:out>">
-						<label for="tipoDeUsuario">Tipo De Usuario</label>
-						<select name="tipoDeUsuario" id="tipoDeUsuario">
+					<input type="text" class="tabelaAdicionar" id="nome" name="nome" placeholder="Nome" value="<c:out value="${usuario.nome}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="email" name="email" placeholder="Email" value="<c:out value="${usuario.email}"></c:out>">
+						<label class="centralizaDropbox" for="tipoDeUsuario">Tipo De Usuario</label>
+						<select class="selectDrop" name="tipoDeUsuario" id="tipoDeUsuario">
 						  <option value="Administrador">Administrador</option>
 						  <option value="Estoquista">Estoquista</option>
 						  <option value="Vendedor">Vendedor</option>
@@ -42,8 +42,8 @@
 				</div>
 			</div>
 			<div class="botoes">
-				<input type="submit" class="categoriasChaves" id="botaoSalvar" name="botaoSalvar" value="Salvar">
-				<input type="submit" class="categoriasChaves" id="botaoExcluir" name="botaoExcluir" value="Excluir">
+				<input type="submit"  id="botaoSalvar" name="botaoSalvar" value="Salvar">
+				<input type="submit"  id="botaoExcluir" name="botaoExcluir" value="Excluir">
 				<a href="Cliente" class="voltarProduto">Voltar</a>
 			</div>
 		</form>

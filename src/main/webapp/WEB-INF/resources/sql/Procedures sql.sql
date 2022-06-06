@@ -1,6 +1,7 @@
 ﻿USE DistribuidoraAMZ
 							--FUNÇÕES DO CLIENTE--
 --******************************************************************************--
+GO
 CREATE PROC sp_adicionar_cliente @nomeRazaoSocial VARCHAR(max), @CpfCnpj VARCHAR(max), @Telefone VARCHAR(max), 
 							     @Email VARCHAR(max), @InscricaoEstadual VARCHAR(max),
 							     @Cep VARCHAR(max), @cidade VARCHAR(max), @estado VARCHAR(max), 
@@ -8,25 +9,31 @@ CREATE PROC sp_adicionar_cliente @nomeRazaoSocial VARCHAR(max), @CpfCnpj VARCHAR
 AS
 	INSERT INTO Cliente VALUES(@nomeRazaoSocial, @CpfCnpj, @Telefone, @Email, @InscricaoEstadual)
 	INSERT INTO Endereco VALUES((SELECT id FROM Cliente WHERE cpfCnpj = @CpfCnpj), @Cep, @cidade, @estado, @logradouro, @numero, @complemento)
+
 --******************************************************************************--
+GO
 CREATE PROC sp_lista_clientes -- Usada para listar os clientes
 AS
 	SELECT c.id, c.nomeRazaoSocial, c.cpfCnpj,c.telefone, c.email, c.inscricaoEstadual,
 	 e.cep,  e.estado,e.cidade,e.logradouro, e.numero, e.complemento
 	 FROM Cliente c INNER JOIN Endereco e ON c.id = e.id_cliente 
 --******************************************************************************--
+GO
 CREATE PROC sp_buscar_cliente_por_nome (@nome VARCHAR(50))
 AS
 	SELECT * FROM Cliente WHERE nomeRazaoSocial like '%'+@nome+'%'
 --******************************************************************************--
+GO
 CREATE PROC sp_buscar_cliente_por_id(@id INT)
 AS
 	SELECT * FROM Cliente WHERE id = @id
 --******************************************************************************--
+GO
 CREATE PROC sp_buscar_endereco_por_id_cliente(@id_cliente INT)
 AS
 	SELECT * FROM Endereco WHERE id_cliente = @id_cliente
 --******************************************************************************--
+GO
 CREATE PROC sp_update_cliente @id INT, @nomeRazaoSocial VARCHAR(max), @CpfCnpj VARCHAR(max), @Telefone VARCHAR(max), 
 							  @Email VARCHAR(max), @InscricaoEstadual VARCHAR(max),
 							  @Cep VARCHAR(max), @cidade VARCHAR(max), @estado VARCHAR(max), 
@@ -77,6 +84,7 @@ AS
 		UPDATE Endereco SET complemento = @complemento WHERE id_cliente = @id
 	END
 --******************************************************************************--
+GO
 CREATE PROC sp_excluir_cliente(@id_cliente int) 
 AS
 	BEGIN
@@ -90,28 +98,34 @@ AS
 
 													--FUNÇÕES DO FORNECEDOR--
 --******************************************************************************--
+GO
 CREATE PROC sp_adicionar_fornecedores @RazaoSocial VARCHAR(max), @Cnpj VARCHAR(max), @InscricaoEstadual CHAR(2), @Telefone VARCHAR(MAX),
 									@Cep VARCHAR(max), @Cidade VARCHAR(MAX), @Estado VARCHAR(max), @Logradouro VARCHAR(max), @Numero INT, @Completo VARCHAR(max)
 AS
 	INSERT INTO Fornecedor VALUES(@RazaoSocial, @Cnpj, @InscricaoEstadual, @Telefone)
 	INSERT INTO Endereco VALUES ((SELECT id FROM Fornecedor WHERE cnpj = @Cnpj), @Cep, @Cidade, @Estado, @Logradouro, @Numero, @Completo)
 --******************************************************************************--
+GO
 CREATE PROC sp_lista_fornecedores
 AS
 	SELECT * FROM FORNECEDOR
 --******************************************************************************--
+GO
 CREATE PROC sp_buscar_fornecedor_por_nome (@nome_fornecedor VARCHAR(max))
 AS
 	SELECT * FROM FORNECEDOR WHERE razaoSocial like '%'+@nome_fornecedor+'%'
 --******************************************************************************--
+GO
 CREATE PROC sp_buscar_fornecedor_por_id(@id_fornecedor INT)
 AS
 	SELECT * FROM FORNECEDOR WHERE id = @id_fornecedor
 --******************************************************************************--
+GO
 CREATE PROC sp_buscar_endereco_por_id_fornecedor (@id_fornecedor INT)
 AS
 	SELECT * FROM Endereco_Fornecedor WHERE id_fornecedor = @id_fornecedor
 --******************************************************************************--
+GO
 CREATE PROC sp_update_fornecedor  @id INT, @RazaoSocial VARCHAR(max), @Cnpj VARCHAR(max), @InscricaoEstadual CHAR(2), @Telefone VARCHAR(MAX),
 								@Cep VARCHAR(max), @Cidade VARCHAR(MAX), @Estado VARCHAR(max), @Logradouro VARCHAR(max), @Numero INT, @Complemento VARCHAR(max)
 AS
@@ -156,6 +170,7 @@ AS
 		UPDATE Endereco_Fornecedor SET complemento = @complemento WHERE id_fornecedor = @id
 	END
 --******************************************************************************--
+GO
 CREATE PROC sp_excluir_fornecedor_por_id (@id_fornecedor INT)
 AS
 	DELETE FROM Endereco_Fornecedor WHERE id_fornecedor = @id_fornecedor
@@ -165,17 +180,32 @@ AS
 
 
 					--FUNÇÕES DO PRODUTO
-CREATE PROC sp_adicionar_produto (@nome VARCHAR(max), @descricao VARCHAR(max), @ncmSh VARCHAR(max), @preco Decimal(7,2), @categoria INT)
+GO
+CREATE PROC sp_adicionar_produto (@nome VARCHAR(max), @descricao VARCHAR(max), @ncmSh VARCHAR(max), @preco Decimal(7,2), @categoria VARCHAR(20))
 AS
-	INSERT INTO Produto VALUES(@nome, @descricao, @ncmSh, @preco, @categoria)
+	DECLARE @aux INT
+
+	SET @aux = 
+		CASE
+			WHEN @categoria = 'Gorje' THEN 1
+			WHEN @categoria = 'Yale' THEN 2
+			WHEN @categoria = 'Yale Dupla' THEN 3
+			WHEN @categoria = 'Tetra' THEN 4
+			WHEN @categoria = 'Pantograficas' THEN 5
+			WHEN @categoria = 'Codificadas' THEN 6
+			WHEN @categoria = 'Laminas de Segredo' THEN 7
+		END	
+	INSERT INTO Produto VALUES(@nome, @descricao, @ncmSh, @preco, @aux)
 --******************************************************************************--
+GO
 CREATE PROC sp_listar_produto
 AS
-	SELECT SUBSTRING(nome, 6, 15) as nome,count(nome) as quantidade
+	SELECT SUBSTRING(nome, 1, 20) as nome,count(nome) as quantidade
 	FROM Produto
 	GROUP BY nome
 
 --******************************************************************************--
+GO
 CREATE PROC sp_listar_produto_por_categoria(@id_categoria INT)
 AS
 	SELECT DISTINCT p.* FROM Produto as p
@@ -183,7 +213,8 @@ AS
 	ON  p.id_categoria = cp.id
 	WHERE cp.id = @id_categoria
 --******************************************************************************--
-CREATE PROC sp_editar_produto(@nome VARCHAR(max), @descricao VARCHAR(max), @ncmSh VARCHAR(max), @preco DECIMAL(7,2), @categoria INT, @id_produto INT)
+GO
+CREATE PROC sp_editar_produto(@nome VARCHAR(max), @descricao VARCHAR(max), @ncmSh VARCHAR(max), @preco DECIMAL(7,2), @categoria VARCHAR(20), @id_produto INT)
 AS
 	IF(@nome != '')
 	BEGIN
@@ -203,20 +234,39 @@ AS
 	END
 	IF(@categoria != '')
 	BEGIN
-		UPDATE Produto SET id_categoria = @categoria WHERE id = @id_produto
+		UPDATE Produto
+		SET id_categoria =
+			CASE
+				WHEN @categoria = 'Gorje' THEN 1
+				WHEN @categoria = 'Yale' THEN 2
+				WHEN @categoria = 'Yale Dupla' THEN 3
+				WHEN @categoria = 'Tetra' THEN 4
+				WHEN @categoria = 'Pantograficas' THEN 5
+				WHEN @categoria = 'Codificadas' THEN 6
+				WHEN @categoria = 'Laminas de Segredo' THEN 7
+			END			
+		WHERE id = @id_produto
 	END
 --******************************************************************************--
+GO
 CREATE PROC sp_excluir_produto_por_id (@id_produto INT)
 AS
 	DELETE FROM Produto WHERE id = @id_produto
 
 --******************************************************************************--
+GO
 CREATE PROC sp_listar_categorias
 AS
 	SELECT * FROM Categoria
 --******************************************************************************--
+GO
+CREATE PROC sp_pesquisar_produto_por_nome(@nome_produto VARCHAR(100))
+AS
+	SELECT * FROM Produto
+	WHERE nome like '%'+@nome_produto+'%'
 
 							--FUNÇÕES USUARIO--
+GO
 CREATE PROC sp_listar_usuarios
 AS
 	SELECT usuario.id, usuario.nome, tipo.nome as tipo_de_usuario
@@ -224,16 +274,28 @@ AS
 	INNER JOIN Tipo_De_Usuario tipo 
 	ON usuario.id_tipoDeUsuario = tipo.id
 --******************************************************************************--
-CREATE PROC sp_adicionar_usuario(@nome VARCHAR(50), @login_usuario VARCHAR(30), @senha_usuario VARCHAR(30), @email VARCHAR(100), @id_tipoDeUsuario INT)	
+GO
+CREATE PROC sp_adicionar_usuario(@nome VARCHAR(50), @login_usuario VARCHAR(30), @senha_usuario VARCHAR(30), @email VARCHAR(100), @tipo_usuario VARCHAR(13))	
 AS
-	INSERT INTO Usuario VALUES(@nome, @login_usuario, @senha_usuario, @email, @id_tipoDeUsuario)
+	DECLARE @aux INT
+
+	SET @aux =
+			CASE
+				WHEN @tipo_usuario = 'Administrador' THEN 1
+				WHEN @tipo_usuario = 'Estoquista' THEN 2
+				WHEN @tipo_usuario = 'Vendedor' THEN 3
+			END		
+
+	INSERT INTO Usuario VALUES(@nome, @login_usuario, @senha_usuario, @email, @aux)
 	 
 --******************************************************************************--
+GO
 CREATE PROC sp_excluir_usuario_por_id (@id_usuario INT)
 AS
 	DELETE FROM Usuario WHERE id = @id_usuario
 --******************************************************************************--
-CREATE PROC sp_editar_usuario(@id_usuario INT, @nome VARCHAR(50), @email VARCHAR(100), @id_tipoDeUsuario INT)
+GO
+CREATE PROC sp_editar_usuario(@id_usuario INT, @nome VARCHAR(50), @email VARCHAR(100), @tipo_usuario VARCHAR(13))
 AS
 	IF(@nome != '')
 	BEGIN
@@ -249,21 +311,38 @@ AS
 		WHERE id = @id_usuario
 	END
 
-	IF(@id_tipoDeUsuario != '')
+	IF(@tipo_usuario != '')
 	BEGIN
 		UPDATE Usuario
-		SET id_tipoDeUsuario = @id_tipoDeUsuario
-		WHERE id = @id_usuario
+		SET id_tipoDeUsuario =
+			CASE
+				WHEN @tipo_usuario = 'Administrador' THEN 1
+				WHEN @tipo_usuario = 'Estoquista' THEN 2
+				WHEN @tipo_usuario = 'Vendedor' THEN 3
+			END			
 	END
 --******************************************************************************--
+GO
 CREATE PROC sp_verificar_duplicidade(@login_usuario VARCHAR(30), @email VARCHAR(100))
 AS
 	SELECT login_usuario, email FROM Usuario WHERE login_usuario = @login_usuario AND email = @email
 --******************************************************************************--
+GO
 CREATE PROC sp_pesquisar_Usuario_Por_Nome (@nome VARCHAR(30))
 AS
 	SELECT u.id, u.nome, t.nome as tipo_de_usuario FROM Usuario u 
 	INNER JOIN Tipo_de_Usuario t 
 	ON u.id_tipoDeUsuario = t.id 
 	WHERE u.nome like '%'+@nome+'%'
+	--******************************************************************************--
+GO
+CREATE PROC sp_pesquisar_Usuario_Por_Id(@id_usuario INT)
+AS
+	SELECT  u.id, u.nome, t.nome as tipo_de_usuario FROM Usuario u 
+	INNER JOIN Tipo_de_Usuario t 
+	ON u.id_tipoDeUsuario = t.id 
+	WHERE u.id = @id_usuario
 
+	SELECT * FROM Usuario
+
+	SELECT * FROM Produto

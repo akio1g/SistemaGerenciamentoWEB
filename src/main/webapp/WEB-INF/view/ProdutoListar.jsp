@@ -28,7 +28,7 @@
 	<div class="formulario">
 		<form action="ProdutoListar" method="post" class="form">
 			<div>
-				<input type="text" class="inputPesquisa" placeholder="Digite sua pesquisa">
+				<input type="text" class="inputPesquisa" id="inputPesquisa" name="inputPesquisa" placeholder="Digite sua pesquisa">
 				<table class="table">	
 					<thead>
 						<tr>
@@ -51,6 +51,7 @@
 				</table>
 			</div>
 			<div class="botoes">
+				<a href="ProdutoAdicionar">Adicionar</a>
 				<a href="Home">Voltar</a>
 			</div>
 		</form>

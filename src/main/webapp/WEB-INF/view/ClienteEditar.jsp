@@ -30,22 +30,22 @@
 			<div class="posicionarCheck">
 				<div class="bordaTabelaAdicionar">
 					<input type="hidden" id="id" name="Id" value="${cliente.id}">
-					<input type="text" class="tabelaAdicionar" id="Nome" name="Nome" value="<c:out value="${cliente.nomeRazaoSocial}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="CNPJ" name="CNPJ" value="<c:out value="${cliente.cpfCnpj}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="Telefone" name="Telefone" value="<c:out value="${cliente.telefone}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="Email" name="Email" value="<c:out value="${cliente.email}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Nome" name="Nome" placeholder="Nome" value="<c:out value="${cliente.nomeRazaoSocial}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="CNPJ" name="CNPJ" placeholder="CNPJ/CPF" value="<c:out value="${cliente.cpfCnpj}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Telefone" name="Telefone" placeholder="Telefone" value="<c:out value="${cliente.telefone}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Email" name="Email" placeholder="Email" value="<c:out value="${cliente.email}"></c:out>">
 					
-					<input type="text" class="tabelaAdicionar" id="CEP"  name="CEP" value="<c:out value="${endereco.cep}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="Logradouro" name="Logradouro" value="<c:out value="${endereco.logradouro}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="Numero" name="Numero" value="<c:out value="${endereco.numero}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="Complemento" name="Complemento" value="<c:out value="${endereco.complemento}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="Cidade" name="Cidade" value="<c:out value="${endereco.cidade}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="Estado" name="Estado" value="<c:out value="${endereco.estado}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="CEP"  name="CEP" placeholder="CEP" value="<c:out value="${endereco.cep}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Logradouro" name="Logradouro" placeholder="Logradouro" value="<c:out value="${endereco.logradouro}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Numero" name="Numero" placeholder="Numero" value="<c:out value="${endereco.numero}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Complemento" name="Complemento" placeholder="Complemento" value="<c:out value="${endereco.complemento}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Cidade" name="Cidade" placeholder="Cidade" value="<c:out value="${endereco.cidade}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Estado" name="Estado" placeholder="Estado" value="<c:out value="${endereco.estado}"></c:out>">
 				</div>
 			</div>
 			<div class="botoes">
-				<input type="submit" class="categoriasChaves" id="botaoSalvar" name="botaoSalvar" value="Salvar">
-				<input type="submit" class="categoriasChaves" id="botaoExcluir" name="botaoExcluir" value="Excluir">
+				<input type="submit" id="botaoSalvar" name="botaoSalvar" value="Salvar">
+				<input type="submit" id="botaoExcluir" name="botaoExcluir" value="Excluir">
 				<a href="Cliente" class="voltarProduto">Voltar</a>
 			</div>
 		</form>

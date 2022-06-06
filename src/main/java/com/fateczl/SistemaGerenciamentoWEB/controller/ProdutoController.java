@@ -30,36 +30,6 @@ public class ProdutoController {
 	public ModelAndView Produto(ModelMap model, @RequestParam Map<String,String> param) {
 		String botaoCategoria = param.get("botaoCategoria");
 		
-		List<Produto> listaProduto = new ArrayList<>();
-		try {
-			switch(botaoCategoria){
-				case "Gorje":
-					listaProduto = pDAO.listarPorCategoria(1);
-					break;
-				case "Yale":
-					listaProduto = pDAO.listarPorCategoria(2);
-					break;
-				case "Yale Dupla":
-					listaProduto = pDAO.listarPorCategoria(3);
-					break;
-				case "Tetra":
-					listaProduto = pDAO.listarPorCategoria(4);
-					break;
-				case "Pantográficas":
-					listaProduto = pDAO.listarPorCategoria(5);
-					break;
-				case "Codificadas":
-					listaProduto = pDAO.listarPorCategoria(6);
-					break;
-				case "Lâminas de Segredo":
-					listaProduto = pDAO.listarPorCategoria(7);
-					break;
-			}
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		} finally {
-			model.addAttribute("listaProduto", listaProduto);
-		}
 		return listaProduto(model);
 	}
 	@RequestMapping(name="ProdutoAdicionar", value="/ProdutoAdicionar", method=RequestMethod.GET)
@@ -77,8 +47,26 @@ public class ProdutoController {
 			produto.setDescricao(param.get("Descricao"));
 			produto.setNcmSh(param.get("ncmSh"));
 			produto.setPreco(Double.parseDouble(param.get("preco")));
-			produto.setCategoria(param.get("categoria"));
 			
+			switch (param.get("categoria")) {
+			case "Gorje":
+				produto.setCategoria("Gorje");
+				break;
+			case "Yale":
+				produto.setCategoria("Yale");
+				break;
+			case "Yale Dupla":
+				produto.setCategoria("Yale Dupla");
+			case "Tetra":
+				produto.setCategoria("Tetra");
+			case "Pantograficas":
+				produto.setCategoria("Pantograficas");
+			case "Codificadas":
+				produto.setCategoria("Codificadas");
+			case "Laminas de Segredo":
+				produto.setCategoria("Laminas de Segredo");
+				
+			}
 			if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
 				pDAO.adicionarProduto(produto);
 				return new ModelAndView("Produto");
@@ -92,18 +80,62 @@ public class ProdutoController {
 	public ModelAndView listaProduto(ModelMap model) {
 		
 		List<Produto> listaProduto = new ArrayList<Produto>();
-		Produto produto = new Produto();
-		
-		produto.setNome("Higor");
-		produto.setNcmSh("200");
-		produto.setPreco(10.2);
-		produto.setDescricao("");
-		listaProduto.add(produto);
+		int id_categoria = 1; //substituir dps que funcionar;
+		try {
+			listaProduto = pDAO.listarPorCategoria(id_categoria);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		model.addAttribute("listaProduto", listaProduto);
 		return new ModelAndView();
 	}
 	@RequestMapping(name="ProdutoListar", value="/ProdutoListar", method=RequestMethod.POST)
 	public ModelAndView listaProduto(ModelMap model, @RequestParam Map<String, String> param) {
+		String botaoCategoria = "Gorje";
+		String botaoInput = param.get("inputPesquisa");
+		String botaoEditar = param.get("botaoEditar");
+		String erro = "";
+		List<Produto> listaProduto = new ArrayList<>();
+		try {
+			if(botaoInput.isEmpty()) {
+				switch(botaoCategoria){
+					case "Gorje":
+						listaProduto = pDAO.listarPorCategoria(1);
+						break;
+					case "Yale":
+						listaProduto = pDAO.listarPorCategoria(2);
+						break;
+					case "Yale Dupla":
+						listaProduto = pDAO.listarPorCategoria(3);
+						break;
+					case "Tetra":
+						listaProduto = pDAO.listarPorCategoria(4);
+						break;
+					case "Pantográficas":
+						listaProduto = pDAO.listarPorCategoria(5);
+						break;
+					case "Codificadas":
+						listaProduto = pDAO.listarPorCategoria(6);
+						break;
+					case "Lâminas de Segredo":
+						listaProduto = pDAO.listarPorCategoria(7);
+						break;
+				}
+			}else {
+				listaProduto = pDAO.pesquisarProdutoPorNome(botaoInput);
+			}
+			if(botaoEditar != null && !botaoEditar.isEmpty()) {
+				model.addAttribute("erro", erro);
+				model.addAttribute("listaProduto", listaProduto);
+				produtoEditar(model);
+			}
+		}catch (ClassNotFoundException | SQLException e) {
+			erro = e.getMessage();
+		} finally {
+			model.addAttribute("erro", erro);
+			model.addAttribute("listaProduto", listaProduto);
+		}
 		return new ModelAndView("ProdutoListar");
 	}
 	@RequestMapping(name="ProdutoEditar", value="/ProdutoEditar", method=RequestMethod.GET)
