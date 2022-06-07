@@ -43,56 +43,25 @@ public class EstoqueDAOImpl implements EstoqueDAO{
 		return listaProdutos;
 	}
 	@Override
-	public List<Produto> listarPorCategoria(Categoria categoria) throws SQLException, ClassNotFoundException {		
-		Connection c = gDAO.getConnection();
-		
-		List<Produto> listaProdutoCategoria = new ArrayList<>();
-		PreparedStatement ps = c.prepareStatement("EXEC sp_listar_produto_por_categoria ?");
-		
-		ps.setLong(1, categoria.getId());
-		ResultSet rs = ps.executeQuery();
-		while(rs.next()) {
-			Produto produto = instanciarProduto(rs);
-			listaProdutoCategoria.add(produto);
-		}
-		c.close();
-		ps.close();
-		rs.close();
-		
-		return listaProdutoCategoria;
-	}
-
-	@Override
-	public List<Produto> listarProdutoPorNome(String nome) throws SQLException, ClassNotFoundException {
+	public List<Estoque> listarProdutoPorNome(String nome) throws SQLException, ClassNotFoundException {
 
 		Connection c = gDAO.getConnection();
 		
-		List<Produto> listaProduto = new ArrayList<Produto>();
+		List<Estoque> listaProdutos = new ArrayList<Estoque>();
 		
-		PreparedStatement p = c.prepareStatement("EXEC sp_listar_produto_por_nome ?");
+		PreparedStatement p = c.prepareStatement("EXEC sp_lista_produto_por_nome ?");
 		
 		p.setString(1, nome);
 		ResultSet rs = p.executeQuery();
 		while(rs.next()) {
-			Produto produto = new Produto();
-			produto = instanciarProduto(rs);
-			listaProduto.add(produto);
+			Estoque estoque = new Estoque();
+			estoque.setQuantidade(rs.getInt("quantidade"));
+			estoque.setNome(rs.getString("nome"));
+			listaProdutos.add(estoque);
 		}
 		c.close();
 		p.close();
 		rs.close();
-		return listaProduto;
-	}
-	
-	private Produto instanciarProduto(ResultSet rs) throws SQLException, ClassNotFoundException {
-		Produto produto = new Produto();
-		produto.setId(rs.getInt("id"));
-		produto.setNome(rs.getString("nome"));
-		produto.setDescricao(rs.getString("descricao"));
-		produto.setNcmSh(rs.getString("ncmSh"));
-		produto.setPreco(rs.getDouble("preco"));
-		produto.setCategoria(rs.getString("categoria"));
-		
-		return produto;
+		return listaProdutos;
 	}
 }

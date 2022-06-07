@@ -23,9 +23,12 @@ public class FornecedoresController {
 	@Autowired
 	FornecedoresDAO fDAO;
 	
+	private static int id_fornecedor;
+	
 	@RequestMapping(name="Fornecedores", value="/Fornecedores", method=RequestMethod.GET)
 	public ModelAndView fornecedores(ModelMap model) {
 		String erro = "";
+		
 		List<Fornecedor> listaFornecedores = new ArrayList<Fornecedor>();
 		try {
 			listaFornecedores = fDAO.listaFornecedor();
@@ -42,7 +45,6 @@ public class FornecedoresController {
 		String erro="";
 		String botaoEditar = param.get("botaoEditar");
 		String botaoInput = param.get("inputPesquisa");
-		
 		List<Fornecedor> listaFornecedores = new ArrayList<Fornecedor>();
 		
 		try {
@@ -54,7 +56,7 @@ public class FornecedoresController {
 					listaFornecedores = fDAO.listaFornecedor();
 					model.addAttribute("erro", erro);
 					model.addAttribute("listaFornecedores", listaFornecedores);
-					return new ModelAndView("Fornecedores");
+					
 				}else {	
 					model.addAttribute("erro", erro);
 					model.addAttribute("listaFornecedores", listaFornecedores);
@@ -62,13 +64,14 @@ public class FornecedoresController {
 				}
 			}
 			if(botaoEditar != null && !botaoEditar.isEmpty()) {
+				id_fornecedor = Integer.parseInt(botaoEditar);
 				fornecedorEditar(model);
-				model.addAttribute("erro", erro);
 				model.addAttribute("listaFornecedores", listaFornecedores);
-				return new ModelAndView("Fornecedores");
+				return new ModelAndView("FornecedorEditar");
 			}
+			
 		} catch (ClassNotFoundException | SQLException e) {
-				erro = e.getMessage();
+			erro = e.getMessage();
 		} finally {
 			model.addAttribute("erro", erro);
 			model.addAttribute("listaFornecedores", listaFornecedores);
@@ -113,12 +116,10 @@ public class FornecedoresController {
 		}
 		return new ModelAndView();
 	}
-	@RequestMapping(name="FornecedorEditar", value="FornecedorEditar", method = RequestMethod.GET)
+	@RequestMapping(name="FornecedorEditar", value="/FornecedorEditar", method = RequestMethod.GET)
 	public ModelAndView fornecedorEditar(ModelMap model) {
 		Fornecedor fornecedor = new Fornecedor();
 		Endereco endereco = new Endereco();
-		
-		int id_fornecedor = 3; //Lugar onde vai substituir o id passado por parametro da tela de listar fornecedor
 		
 		try {
 			fornecedor = fDAO.buscarFornecedorPorId(id_fornecedor);
@@ -131,7 +132,7 @@ public class FornecedoresController {
 		}
 		return new ModelAndView("FornecedorEditar");
 	}
-	@RequestMapping(name="FornecedorEditar", value="FornecedorEditar", method = RequestMethod.POST)
+	@RequestMapping(name="FornecedorEditar", value="/FornecedorEditar", method = RequestMethod.POST)
 	public ModelAndView fornecedorEditar(ModelMap model, @RequestParam Map<String,String> param) {
 		String botaoSalvar = param.get("botaoSalvar");
 		String botaoExcluir = param.get("botaoExcluir");
@@ -156,7 +157,7 @@ public class FornecedoresController {
 		
 			if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
 				fDAO.editarFornecedor(fornecedor, endereco);
-				return new ModelAndView("FornecedorEditar");
+				return new ModelAndView("Fornecedores");
 			}
 			if(botaoExcluir != null && !botaoExcluir.isEmpty()) {
 				fDAO.excluirFornecedorPorId(fornecedor.getId());

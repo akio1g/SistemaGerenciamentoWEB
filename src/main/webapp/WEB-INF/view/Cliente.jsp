@@ -40,10 +40,7 @@
 					<tbody class="nomes">
 						<c:forEach var="cliente" items="${listaClientes}">
 							<tr>
-								<td>
-									<a href="ClienteEditar" id="botaoEditar" name="botaoEditar" value="${cliente.id}"> Editar </a>
-								</td>
-								
+								<td><button id="botaoEditar" name="botaoEditar" value="${cliente.id}">Editar</button></td>
 								<td><c:out value="${cliente.nomeRazaoSocial}"></c:out></td>
 							</tr>
 						</c:forEach>

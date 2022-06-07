@@ -45,7 +45,7 @@
 			</div>
 			<div class="botoes">
 				<input type="submit" id="botaoAdicionar" name="botaoAdicionar" value="Adicionar">
-				<a href="GerenciarUsuario" class="voltarProduto">Voltar</a>
+				<a href="GerenciarUsuarios" class="voltarProduto">Voltar</a>
 			</div>
 		</form>
 	</div>

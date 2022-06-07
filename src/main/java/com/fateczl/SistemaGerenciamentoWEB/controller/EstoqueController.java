@@ -39,7 +39,42 @@ public class EstoqueController{
 	}
 	@RequestMapping(name="Estoque", value="/Estoque", method=RequestMethod.POST)
 	public ModelAndView estoque(ModelMap model, @RequestParam Map<String,String> param) {
+		String erro="";
+		String botaoInput = param.get("inputPesquisa");
+		String botaoSalvar = param.get("botaoSalvar");
+		List<Estoque> listaEstoque = new ArrayList<Estoque>();
+		
+		try {
+			if(botaoInput.isEmpty()) {
+				listaEstoque = eDAO.listarProduto();
+			}else {
+				listaEstoque = eDAO.listarProdutoPorNome(botaoInput);
+				if(listaEstoque.isEmpty()) {
+					listaEstoque = eDAO.listarProduto();
+					model.addAttribute("listaEstoque", listaEstoque);
+					return new ModelAndView("Estoque");
+				}else {
+					model.addAttribute("erro", erro);
+					model.addAttribute("listaEstoque", listaEstoque);
+					return new ModelAndView("Estoque");
+				}
+				//if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
+					//Lugar que vai gerenciar o estoque
+				//}
+			}
+		}catch (ClassNotFoundException | SQLException e)  {
+			
+		}
+		
 		return new ModelAndView("Estoque");
 	}	
+	@RequestMapping(name="EstoqueEditar", value="/EstoqueEditar", method=RequestMethod.GET)
+	public ModelAndView estoqueEditar(ModelMap model) {
+		return new ModelAndView();
+	}
+	@RequestMapping(name="EstoqueEditar", value="/EstoqueEditar", method=RequestMethod.POST)
+	public ModelAndView estoqueEditar(ModelMap model, @RequestParam Map<String, String> param) {
+		return new ModelAndView();
+	}
 	
 }

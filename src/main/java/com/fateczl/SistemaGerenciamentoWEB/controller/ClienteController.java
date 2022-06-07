@@ -23,6 +23,8 @@ public class ClienteController {
 
 	@Autowired
 	ClienteDAO cDAO;
+	
+	private static int id_cliente;
 
 	@RequestMapping(name = "Cliente", value = "Cliente", method = RequestMethod.GET)
 	public ModelAndView listarCliente(ModelMap model) {
@@ -63,10 +65,11 @@ public class ClienteController {
 				}
 			}
 			if(botaoEditar != null && !botaoEditar.isEmpty()){
+				id_cliente = Integer.parseInt(param.get("botaoEditar"));
 				clienteEditar(model);
 				model.addAttribute("erro", erro);
 				model.addAttribute("listaClientes", listaClientes);
-				return new ModelAndView("Cliente");
+				return new ModelAndView("ClienteEditar");
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			erro = e.getMessage();
@@ -147,7 +150,6 @@ public class ClienteController {
 				if (cDAO.verificarDuplicidade(cliente.getCpfCnpj())) {
 					cDAO.adicionarCliente(cliente, end);
 				} else {
-					System.out.println("duplicado");
 				}
 			} catch (ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
@@ -159,7 +161,7 @@ public class ClienteController {
 	public ModelAndView clienteEditar(ModelMap model) {
 		Cliente cliente = new Cliente();
 		Endereco endereco = new Endereco();
-		int id_cliente = 3; //lugar onde vai substituir o id passado por parametro da tela de listar cliente.
+		
 		try {
 			cliente = cDAO.buscarClientePorId(id_cliente);
 			endereco = cDAO.buscarEnderecoPorId(id_cliente);

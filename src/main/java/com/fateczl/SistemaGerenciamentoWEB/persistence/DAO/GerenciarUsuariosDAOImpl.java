@@ -97,7 +97,7 @@ public class GerenciarUsuariosDAOImpl implements GerenciarUsuariosDAO{
 	public void excluirUsuarioPorId(int id) throws SQLException, ClassNotFoundException {
 		Connection c = gDAO.getConnection();
 		
-		PreparedStatement p = c.prepareStatement("EXEC sp_excluir_usuario ?");
+		PreparedStatement p = c.prepareStatement("EXEC sp_excluir_usuario_por_id ?");
 		p.setInt(1, id);
 		p.executeUpdate();
 		
@@ -148,6 +148,7 @@ public class GerenciarUsuariosDAOImpl implements GerenciarUsuariosDAO{
 		try {
 			usuario.setId(rs.getInt("id"));
 			usuario.setNome(rs.getString("nome"));
+			usuario.setEmail(rs.getString("email"));
 			usuario.setTipo_usuario(rs.getString("tipo_de_usuario"));
 		} catch (SQLException e) {
 			e.printStackTrace();

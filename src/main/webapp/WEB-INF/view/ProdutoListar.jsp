@@ -33,7 +33,6 @@
 					<thead>
 						<tr>
 							<th></th>
-							<th>ID</th>
 							<th>Nome do Produto</th>
 							<th>Preco</th>
 						</tr>
@@ -41,8 +40,7 @@
 					<tbody class="nomes">
 						<c:forEach var="Produto" items="${listaProduto}">
 							<tr>
-								<td><a href="ProdutoEditar">Editar</a></td>
-								<td><c:out value="${Produto.id}"></c:out></td>
+								<td><button id="botaoEditar" name="botaoEditar" value="${Produto.id}">Editar</button></td>
 								<td><c:out value="${Produto.nome}"></c:out></td>
 								<td><c:out value="${Produto.preco}"></c:out></td>
 							</tr>
@@ -52,7 +50,7 @@
 			</div>
 			<div class="botoes">
 				<a href="ProdutoAdicionar">Adicionar</a>
-				<a href="Home">Voltar</a>
+				<a href="Produto">Voltar</a>
 			</div>
 		</form>
 	</div>

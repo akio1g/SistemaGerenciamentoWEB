@@ -204,6 +204,16 @@ AS
 	FROM Produto
 	GROUP BY nome
 
+
+	SELECT * FROM Produto
+--******************************************************************************--
+GO
+CREATE PROC sp_lista_produto_por_nome(@nome_produto VARCHAR(30))
+AS
+	SELECT SUBSTRING(nome, 1, 20) as nome,count(nome) as quantidade
+	FROM Produto
+	WHERE nome like '%'+@nome_produto+'%'
+	GROUP BY nome
 --******************************************************************************--
 GO
 CREATE PROC sp_listar_produto_por_categoria(@id_categoria INT)
@@ -214,7 +224,7 @@ AS
 	WHERE cp.id = @id_categoria
 --******************************************************************************--
 GO
-CREATE PROC sp_editar_produto(@nome VARCHAR(max), @descricao VARCHAR(max), @ncmSh VARCHAR(max), @preco DECIMAL(7,2), @categoria VARCHAR(20), @id_produto INT)
+CREATE PROC sp_editar_produto(@nome VARCHAR(max), @descricao VARCHAR(max), @ncmSh VARCHAR(max), @preco Numeric(7,2), @categoria VARCHAR(20), @id_produto INT)
 AS
 	IF(@nome != '')
 	BEGIN
@@ -264,12 +274,19 @@ CREATE PROC sp_pesquisar_produto_por_nome(@nome_produto VARCHAR(100))
 AS
 	SELECT * FROM Produto
 	WHERE nome like '%'+@nome_produto+'%'
+--******************************************************************************--
+GO
+CREATE PROC sp_pesquisar_produto_por_id(@id_produto INT)
+AS
+	SELECT * FROM Produto
+	WHERE id = @id_produto
+
 
 							--FUNÇÕES USUARIO--
 GO
 CREATE PROC sp_listar_usuarios
 AS
-	SELECT usuario.id, usuario.nome, tipo.nome as tipo_de_usuario
+	SELECT usuario.id, usuario.nome, tipo.nome AS tipo_de_usuario, usuario.email AS email
 	FROM Usuario usuario 
 	INNER JOIN Tipo_De_Usuario tipo 
 	ON usuario.id_tipoDeUsuario = tipo.id
@@ -338,11 +355,7 @@ AS
 GO
 CREATE PROC sp_pesquisar_Usuario_Por_Id(@id_usuario INT)
 AS
-	SELECT  u.id, u.nome, t.nome as tipo_de_usuario FROM Usuario u 
+	SELECT  u.id,  u.nome, u.email,t.nome as tipo_de_usuario FROM Usuario u 
 	INNER JOIN Tipo_de_Usuario t 
 	ON u.id_tipoDeUsuario = t.id 
 	WHERE u.id = @id_usuario
-
-	SELECT * FROM Usuario
-
-	SELECT * FROM Produto

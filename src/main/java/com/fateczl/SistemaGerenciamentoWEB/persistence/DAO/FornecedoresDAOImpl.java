@@ -58,6 +58,7 @@ public class FornecedoresDAOImpl implements FornecedoresDAO{
 		ResultSet rs = p.executeQuery();
 		while(rs.next()) {
 			Fornecedor fornecedor = new Fornecedor();
+			fornecedor.setId(rs.getInt("id"));
 			fornecedor.setRazaoSocial(rs.getString("razaoSocial"));
 			fornecedor.setCnpj(rs.getString("cnpj"));
 			fornecedor.setInscricaoEstadual("inscricaoEstadual");

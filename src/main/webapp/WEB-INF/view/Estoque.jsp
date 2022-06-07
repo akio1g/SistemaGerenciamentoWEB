@@ -27,7 +27,7 @@
 	</nav>
 	<form action="Estoque" method="post" class="formulario">
 			<div>
-				<input type="text" class="inputPesquisa" placeholder="Digite sua pesquisa">
+				<input type="text" class="inputPesquisa" id="inputPesquisa" name="inputPesquisa" placeholder="Digite sua pesquisa">
 				<table class="table">	
 					<thead>
 						<tr>
@@ -45,7 +45,7 @@
 					</tbody>
 				</table>
 				<div class="botoes">
-					<a href="EstoqueAdicionar">Adicionar</a>
+					<a href="EstoqueAdicionar">Editar</a>
 					<a href="Home">Voltar</a>
 				</div>
 			</div>

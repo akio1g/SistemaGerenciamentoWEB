@@ -41,7 +41,7 @@
 						<tbody class="nomes">
 							<c:forEach var="usuario" items="${listarUsuario}">
 								<tr>
-									<td><a href="GerenciarUsuariosEditar" id="botaoEditar" name="botaoEditar" value="${usuario.id}"> Editar </a></td>
+									<td><button id="botaoEditar" name="botaoEditar" value="${usuario.id}">Editar</button></td>
 									<td><c:out value="${usuario.nome}"></c:out></td>
 									<td><c:out value="${usuario.tipo_usuario}"></c:out>
 								</tr>

@@ -22,6 +22,8 @@ public class GerenciarUsuariosController {
 	@Autowired
 	GerenciarUsuariosDAO guDAO;
 	
+	private static int id_usuario;
+	
 	@RequestMapping(name="GerenciarUsuarios", value="/GerenciarUsuarios", method=RequestMethod.GET)
 	public ModelAndView listarUsuario(ModelMap model) {
 		String erro="";
@@ -52,11 +54,17 @@ public class GerenciarUsuariosController {
 					listaUsuario = guDAO.listaUsuario();
 					model.addAttribute("listarUsuario", listaUsuario);
 					return new ModelAndView("GerenciarUsuarios");
+				}else {
+					model.addAttribute("listarUsuario", listaUsuario);
+					return new ModelAndView("GerenciarUsuarios");
 				}
 			}
 			if(botaoEditar != null && !botaoEditar.isEmpty()) {
+				id_usuario = Integer.parseInt(param.get("botaoEditar"));
 				editarUsuario(model);
+				model.addAttribute("erro", erro);
 				model.addAttribute("listaUsuario", listaUsuario);
+				return new ModelAndView("GerenciarUsuariosEditar");
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			erro = e.getMessage();
@@ -105,7 +113,6 @@ public class GerenciarUsuariosController {
 	public ModelAndView editarUsuario(ModelMap model) {
 		Usuario usuario = new Usuario();
 		
-		int id_usuario = 1; //lugar onde vai substituir o id passado por parametro da tela de listar usuario.
 		try {
 			usuario = guDAO.pesquisarUsuarioPorId(id_usuario);
 		}catch (ClassNotFoundException | SQLException e) {
@@ -113,7 +120,7 @@ public class GerenciarUsuariosController {
 		}finally {
 			model.addAttribute("usuario", usuario);
 		}
-		return new ModelAndView();
+		return new ModelAndView("GerenciarUsuariosEditar");
 	}
 	@RequestMapping(name="GerenciarUsuariosEditar", value="/GerenciarUsuariosEditar", method=RequestMethod.POST)
 	public ModelAndView editarUsuario(ModelMap model, @RequestParam Map<String, String> param) {
@@ -140,17 +147,17 @@ public class GerenciarUsuariosController {
 			}
 			if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
 				guDAO.editarUsuarioPorId(usuario);
+				model.addAttribute("usuario", usuario);
 				return new ModelAndView("GerenciarUsuariosEditar");
 			}
-			if(botaoExcluir != null && !botaoSalvar.isEmpty()) {
+			if(botaoExcluir != null && !botaoExcluir.isEmpty()) {
 				guDAO.excluirUsuarioPorId(usuario.getId());
+				model.addAttribute("usuario", usuario);
+				return new ModelAndView("GerenciarUsuariosEditar");
 			}
 		}catch (ClassNotFoundException | SQLException e) {
 			erro = e.getMessage();
-		}finally {
-			
 		}
-		
-		return new ModelAndView();
+		return new ModelAndView("GerenciarUsuariosEditar");
 	}
 }

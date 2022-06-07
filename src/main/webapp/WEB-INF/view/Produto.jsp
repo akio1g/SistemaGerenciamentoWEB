@@ -28,13 +28,13 @@
 	<div class="formulario">
 	<form action="Produto" method="post" class="form">
 			<div class="listaBotoesCategoria">
-				<input type="submit" id="id" name="botaoCategoria" value="Gorje">
-				<input type="submit" id="id" name="botaoCategoria" value="Yale">
-				<input type="submit" id="id" name="botaoCategoria" value="Yale Dupla">
-				<input type="submit" id="id" name="botaoCategoria" value="Tetra">
-				<input type="submit" id="id" name="botaoCategoria" value="Pantográficas">
-				<input type="submit" id="id" name="botaoCategoria" value="Codificadas">
-				<input type="submit" id="id" name="botaoCategoria" value="Lâminas de Segredo">
+				<button id="id" name="botaoCategoria" value="1">Gorje</button>
+				<button id="id" name="botaoCategoria" value="2">Yale</button>
+				<button id="id" name="botaoCategoria" value="3">Yale Dupla</button>
+				<button id="id" name="botaoCategoria" value="4">Tetra</button>
+				<button id="id" name="botaoCategoria" value="5">Pantográficas</button>
+				<button id="id" name="botaoCategoria" value="6">Codificadas</button>
+				<button id="id" name="botaoCategoria" value="7">Laminas de Segredo</button>
 			</div>	
 			<div class="botoes">
 				<a href="Home" class="voltarProduto">Voltar</a>

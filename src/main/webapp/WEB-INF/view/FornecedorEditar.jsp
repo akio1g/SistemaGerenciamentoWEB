@@ -32,18 +32,18 @@
 				<h2>Editar Fornecedor</h2>
 				<div class="bordaTabelaAdicionar">
 					<input type="hidden" id="Id" name="Id" value="${fornecedor.id}">
-					<input type="text" class="tabelaAdicionar" id="RazaoSocial" name="RazaoSocial" value="<c:out value="${fornecedor.razaoSocial}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="Cnpj" name="Cnpj" value="<c:out value="${fornecedor.cnpj}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="Telefone" name="Telefone" value="<c:out value="${fornecedor.telefone}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="InscricaoEstadual" name="InscricaoEstadual" value="<c:out value="${fornecedor.inscricaoEstadual}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="RazaoSocial" name="RazaoSocial" placeholder="RazaoSocial" value="<c:out value="${fornecedor.razaoSocial}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Cnpj" name="Cnpj" placeholder="Cnpj" value="<c:out value="${fornecedor.cnpj}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Telefone" name="Telefone" placeholder="Telefone" value="<c:out value="${fornecedor.telefone}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="InscricaoEstadual" name="InscricaoEstadual" placeholder="InscricaoEstadual" value="<c:out value="${fornecedor.inscricaoEstadual}"></c:out>">
 					
 					
-					<input type="text" class="tabelaAdicionar" id="CEP"  name="CEP" value="<c:out value="${endereco.cep}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="Logradouro" name="Logradouro" value="<c:out value="${endereco.logradouro}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="Numero" name="Numero" value="<c:out value="${endereco.numero}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="Complemento" name="Complemento" value="<c:out value="${endereco.complemento}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="Cidade" name="Cidade" value="<c:out value="${endereco.cidade}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="Estado" name="Estado" value="<c:out value="${endereco.estado}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="CEP"  name="CEP" placeholder="CEP" value="<c:out value="${endereco.cep}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Logradouro" name="Logradouro" placeholder="Logradouro"  value="<c:out value="${endereco.logradouro}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Numero" name="Numero" placeholder="Numero" value="<c:out value="${endereco.numero}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Complemento" name="Complemento" placeholder="Complemento"  value="<c:out value="${endereco.complemento}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Cidade" name="Cidade" placeholder="Cidade" value="<c:out value="${endereco.cidade}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="Estado" name="Estado" placeholder="Estado" value="<c:out value="${endereco.estado}"></c:out>">
 				</div>
 			</div>
 			<div class="botoes">

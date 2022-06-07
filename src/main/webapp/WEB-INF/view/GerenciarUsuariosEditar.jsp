@@ -35,6 +35,7 @@
 					<input type="text" class="tabelaAdicionar" id="email" name="email" placeholder="Email" value="<c:out value="${usuario.email}"></c:out>">
 						<label class="centralizaDropbox" for="tipoDeUsuario">Tipo De Usuario</label>
 						<select class="selectDrop" name="tipoDeUsuario" id="tipoDeUsuario">
+						  <option selected="selected">
 						  <option value="Administrador">Administrador</option>
 						  <option value="Estoquista">Estoquista</option>
 						  <option value="Vendedor">Vendedor</option>
@@ -44,7 +45,7 @@
 			<div class="botoes">
 				<input type="submit"  id="botaoSalvar" name="botaoSalvar" value="Salvar">
 				<input type="submit"  id="botaoExcluir" name="botaoExcluir" value="Excluir">
-				<a href="Cliente" class="voltarProduto">Voltar</a>
+				<a href="GerenciarUsuarios" class="voltarProduto">Voltar</a>
 			</div>
 		</form>
 	</div>

@@ -68,7 +68,7 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 		p.setDescricao(rs.getString("descricao"));
 		p.setNcmSh(rs.getString("ncmSh"));
 		p.setPreco(rs.getDouble("preco"));
-		
+		p.setCategoria(rs.getString("id_categoria"));
 		return p;
 	}
 
@@ -90,13 +90,15 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 		
 		Connection c = gDAO.getConnection();
 		
-		PreparedStatement ps = c.prepareStatement("EXEC sp_editar_produto ?,?,?,?,?");
+		PreparedStatement ps = c.prepareStatement("EXEC sp_editar_produto ?,?,?,?,?,?");
 		
 		ps.setString(1, produto.getNome());
 		ps.setString(2, produto.getDescricao());
 		ps.setString(3, produto.getNcmSh());
 		ps.setDouble(4, produto.getPreco());
-		ps.setInt(5, produto.getId());
+		ps.setString(5, produto.getCategoria());
+		ps.setInt(6, produto.getId());
+	
 		
 		ps.executeUpdate();
 	
@@ -142,5 +144,18 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 		rs.close();
 		c.close();
 		return listaProduto;
+	}
+	public Produto pesquisarProdutoPorId(int id) throws SQLException, ClassNotFoundException{
+		
+		Connection c = gDAO.getConnection();
+		
+		PreparedStatement ps= c.prepareStatement("sp_pesquisar_produto_por_id ?");
+		
+		ps.setInt(1, id);
+		ResultSet rs = ps.executeQuery();
+		if(rs.next()) {
+			return instanciarProduto(rs);
+		}
+		return new Produto();
 	}
 }

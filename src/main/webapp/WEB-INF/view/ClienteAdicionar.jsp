@@ -33,7 +33,7 @@
 			<a href="ClienteAdicionarCNPJ" class="categoriasChaves">Pessoa Jurídica</a>
 			
 			<div class="botoes">
-				<a href="Home" class="voltarProduto">Voltar</a>
+				<a href="Cliente" class="voltarProduto">Voltar</a>
 			</div>
 		</form>
 	</div>
