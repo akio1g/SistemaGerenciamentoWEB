@@ -90,6 +90,28 @@ CREATE TABLE Usuario(
 	CONSTRAINT pk_id_usuario PRIMARY KEY(id)
 )
 GO
+CREATE TABLE Carrinho (
+	id int IDENTITY,
+	id_produto int not null,
+	quantidade int not null,
+	valor decimal(7,2),
+
+	CONSTRAINT pk_id_carrinho PRIMARY KEY(id),
+	CONSTRAINT fk_id_produto_carrinho FOREIGN KEY (id_produto) REFERENCES Produto(id)
+)
+GO
+CREATE TABLE RegistrosVenda (
+	id_vendedor int,
+	id_cliente int not null,
+	id_carrinho int NOT NULL,
+	dataVenda smalldatetime not null,
+	valor decimal(7,2) NOT NULL,
+
+	CONSTRAINT fk_id_vendedor_venda FOREIGN KEY (id_vendedor) REFERENCES Usuario(id),
+	CONSTRAINT fk_id_cliente_venda FOREIGN KEY (id_cliente) REFERENCES Cliente(id),
+	CONSTRAINT fk_id_carrinho_venda FOREIGN KEY (id_carrinho) REFERENCES Carrinho(id)
+	)
+GO
 INSERT INTO Cliente (nomeRazaoSocial,cpfCnpj,telefone,email,inscricaoEstadual) VALUES 
 ('Marcos Josue','19238592832','11983275921','majosue@gmail.com',null),
 ('Roberto Freitas','12682957294','11987460692','rfreitas@outlook.com.br',null),
@@ -142,3 +164,25 @@ INSERT INTO Usuario (nome, login_usuario, senha_usuario, email, id_tipoDeUsuario
 ('Higor', 'Higor123', 'senha123', 'gabriel@bol.com.br', 1),
 ('Gabriel', 'Gabriel123', 'senha123', 'gabriel@bol.com.br', 2),
 ('Breno', 'Breno789', 'senha123', 'breno@bol.com.br', 3)
+GO
+INSERT INTO Carrinho (id_produto, quantidade, valor) VALUES
+	(2,14,(14*(select produto.preco from produto where produto.id = 2))),
+	(1,12,(14*(select produto.preco from produto where produto.id = 1))),
+	(3,63,(14*(select produto.preco from produto where produto.id = 3))),
+	(4,24,(14*(select produto.preco from produto where produto.id = 4))),
+	(5,57,(14*(select produto.preco from produto where produto.id = 5))),
+	(6,12,(14*(select produto.preco from produto where produto.id = 6))),
+	(7,100,(14*(select produto.preco from produto where produto.id = 7))),
+	(1,200,(14*(select produto.preco from produto where produto.id = 1))),
+	(2,100,(14*(select produto.preco from produto where produto.id = 2)))
+GO
+INSERT INTO RegistrosVenda VALUES 
+	(2,4,3,'2022-03-12 21:35:16',(select c.valor from carrinho as c where c.id = 3)),
+	(3,6,6,'2022-06-07 19:18:25',(select c.valor from carrinho as c where c.id = 6)),
+	(3,6,7,'2022-06-07 19:18:25',(select c.valor from carrinho as c where c.id = 7)),
+	(1,5,5,'2022-06-07 18:05:25',(select c.valor from carrinho as c where c.id = 5)),
+	(1,5,1,'2022-06-07 18:05:25',(select c.valor from carrinho as c where c.id = 1)),
+	(1,1,8,'2022-06-07 18:25:21',(select c.valor from carrinho as c where c.id = 8)),
+	(1,2,4,'2022-06-06 12:04:25',(select c.valor from carrinho as c where c.id = 4)),
+	(1,3,2,'2022-04-12 22:09:29',(select c.valor from carrinho as c where c.id = 2))
+GO
