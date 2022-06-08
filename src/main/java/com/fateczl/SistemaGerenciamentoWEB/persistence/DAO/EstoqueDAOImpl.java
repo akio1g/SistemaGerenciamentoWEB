@@ -23,11 +23,11 @@ public class EstoqueDAOImpl implements EstoqueDAO{
 	GenericDAO gDAO;
 	
 	@Override
-	public List<Estoque> listarProduto() throws SQLException, ClassNotFoundException{
+	public List<Estoque> listarEstoque() throws SQLException, ClassNotFoundException{
 		Connection c = gDAO.getConnection();
 	
 		List<Estoque> listaProdutos = new ArrayList<Estoque>();
-		PreparedStatement ps = c.prepareStatement("EXEC sp_listar_produto");
+		PreparedStatement ps = c.prepareStatement("EXEC sp_listar_estoque");
 		
 		ResultSet rs = ps.executeQuery();
 		while(rs.next()) {
@@ -49,12 +49,13 @@ public class EstoqueDAOImpl implements EstoqueDAO{
 		
 		List<Estoque> listaProdutos = new ArrayList<Estoque>();
 		
-		PreparedStatement p = c.prepareStatement("EXEC sp_lista_produto_por_nome ?");
+		PreparedStatement p = c.prepareStatement("EXEC sp_procurar_no_estoque ?");
 		
 		p.setString(1, nome);
 		ResultSet rs = p.executeQuery();
 		while(rs.next()) {
 			Estoque estoque = new Estoque();
+			
 			estoque.setQuantidade(rs.getInt("quantidade"));
 			estoque.setNome(rs.getString("nome"));
 			listaProdutos.add(estoque);
@@ -63,5 +64,21 @@ public class EstoqueDAOImpl implements EstoqueDAO{
 		p.close();
 		rs.close();
 		return listaProdutos;
+	}
+	@Override
+	public void editarEstoque(List<Estoque> estoque) throws SQLException, ClassNotFoundException {
+			
+		Connection c = gDAO.getConnection();
+		
+		for(int i=0; i<estoque.size();i++) {
+			PreparedStatement p = c.prepareStatement("Exec sp_editar_estoque ?, ?");
+			
+			p.setString(1, estoque.get(i).getNome());
+			p.setInt(2, estoque.get(i).getQuantidade());
+			
+			p.executeUpdate();
+			p.close();
+		}
+		c.close();
 	}
 }

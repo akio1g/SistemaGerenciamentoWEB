@@ -36,16 +36,16 @@
 						</tr>
 					</thead>
 					<tbody class="nomes">
-						<c:forEach var="produto" items="${listaProduto}">
-							<tr>
-								<td><c:out value="${produto.quantidade}"></c:out></td>
-								<td><c:out value="${produto.nome}"></c:out></td>
+						<c:forEach var="estoque" items="${listaEstoque}">
+							<tr>	
+								<td><input style="text-align: center;width: 80px;" type="number" id="idQuantidade" name="quantidade{}" value="<c:out value="${estoque.quantidade}"></c:out>"></td>
+								<td><c:out value="${estoque.nome}"></c:out></td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 				<div class="botoes">
-					<a href="EstoqueAdicionar">Editar</a>
+					<input type="submit" id="botaoSalvar" name="botaoSalvar" value="Salvar">
 					<a href="Home">Voltar</a>
 				</div>
 			</div>
