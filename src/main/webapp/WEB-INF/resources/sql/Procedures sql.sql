@@ -1,4 +1,4 @@
-﻿USE DistribuidoraAMZ
+USE DistribuidoraAMZ
 												--FUNÇÕES DO CLIENTE--
 --******************************************************************************--
 GO
@@ -217,38 +217,7 @@ AS
 	GROUP BY nome
 --******************************************************************************--
 GO
-CREATE PROC sp_adicionar_estoque(@nome_produto VARCHAR, @quantidade INT)
-AS
-	DECLARE @count INT, @descricao VARCHAR(max), @ncmSh VARCHAR(20), @preco NUMERIC(7,2), @categoria INT
-	SET @count = 0
-	SET @descricao = (SELECT descricao FROM Produto WHERE nome = @nome_produto)
-	SET @ncmSh = (SELECT ncmSh FROM Produto WHERE nome = @nome_produto)
-	SET @preco = (SELECT preco FROM Produto WHERE nome = @nome_produto)
-	SET @categoria = (SELECT id_categoria FROM Produto WHERE nome = @nome_produto)
-	SET @count = (SELECT COUNT(nome) FROM Produto WHERE nome = @nome_produto)
 
-	IF @count < @quantidade
-	BEGIN
-		WHILE @count != @quantidade
-		BEGIN
-			SELECT * FROM Produto
-			INSERT INTO Produto VALUES()
-			SET @count+=1
-		END
-	END
-	ELSE
-	BEGIN
-		DELETE FROM
-	END
-	
-	WHILE @count <= @quantidade
-	BEGIN
-		INSERT INTO Produto VALUES (@nome_produto, @descricao, @ncmSh, @preco, @categoria)
-		SET @count += 1
-	END
-
---******************************************************************************--
-GO
 CREATE PROC sp_listar_produto_por_categoria(@id_categoria INT)
 AS
 	SELECT DISTINCT p.* FROM Produto as p
