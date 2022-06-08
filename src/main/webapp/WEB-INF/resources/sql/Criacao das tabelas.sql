@@ -71,6 +71,32 @@ CREATE TABLE Produto (
 	CONSTRAINT pk_produto PRIMARY KEY (id)
 )
 GO
+CREATE TABLE Estoque(
+	id INT IDENTITY,
+	id_Produto INT NOT NULL,
+	quantidade INT NOT NULL
+
+	CONSTRAINT fk_id_produto_estoque FOREIGN KEY(id_Produto) REFERENCES Produto (id),
+	CONSTRAINT pk_id_estoque PRIMARY KEY(id)
+)
+GO
+CREATE TRIGGER t_atualizar_estoque
+ON Produto
+AFTER INSERT
+AS
+BEGIN
+		INSERT INTO Estoque VALUES((SELECT id FROM inserted), 0)
+END
+GO
+CREATE TRIGGER t_deletar_produto
+ON PRODUTO
+INSTEAD OF DELETE
+AS
+BEGIN
+	DELETE FROM Estoque WHERE id_Produto = (SELECT id FROM deleted) 
+	DELETE FROM Produto WHERE id = (SELECT id FROM deleted)
+END
+GO
 CREATE TABLE Tipo_De_Usuario(
 	id INT IDENTITY,
 	nome CHAR(13) NOT NULL
@@ -89,7 +115,7 @@ CREATE TABLE Usuario(
 	CONSTRAINT fk_id_tipoDeUsuario FOREIGN KEY(id_tipoDeUsuario) REFERENCES Tipo_De_Usuario(id),
 	CONSTRAINT pk_id_usuario PRIMARY KEY(id)
 )
-GO
+go
 CREATE TABLE Carrinho (
 	id int IDENTITY,
 	id_produto int not null,
@@ -110,15 +136,6 @@ CREATE TABLE RegistrosVenda (
 	CONSTRAINT fk_id_vendedor_venda FOREIGN KEY (id_vendedor) REFERENCES Usuario(id),
 	CONSTRAINT fk_id_cliente_venda FOREIGN KEY (id_cliente) REFERENCES Cliente(id),
 	CONSTRAINT fk_id_carrinho_venda FOREIGN KEY (id_carrinho) REFERENCES Carrinho(id)
-)
-GO
-CREATE TABLE Estoque(
-	id INT IDENTITY,
-	id_Produto INT NOT NULL,
-	quantidade INT NOT NULL
-
-	CONSTRAINT fk_id_produto_estoque FOREIGN KEY(id_Produto) REFERENCES Produto (id),
-	CONSTRAINT pk_id_estoque PRIMARY KEY(id)
 )
 GO
 INSERT INTO Cliente (nomeRazaoSocial,cpfCnpj,telefone,email,inscricaoEstadual) VALUES 
@@ -194,11 +211,3 @@ INSERT INTO RegistrosVenda VALUES
 	(1,1,8,'2022-06-07 18:25:21',(select c.valor from carrinho as c where c.id = 8)),
 	(1,2,4,'2022-06-06 12:04:25',(select c.valor from carrinho as c where c.id = 4)),
 	(1,3,2,'2022-04-12 22:09:29',(select c.valor from carrinho as c where c.id = 2))
-GO
-INSERT INTO Estoque(id_Produto, quantidade) VALUES
-(1,10),
-(2,5),
-(3,4),
-(4,8),
-(5,9),
-(6,3)

@@ -395,28 +395,8 @@ AS
 --******************************************************************************--
 
 
-
-
-
 							--FUNÇÕES ESTOQUE
-GO
-CREATE TRIGGER t_atualizar_estoque
-ON Produto
-AFTER INSERT
-AS
-BEGIN
-		INSERT INTO Estoque VALUES((SELECT id FROM inserted), 0)
-END
---******************************************************************************--
-GO
-CREATE TRIGGER t_deletar_produto
-ON PRODUTO
-INSTEAD OF DELETE
-AS
-BEGIN
-	DELETE FROM Estoque WHERE id_Produto = (SELECT id FROM deleted) 
-	DELETE FROM Produto WHERE id = (SELECT id FROM deleted)
-END
+
 --****************************************************************************--
 GO
 CREATE PROC sp_editar_estoque(@nome VARCHAR(50), @quantidade int)
