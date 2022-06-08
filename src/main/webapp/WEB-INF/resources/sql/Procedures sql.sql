@@ -1,5 +1,5 @@
 ﻿USE DistribuidoraAMZ
-							--FUNÇÕES DO CLIENTE--
+												--FUNÇÕES DO CLIENTE--
 --******************************************************************************--
 GO
 CREATE PROC sp_adicionar_cliente @nomeRazaoSocial VARCHAR(max), @CpfCnpj VARCHAR(max), @Telefone VARCHAR(max), 
@@ -12,7 +12,7 @@ AS
 
 --******************************************************************************--
 GO
-CREATE PROC sp_lista_clientes -- Usada para listar os clientes
+CREATE PROC sp_lista_clientes 
 AS
 	SELECT c.id, c.nomeRazaoSocial, c.cpfCnpj,c.telefone, c.email, c.inscricaoEstadual,
 	 e.cep,  e.estado,e.cidade,e.logradouro, e.numero, e.complemento
@@ -179,7 +179,8 @@ AS
 
 
 
-					--FUNÇÕES DO PRODUTO
+														--FUNÇÕES DO PRODUTO
+--******************************************************************************--
 GO
 CREATE PROC sp_adicionar_produto (@nome VARCHAR(max), @descricao VARCHAR(max), @ncmSh VARCHAR(max), @preco Decimal(7,2), @categoria VARCHAR(20))
 AS
@@ -212,8 +213,40 @@ CREATE PROC sp_lista_produto_por_nome(@nome_produto VARCHAR(30))
 AS
 	SELECT SUBSTRING(nome, 1, 20) as nome,count(nome) as quantidade
 	FROM Produto
-	WHERE nome like '%'+@nome_produto+'%'
+	--WHERE nome like '%'+@nome_produto+'%'
 	GROUP BY nome
+--******************************************************************************--
+GO
+CREATE PROC sp_adicionar_estoque(@nome_produto VARCHAR, @quantidade INT)
+AS
+	DECLARE @count INT, @descricao VARCHAR(max), @ncmSh VARCHAR(20), @preco NUMERIC(7,2), @categoria INT
+	SET @count = 0
+	SET @descricao = (SELECT descricao FROM Produto WHERE nome = @nome_produto)
+	SET @ncmSh = (SELECT ncmSh FROM Produto WHERE nome = @nome_produto)
+	SET @preco = (SELECT preco FROM Produto WHERE nome = @nome_produto)
+	SET @categoria = (SELECT id_categoria FROM Produto WHERE nome = @nome_produto)
+	SET @count = (SELECT COUNT(nome) FROM Produto WHERE nome = @nome_produto)
+
+	IF @count < @quantidade
+	BEGIN
+		WHILE @count != @quantidade
+		BEGIN
+			SELECT * FROM Produto
+			INSERT INTO Produto VALUES()
+			SET @count+=1
+		END
+	END
+	ELSE
+	BEGIN
+		DELETE FROM
+	END
+	
+	WHILE @count <= @quantidade
+	BEGIN
+		INSERT INTO Produto VALUES (@nome_produto, @descricao, @ncmSh, @preco, @categoria)
+		SET @count += 1
+	END
+
 --******************************************************************************--
 GO
 CREATE PROC sp_listar_produto_por_categoria(@id_categoria INT)
@@ -359,3 +392,57 @@ AS
 	INNER JOIN Tipo_de_Usuario t 
 	ON u.id_tipoDeUsuario = t.id 
 	WHERE u.id = @id_usuario
+--******************************************************************************--
+
+
+
+
+
+							--FUNÇÕES ESTOQUE
+GO
+CREATE TRIGGER t_atualizar_estoque
+ON Produto
+AFTER INSERT
+AS
+BEGIN
+		INSERT INTO Estoque VALUES((SELECT id FROM inserted), 0)
+END
+--******************************************************************************--
+GO
+CREATE TRIGGER t_deletar_produto
+ON PRODUTO
+INSTEAD OF DELETE
+AS
+BEGIN
+	DELETE FROM Estoque WHERE id_Produto = (SELECT id FROM deleted) 
+	DELETE FROM Produto WHERE id = (SELECT id FROM deleted)
+END
+--****************************************************************************--
+GO
+CREATE PROC sp_editar_estoque(@nome VARCHAR(50), @quantidade int)
+AS
+	DECLARE @id_produto INT
+	SET @id_produto = (SELECT id FROM Produto WHERE nome = @nome)
+	
+	IF (@quantidade > -1 )
+	BEGIN
+		UPDATE Estoque
+		SET quantidade = @quantidade
+		WHERE id_Produto = @id_produto
+	END
+
+--****************************************************************************--
+GO
+CREATE PROC sp_listar_estoque
+AS
+	SELECT p.nome, e.quantidade 
+	FROM Estoque e INNER JOIN Produto p 
+	ON e.id_Produto = p.id
+--****************************************************************************--
+GO
+CREATE PROC sp_procurar_no_estoque(@nomeProduto VARCHAR(50))
+AS
+	SELECT p.nome, e.quantidade
+	FROM Estoque e INNER JOIN Produto p
+	ON e.id_Produto = p.id
+	WHERE p.nome like '%'+@nomeProduto+'%'

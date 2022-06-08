@@ -110,7 +110,16 @@ CREATE TABLE RegistrosVenda (
 	CONSTRAINT fk_id_vendedor_venda FOREIGN KEY (id_vendedor) REFERENCES Usuario(id),
 	CONSTRAINT fk_id_cliente_venda FOREIGN KEY (id_cliente) REFERENCES Cliente(id),
 	CONSTRAINT fk_id_carrinho_venda FOREIGN KEY (id_carrinho) REFERENCES Carrinho(id)
-	)
+)
+GO
+CREATE TABLE Estoque(
+	id INT IDENTITY,
+	id_Produto INT NOT NULL,
+	quantidade INT NOT NULL
+
+	CONSTRAINT fk_id_produto_estoque FOREIGN KEY(id_Produto) REFERENCES Produto (id),
+	CONSTRAINT pk_id_estoque PRIMARY KEY(id)
+)
 GO
 INSERT INTO Cliente (nomeRazaoSocial,cpfCnpj,telefone,email,inscricaoEstadual) VALUES 
 ('Marcos Josue','19238592832','11983275921','majosue@gmail.com',null),
@@ -186,3 +195,10 @@ INSERT INTO RegistrosVenda VALUES
 	(1,2,4,'2022-06-06 12:04:25',(select c.valor from carrinho as c where c.id = 4)),
 	(1,3,2,'2022-04-12 22:09:29',(select c.valor from carrinho as c where c.id = 2))
 GO
+INSERT INTO Estoque(id_Produto, quantidade) VALUES
+(1,10),
+(2,5),
+(3,4),
+(4,8),
+(5,9),
+(6,3)
