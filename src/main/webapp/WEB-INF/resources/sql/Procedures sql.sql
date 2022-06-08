@@ -226,7 +226,8 @@ AS
 	WHERE cp.id = @id_categoria
 --******************************************************************************--
 GO
-CREATE PROC sp_editar_produto(@nome VARCHAR(max), @descricao VARCHAR(max), @ncmSh VARCHAR(max), @preco Numeric(7,2), @categoria VARCHAR(20), @id_produto INT)
+
+CREATE PROC sp_editar_produto(@nome VARCHAR(max), @descricao VARCHAR(max), @ncmSh VARCHAR(max), @preco VARCHAR(max), @categoria VARCHAR(20), @id_produto INT)
 AS
 	IF(@nome != '')
 	BEGIN
@@ -242,7 +243,7 @@ AS
 	END
 	IF(@preco != '')
 	BEGIN
-		UPDATE Produto SET preco = @preco WHERE id = @id_produto
+		UPDATE Produto SET preco = convert(float,@preco) WHERE id = @id_produto
 	END
 	IF(@categoria != '')
 	BEGIN
