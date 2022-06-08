@@ -34,18 +34,18 @@
 						<tr>
 							<th></th>
 							<th>ID</th>
-							<th>Descrição da Venda</th>
-							<th>Data</th>
+							<th>Vendedor</th>
+							<th>Cliente</th>
 							<th>Valor</th>
 						</tr>
 					</thead>
 					<tbody class="nomes">
 						<c:forEach var="Venda" items="${listaVenda}">
 							<tr>
-								<td><input type="submit"><img src="./resources/img/editar"></td>
+								<td><button id="botaoVisualizar" name="botaoVisualizar" value="${Venda.id}">Visualizar</button></td>
 								<td><c:out value="${Venda.id}"></c:out></td>
-								<td><c:out value="${Venda.descricao}"></c:out></td>
-								<td><c:out value="${Venda.data}"></c:out></td>
+								<td><c:out value="${Venda.vendedor}"></c:out></td>
+								<td><c:out value="${Venda.cliente}"></c:out></td>
 								<td><c:out value="${Venda.valor}"></c:out></td>
 							</tr>
 						</c:forEach>
@@ -53,33 +53,11 @@
 				</table>
 			</div>
 			<div class="botoes">
-				<a href="VendaVisualizar">Visualizar</a>
+				<a href="Adicionar Venda">Adicionar</a>
 				<a href="Home">Voltar</a>
 			</div>
 		</form>
 	</div>
-	<!-- MODAL DE VISUALIZAR DETALHAMENTO DA VENDA 
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Qtd</th>
-					<th>Descrição do Produto</th>
-					<th>Valor Unitario</th>
-					<th>Valor Total</th>
-				</tr>
-			</thead>
-			<tbody class="nomes">
-				<c:forEach var="Venda" items="${listaVenda}">
-					<tr>
-						<td><c:out value="${Venda.quantidade}"></c:out></td>
-						<td><c:out value="${Venda.descricao}"></c:out></td>
-						<td><c:out value="${Venda.valorUnitario}"></c:out></td>
-						<td><c:out value="${Venda.valorTotal}"></c:out></td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	-->	
 </body>
 
 </html>

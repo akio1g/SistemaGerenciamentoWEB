@@ -1,5 +1,15 @@
 package com.fateczl.SistemaGerenciamentoWEB.persistence.InterfaceDAO;
 
-public interface RegistroVendasDAO {
+import java.sql.SQLException;
+import java.util.List;
 
+import com.fateczl.SistemaGerenciamentoWEB.model.Carrinho;
+import com.fateczl.SistemaGerenciamentoWEB.model.RegistroDeVenda;
+
+public interface RegistroVendasDAO {
+	public List<RegistroDeVenda> listaVendas() throws SQLException, ClassNotFoundException;
+
+	public List<Carrinho> listarCarrinho(int id) throws SQLException, ClassNotFoundException;
+
+	public List<RegistroDeVenda> listaVendaPorVendedor(String nome_vendedor) throws SQLException, ClassNotFoundException;
 }

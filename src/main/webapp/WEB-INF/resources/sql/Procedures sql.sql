@@ -395,3 +395,20 @@ AS
 	FROM Estoque e INNER JOIN Produto p
 	ON e.id_Produto = p.id
 	WHERE p.nome like '%'+@nomeProduto+'%'
+--****************************************************************************--
+
+				----FUNÇÕES DO REGISTRO DE VENDA
+GO
+CREATE PROC sp_listar_vendas
+AS
+	SELECT rv.id, u.nome as vendedor, 
+		   c.nomeRazaoSocial as cliente, 
+		   rv.dataVenda as data, 
+		   rv.id_carrinho as id_carrinho,
+		   rv.valor FROM RegistrosVenda rv 
+	INNER JOIN Usuario u 
+	ON rv.id_vendedor = u.id
+	INNER JOIN Cliente c
+	ON rv.id_cliente = c.id
+
+

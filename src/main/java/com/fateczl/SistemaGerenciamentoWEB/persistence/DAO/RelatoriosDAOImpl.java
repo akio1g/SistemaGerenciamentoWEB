@@ -1,5 +1,11 @@
 package com.fateczl.SistemaGerenciamentoWEB.persistence.DAO;
 
-public class RelatoriosDAOImpl {
+import java.sql.SQLException;
+import java.util.List;
+
+import com.fateczl.SistemaGerenciamentoWEB.model.RegistroDeVenda;
+
+public interface RelatoriosDAOImpl {
+	public List<RegistroDeVenda> listaVendas() throws SQLException, ClassNotFoundException;
 
 }

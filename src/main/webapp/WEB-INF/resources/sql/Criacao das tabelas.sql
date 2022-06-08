@@ -131,6 +131,7 @@ CREATE TABLE Carrinho (
 )
 GO
 CREATE TABLE RegistrosVenda (
+	id int identity,
 	id_vendedor int,
 	id_cliente int not null,
 	id_carrinho int NOT NULL,
@@ -139,7 +140,8 @@ CREATE TABLE RegistrosVenda (
 
 	CONSTRAINT fk_id_vendedor_venda FOREIGN KEY (id_vendedor) REFERENCES Usuario(id),
 	CONSTRAINT fk_id_cliente_venda FOREIGN KEY (id_cliente) REFERENCES Cliente(id),
-	CONSTRAINT fk_id_carrinho_venda FOREIGN KEY (id_carrinho) REFERENCES Carrinho(id)
+	CONSTRAINT fk_id_carrinho_venda FOREIGN KEY (id_carrinho) REFERENCES Carrinho(id),
+	CONSTRAINT pk_id_registroVenda PRIMARY KEY(id)
 )
 GO
 INSERT INTO Cliente (nomeRazaoSocial,cpfCnpj,telefone,email,inscricaoEstadual) VALUES 
@@ -177,12 +179,11 @@ INSERT INTO Categoria (nome) values ('Gorje'),
 ('Laminas de Segredo')
 GO
 INSERT INTO Produto (nome,descricao,ncmSh,preco, id_categoria) VALUES
---('Chave Pado Original 2',null,'83017000',7.9, 2),
---('Chave Pado 682',null,'83017000',1.75, 1),
---('Chave Stam 799',null,'83017000',1.75, 3),
---('Chave Tetram Niquelada Fechadura 1201',null,'83017000',6.30,1),
---('Chave 3F 1040 Gold',null,'83017000',1.79, 2),
---('Chave 3F 1125.1',null,'83017000',0.97, 1),
+('Chave Pado Original 2',null,'83017000',7.9, 2),
+('Chave Pado 682',null,'83017000',1.75, 1),
+('Chave Stam 799',null,'83017000',1.75, 3),
+('Chave Tetram Niquelada Fechadura 1201',null,'83017000',6.30,1),
+('Chave 3F 1040 Gold',null,'83017000',1.79, 2),
 ('Chave 3F 1125.1',null,'83017000',0.97, 1)
 GO
 INSERT INTO Tipo_De_Usuario(nome) VALUES
@@ -201,20 +202,14 @@ INSERT INTO Carrinho (id_produto, quantidade, valor) VALUES
 	(3,63,(14*(select produto.preco from produto where produto.id = 3))),
 	(4,24,(14*(select produto.preco from produto where produto.id = 4))),
 	(5,57,(14*(select produto.preco from produto where produto.id = 5))),
-	(0,100,(14*(select produto.preco from produto where produto.id = 0))),
+	(6,100,(14*(select produto.preco from produto where produto.id = 6))),
 	(1,200,(14*(select produto.preco from produto where produto.id = 1))),
 	(2,100,(14*(select produto.preco from produto where produto.id = 2)))
 GO
-INSERT INTO RegistrosVenda VALUES 
-	(2,4,14,'2022-03-12 21:35:16',(select c.valor from carrinho as c where c.id = 14)),
-	(3,6,15,'2022-06-07 19:18:25',(select c.valor from carrinho as c where c.id = 15)),
-	(3,6,16,'2022-06-07 19:18:25',(select c.valor from carrinho as c where c.id = 16)),
-	(1,5,17,'2022-06-07 18:05:25',(select c.valor from carrinho as c where c.id = 17)),
-	(1,5,18,'2022-06-07 18:05:25',(select c.valor from carrinho as c where c.id = 18)),
-	(1,1,19,'2022-06-07 18:25:21',(select c.valor from carrinho as c where c.id = 19)),
-	(1,2,21,'2022-06-06 12:04:25',(select c.valor from carrinho as c where c.id =21)),
-	(1,3,20,'2022-04-12 22:09:29',(select c.valor from carrinho as c where c.id = 20))
+INSERT INTO RegistrosVenda (id_vendedor, id_cliente, id_carrinho, dataVenda, valor)VALUES 
+	(2,4,7,'2022-03-12 21:35:16',(select c.valor from carrinho as c where c.id = 7)),
+	(3,6,8,'2022-06-07 19:18:25',(select c.valor from carrinho as c where c.id = 8)),
+	(1,5,10,'2022-06-07 18:05:25',(select c.valor from carrinho as c where c.id = 10)),
+	(1,1,12,'2022-06-07 18:25:21',(select c.valor from carrinho as c where c.id = 12)),
+	(1,2,13,'2022-06-06 12:04:25',(select c.valor from carrinho as c where c.id =13))
 
-	select * from cliente
-	select * from RegistrosVenda
-	select * from carrinho
