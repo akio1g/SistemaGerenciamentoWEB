@@ -91,9 +91,40 @@ public class RegistrarVendasDAOImpl implements RegistroVendasDAO{
 			
 			listaCarrinho.add(carrinho);
 		}
-		
+		rs.close();
+		p.close();
+		c.close();
 		return null;
 		
 	}
-	
+	@Override
+	public String buscarCliente(String nome) throws SQLException, ClassNotFoundException{
+		Connection c = gDAO.getConnection();
+		String nome_cliente = "";
+		PreparedStatement p = c.prepareStatement("EXEC sp_buscarCliente ?");
+		p.setString(1, nome);
+		ResultSet rs = p.executeQuery();
+		if(rs.next()){
+			nome_cliente = rs.getString("nomeRazaoSocial");
+		}
+		rs.close();
+		p.close();
+		c.close();
+		return nome_cliente;
+	}
+	@Override
+	public String buscarVendedor(String nome) throws SQLException, ClassNotFoundException{
+		Connection c = gDAO.getConnection();
+		String nome_vendedor = "";
+		PreparedStatement p = c.prepareStatement("EXEC sp_buscarVendedor ?");
+		p.setString(1, nome);
+		ResultSet rs = p.executeQuery();
+		if(rs.next()){
+			nome_vendedor = rs.getString("nome");
+		}
+		rs.close();
+		p.close();
+		c.close();
+		return nome_vendedor;
+	}
 }

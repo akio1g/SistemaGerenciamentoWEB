@@ -9,11 +9,11 @@
 	<meta charset="ISO-8859-1">
 	<link rel="stylesheet" type="text/css"
 		href='<c:url value="./resources/css/styles.css"/>'>
-	<title>Relatorios</title>
+	<title>Adicionar Venda </title>
 </head>
 
 <body>
-	<div class="menu-lateral">
+	<nav class="menu-lateral">
 		<ul>
 			<li><a href="Home"><img src="./resources/img/DistribuidoraAMZ.png"></a>
 			<li><a href="Produto">Produto</a></li>
@@ -24,6 +24,19 @@
 			<%--<li><a href="Relatorios">Relátorios</a></li>--%>
 			<li><a href="GerenciarUsuarios">Gerenciar Usuários</a></li>
 		</ul>
+	</nav>
+	<div class="formulario">
+		<form action="RegistroVendasAdicionar" method="post" class="form">
+			<div class="bordaTabelaAdicionar">
+				<input type="number" id="botaoQuantidadeItens" name="botaoQuantidadeItens" placeholder="quantidade">
+				<input type="text" id="vendedor" name="vendedor" placeholder="Nome do Vendedor">
+				<input type="text" id="cliente" name="cliente" placeholder="Nome do Cliente">
+			</div>
+			<div class="botoes">
+				<a href="RegistrarVendaAdicionarItens">Salvar</a>
+				<a href="RegistroVendas">Voltar</a>
+			</div>
+		</form>
 	</div>
 </body>
 

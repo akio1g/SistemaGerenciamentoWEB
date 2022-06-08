@@ -22,6 +22,9 @@ public class RegistroVendasController {
 	@Autowired
 	RegistroVendasDAO rDAO;
 	
+	private int quantidade_itens;
+	private String vendedor;
+	private String cliente;
 	@RequestMapping(name="RegistroVendas", value="/RegistroVendas", method=RequestMethod.GET)
 	public ModelAndView init(ModelMap model) {
 		List<RegistroDeVenda> listaVenda = new ArrayList<>();
@@ -64,5 +67,38 @@ public class RegistroVendasController {
 			model.addAttribute("listaVenda", listaVenda);
 		}
 		return new ModelAndView("RegistroVendas");
+	}
+	@RequestMapping(name="RegistroVendasAdicionar", value="/RegistroVendasAdicionar", method=RequestMethod.GET)
+	public ModelAndView adicionarVendas(ModelMap model) {
+		return new ModelAndView("RegistroVendasAdicionar");
+		
+	}
+	@RequestMapping(name="RegistroVendasAdicionar", value="/RegistroVendasAdicionar", method=RequestMethod.POST)
+	public ModelAndView adicionarVendas(ModelMap model, @RequestParam Map<String,String> param) {
+		quantidade_itens = Integer.parseInt(param.get("botaoQuantidadeItens"));
+		vendedor = param.get("vendedor");
+		cliente = param.get("cliente");
+		
+		return new ModelAndView("RegistroVendasAdicionar");
+	}
+	@RequestMapping(name="RegistrarVendaAdicionarItens", value="/RegistrarVendaAdicionarItens", method=RequestMethod.GET)
+	public ModelAndView adicionarItensVendas(ModelMap model) {
+		RegistroDeVenda rg = new RegistroDeVenda();
+		try {
+			rg.setCliente(rDAO.buscarCliente(cliente));
+			rg.setVendedor(rDAO.buscarVendedor(vendedor));
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("rg", rg);
+		
+		return new ModelAndView("RegistrarVendaAdicionarItens");
+	}
+	@RequestMapping(name="RegistrarVendaAdicionarItens", value="/RegistrarVendaAdicionarItens", method=RequestMethod.POST)
+	public ModelAndView adicionarItensVendas(ModelMap model, @RequestParam Map<String,String> param) {
+		List<String> listaNomeitens = new ArrayList<>();
+		List<String> listaQuantidade = new ArrayList<>();
+		
+		return new ModelAndView("RegistrarVendaAdicionarItens");	
 	}
 }
