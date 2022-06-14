@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fateczl.SistemaGerenciamentoWEB.model.RegistroDeVenda;
+import com.fateczl.SistemaGerenciamentoWEB.persistence.InterfaceDAO.LoginDAO;
 import com.fateczl.SistemaGerenciamentoWEB.persistence.InterfaceDAO.RegistroVendasDAO;
 
 @Controller
@@ -22,15 +23,26 @@ public class RegistroVendasController {
 	@Autowired
 	RegistroVendasDAO rDAO;
 	
+	@Autowired
+	LoginDAO lDAO;
 	private int quantidade_itens;
 	private String vendedor;
 	private String cliente;
+	
 	@RequestMapping(name="RegistroVendas", value="/RegistroVendas", method=RequestMethod.GET)
 	public ModelAndView init(ModelMap model) {
+		String erro = "";
 		List<RegistroDeVenda> listaVenda = new ArrayList<>();
 		try {
-			listaVenda = rDAO.listaVendas();
-			model.addAttribute("listaVenda", listaVenda);
+			if(lDAO.verificarAcesso().equals("Vendedor") || lDAO.verificarAcesso().equals("Administrador")) {
+				listaVenda = rDAO.listaVendas();
+				model.addAttribute("listaVenda", listaVenda);
+				return new ModelAndView("RegistroVendas");
+			}else {
+				erro = "Acesso não autorizado";
+				model.addAttribute("erro", erro);
+				return new ModelAndView("RegistroVendas");
+			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}

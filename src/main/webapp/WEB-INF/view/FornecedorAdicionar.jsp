@@ -41,6 +41,7 @@
 					<input type="text" class="tabelaAdicionar" id="Cidade" name="Cidade" placeholder="Cidade">
 					<input type="text" class="tabelaAdicionar" id="Estado" name="Estado" placeholder="Estado">
 				</div>
+				<c:out value="${erro}"></c:out>
 			</div>
 			<div class="botoes">
 				<input type="submit" id="botao" name="botaoAdicionar" value="Adicionar">

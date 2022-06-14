@@ -42,6 +42,7 @@
 					<input type="text" class="tabelaAdicionar" id="Cidade" name="Cidade" placeholder="Cidade" value="<c:out value="${endereco.cidade}"></c:out>">
 					<input type="text" class="tabelaAdicionar" id="Estado" name="Estado" placeholder="Estado" value="<c:out value="${endereco.estado}"></c:out>">
 				</div>
+				<c:out value="${erro}"></c:out>
 			</div>
 			<div class="botoes">
 				<input type="submit" id="botaoSalvar" name="botaoSalvar" value="Salvar">

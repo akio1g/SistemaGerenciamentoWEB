@@ -22,7 +22,7 @@
 			<li><a href="RegistroVendas">Registro De Vendas</a></li>
 			<li><a href="Fornecedores">Fornecedores</a></li>
 			<%--<li><a href="Relatorios">Rel�torios</a></li>--%>
-			<li><a href="GerenciarUsuarios">Gerenciar Usu�rios</a></li>
+			<li><a href="GerenciarUsuarios">Gerenciar Usuarios</a></li>
 		</ul>
 	</nav>
 		<div>
@@ -46,6 +46,7 @@
 						</c:forEach>
 					</tbody>
 				</table>
+				<c:out value="${erro}"></c:out>
 				<div class="botoes">
 				<a href="ClienteAdicionar">Adicionar</a>
 				<a href="Home">Voltar</a>

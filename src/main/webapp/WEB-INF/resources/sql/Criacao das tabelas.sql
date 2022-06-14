@@ -65,13 +65,13 @@ CREATE TABLE Produto (
 	descricao VARCHAR(max),
 	ncmSh VARCHAR(15) NOT NULL,
 	preco DECIMAL(7,2) NOT NULL,
-	id_categoria INT NOT NULL
+	id_categoria INT NOT NULL,
+	id_fornecedor INT NOT NULL
 
 	CONSTRAINT fk_categoria FOREIGN KEY (id_categoria) REFERENCES Categoria(id),
+	CONSTRAINT fk_id_produto FOREIGN KEY(id_fornecedor) REFERENCES Fornecedor(id),
 	CONSTRAINT pk_produto PRIMARY KEY (id)
 )
-GO
-DBCC CHECKIDENT(Produto, RESEED, 0)
 GO
 CREATE TABLE Estoque(
 	id INT IDENTITY,
@@ -82,8 +82,6 @@ CREATE TABLE Estoque(
 	CONSTRAINT pk_id_estoque PRIMARY KEY(id)
 )
 GO
-DBCC CHECKIDENT(Estoque, RESEED, 0)
-go
 CREATE TRIGGER t_atualizar_estoque
 ON Produto
 AFTER INSERT
@@ -143,6 +141,14 @@ CREATE TABLE RegistrosVenda (
 	CONSTRAINT fk_id_carrinho_venda FOREIGN KEY (id_carrinho) REFERENCES Carrinho(id),
 	CONSTRAINT pk_id_registroVenda PRIMARY KEY(id)
 )
+CREATE TABLE Acesso(
+	id int identity,
+	id_usuario INT NOT NULL,
+	tipo_usuario INT NOT NULL
+
+	CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
+	CONSTRAINT pk_id_Acesso PRIMARY KEY(id)
+)
 GO
 INSERT INTO Cliente (nomeRazaoSocial,cpfCnpj,telefone,email,inscricaoEstadual) VALUES 
 ('Marcos Josue','19238592832','11983275921','majosue@gmail.com',null),
@@ -178,38 +184,43 @@ INSERT INTO Categoria (nome) values ('Gorje'),
 ('Codificadas'),
 ('Laminas de Segredo')
 GO
-INSERT INTO Produto (nome,descricao,ncmSh,preco, id_categoria) VALUES
-('Chave Pado Original 2',null,'83017000',7.9, 2),
-('Chave Pado 682',null,'83017000',1.75, 1),
-('Chave Stam 799',null,'83017000',1.75, 3),
-('Chave Tetram Niquelada Fechadura 1201',null,'83017000',6.30,1),
-('Chave 3F 1040 Gold',null,'83017000',1.79, 2),
-('Chave 3F 1125.1',null,'83017000',0.97, 1)
+INSERT INTO Produto (nome,descricao,ncmSh,preco, id_categoria, id_fornecedor) VALUES
+--('Chave Pado Original 2',null,'83017000',7.9, 2,2),
+--('Chave Pado 682',null,'83017000',1.75, 1,2),
+--('Chave Stam 799',null,'83017000',1.75, 3,3),
+--('Chave Tetram Niquelada Fechadura 1201',null,'83017000',6.30,1,3),
+--('Chave 3F 1040 Gold',null,'83017000',1.79, 2,1),
+('Chave 3F 1125.1',null,'83017000',0.97, 1,1)
 GO
 INSERT INTO Tipo_De_Usuario(nome) VALUES
 ('Administrador'),
 ('Estoquista'),
 ('Vendedor')
 GO
+exec sp_salvarAutenticacao 'Higor123'
+EXEC sp_salvarAutenticacao 'Gabriel123'
+EXEC sp_salvarAutenticacao 'Breno789'
+
 INSERT INTO Usuario (nome, login_usuario, senha_usuario, email, id_tipoDeUsuario)VALUES
 ('Higor', 'Higor123', 'senha123', 'gabriel@bol.com.br', 1),
 ('Gabriel', 'Gabriel123', 'senha123', 'gabriel@bol.com.br', 2),
 ('Breno', 'Breno789', 'senha123', 'breno@bol.com.br', 3)
 GO
 INSERT INTO Carrinho (id_produto, quantidade, valor) VALUES
-	(2,14,(14*(select produto.preco from produto where produto.id = 2))),
-	(1,12,(14*(select produto.preco from produto where produto.id = 1))),
-	(3,63,(14*(select produto.preco from produto where produto.id = 3))),
-	(4,24,(14*(select produto.preco from produto where produto.id = 4))),
-	(5,57,(14*(select produto.preco from produto where produto.id = 5))),
-	(6,100,(14*(select produto.preco from produto where produto.id = 6))),
-	(1,200,(14*(select produto.preco from produto where produto.id = 1))),
-	(2,100,(14*(select produto.preco from produto where produto.id = 2)))
+	(18,14,(14*(select produto.preco from produto where produto.id = 18))),
+	(17,12,(14*(select produto.preco from produto where produto.id = 17))),
+	(13,63,(14*(select produto.preco from produto where produto.id = 13))),
+	(14,24,(14*(select produto.preco from produto where produto.id = 14))),
+	(15,57,(14*(select produto.preco from produto where produto.id = 15))),
+	(16,100,(14*(select produto.preco from produto where produto.id = 16))),
+	(17,200,(14*(select produto.preco from produto where produto.id = 17))),
+	(18,100,(14*(select produto.preco from produto where produto.id = 18)))
 GO
-INSERT INTO RegistrosVenda (id_vendedor, id_cliente, id_carrinho, dataVenda, valor)VALUES 
-	(2,4,7,'2022-03-12 21:35:16',(select c.valor from carrinho as c where c.id = 7)),
-	(3,6,8,'2022-06-07 19:18:25',(select c.valor from carrinho as c where c.id = 8)),
-	(1,5,10,'2022-06-07 18:05:25',(select c.valor from carrinho as c where c.id = 10)),
-	(1,1,12,'2022-06-07 18:25:21',(select c.valor from carrinho as c where c.id = 12)),
-	(1,2,13,'2022-06-06 12:04:25',(select c.valor from carrinho as c where c.id =13))
+SELECT * FROM Carrinho
 
+INSERT INTO RegistrosVenda (id_vendedor, id_cliente, id_carrinho, dataVenda, valor)VALUES 
+	(2,4,3,'2022-03-12 21:35:16',(select c.valor from carrinho as c where c.id = 3)),
+	(3,6,4,'2022-06-07 19:18:25',(select c.valor from carrinho as c where c.id = 4)),
+	(1,5,5,'2022-06-07 18:05:25',(select c.valor from carrinho as c where c.id = 5)),
+	(1,1,6,'2022-06-07 18:25:21',(select c.valor from carrinho as c where c.id = 6)),
+	(1,2,7,'2022-06-06 12:04:25',(select c.valor from carrinho as c where c.id = 7))

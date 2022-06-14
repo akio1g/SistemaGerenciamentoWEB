@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fateczl.SistemaGerenciamentoWEB.model.Estoque;
 import com.fateczl.SistemaGerenciamentoWEB.persistence.InterfaceDAO.EstoqueDAO;
+import com.fateczl.SistemaGerenciamentoWEB.persistence.InterfaceDAO.LoginDAO;
 
 @Controller
 public class EstoqueController{
@@ -23,17 +24,26 @@ public class EstoqueController{
 	@Autowired
 	EstoqueDAO eDAO;
 	
+	@Autowired
+	LoginDAO lDAO;
+	
 	@RequestMapping(name="Estoque", value="/Estoque", method=RequestMethod.GET)
 	public ModelAndView estoque(ModelMap model) {
 		String erro = "";
 		List<Estoque> listaEstoque = new ArrayList<Estoque>();
 		try {
-			listaEstoque = eDAO.listarEstoque();
-
+			if(lDAO.verificarAcesso().equals("Estoquista") || lDAO.verificarAcesso().equals("Administrador")) {
+				listaEstoque = eDAO.listarEstoque();
+				model.addAttribute("listaEstoque", listaEstoque);
+				return new ModelAndView("Estoque");
+			}else {
+				erro = "Acesso não autorizado";
+				model.addAttribute("erro", erro);
+				return new ModelAndView("Estoque");
+			}
 		}catch(ClassNotFoundException| SQLException e){
 			erro = e.getMessage();
 		}finally {
-			model.addAttribute("erro", erro);
 			model.addAttribute("listaEstoque", listaEstoque);
 		}
 		return new ModelAndView();
@@ -47,34 +57,39 @@ public class EstoqueController{
 		List<Estoque> listaEstoque = new ArrayList<Estoque>();
 		
 		try {
-			if(botaoInput.isEmpty()) {
-				listaEstoque = eDAO.listarEstoque();
-			}else {
-				listaEstoque = eDAO.listarProdutoPorNome(botaoInput);
-				if(listaEstoque.isEmpty()) {
+			if(lDAO.verificarAcesso().equals("Estoquista") || lDAO.verificarAcesso().equals("Administrador")) {
+				if(botaoInput.isEmpty()) {
 					listaEstoque = eDAO.listarEstoque();
-					model.addAttribute("listaEstoque", listaEstoque);
-					return new ModelAndView("Estoque");
 				}else {
-					model.addAttribute("erro", erro);
-					model.addAttribute("listaEstoque", listaEstoque);
-					return new ModelAndView("Estoque");
+					listaEstoque = eDAO.listarProdutoPorNome(botaoInput);
+					if(listaEstoque.isEmpty()) {
+						listaEstoque = eDAO.listarEstoque();
+						model.addAttribute("listaEstoque", listaEstoque);
+						return new ModelAndView("Estoque");
+					}else {
+						model.addAttribute("erro", erro);
+						model.addAttribute("listaEstoque", listaEstoque);
+						return new ModelAndView("Estoque");
+					}
 				}
-			}
-			if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
-				List<Estoque> listaAtualizada = new ArrayList<Estoque>();
-				for(int i=0; i< listaEstoque.size(); i++) {
-					Estoque novoItem = new Estoque();
-					novoItem.setNome(listaEstoque.get(i).getNome());
-					novoItem.setQuantidade(Integer.parseInt(ListaQuantidades.get(i)));
-					listaAtualizada.add(novoItem);
+				if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
+					List<Estoque> listaAtualizada = new ArrayList<Estoque>();
+					for(int i=0; i< listaEstoque.size(); i++) {
+						Estoque novoItem = new Estoque();
+						novoItem.setNome(listaEstoque.get(i).getNome());
+						novoItem.setQuantidade(Integer.parseInt(ListaQuantidades.get(i)));
+						listaAtualizada.add(novoItem);
+					}
+					eDAO.editarEstoque(listaAtualizada);
 				}
-				eDAO.editarEstoque(listaAtualizada);
+			}else {
+				erro = "Acesso não autorizado";
+				model.addAttribute("erro", erro);
+				return new ModelAndView("Estoque");
 			}
 		}catch (ClassNotFoundException | SQLException e)  {
 			erro = e.getMessage();
 		}
-		model.addAttribute("erro", erro);
 		model.addAttribute("listaEstoque", listaEstoque);
 		return new ModelAndView("Estoque");
 	}	

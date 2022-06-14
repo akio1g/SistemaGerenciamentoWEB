@@ -7,12 +7,13 @@ public class Produto {
 	private String ncmSh;
 	private double preco;
 	private String categoria;
-
+	private String fornecedor;
 
 	public Produto() {
 	}
 
-	public Produto(int id, String nome, String descricao, String ncmSh, double preco, String categoria) {
+	public Produto(int id, String nome, String descricao, String ncmSh, double preco, String categoria,
+			String fornecedor) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -20,6 +21,7 @@ public class Produto {
 		this.ncmSh = ncmSh;
 		this.preco = preco;
 		this.categoria = categoria;
+		this.fornecedor = fornecedor;
 	}
 
 	public int getId() {
@@ -61,6 +63,7 @@ public class Produto {
 	public void setPreco(double preco) {
 		this.preco = preco;
 	}
+
 	public String getCategoria() {
 		return categoria;
 	}
@@ -69,10 +72,17 @@ public class Produto {
 		this.categoria = categoria;
 	}
 
+	public String getFornecedor() {
+		return fornecedor;
+	}
+
+	public void setFornecedor(String fornecedor) {
+		this.fornecedor = fornecedor;
+	}
+
 	@Override
 	public String toString() {
 		return "Produto [id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", ncmSh=" + ncmSh + ", preco="
-				+ preco + ", categoria=" + categoria + "]";
+				+ preco + ", categoria=" + categoria + ", fornecedor=" + fornecedor + "]";
 	}
-
 }

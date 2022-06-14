@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fateczl.SistemaGerenciamentoWEB.model.Cliente;
 import com.fateczl.SistemaGerenciamentoWEB.model.Endereco;
 import com.fateczl.SistemaGerenciamentoWEB.persistence.InterfaceDAO.ClienteDAO;
+import com.fateczl.SistemaGerenciamentoWEB.persistence.InterfaceDAO.LoginDAO;
 
 @Controller
 public class ClienteController {
@@ -24,19 +25,27 @@ public class ClienteController {
 	@Autowired
 	ClienteDAO cDAO;
 	
+	@Autowired
+	LoginDAO lDAO;
 	private static int id_cliente;
 
 	@RequestMapping(name = "Cliente", value = "Cliente", method = RequestMethod.GET)
 	public ModelAndView listarCliente(ModelMap model) {
 		String erro = "";
-		List<Cliente> listaClientes = new ArrayList<Cliente>();
 		try {
-			listaClientes = cDAO.listaClientes();
-		} catch (ClassNotFoundException | SQLException e) {
-			erro = e.getMessage();
-		} finally {
-			model.addAttribute("erro", erro);
-			model.addAttribute("listaClientes", listaClientes);
+			if(lDAO.verificarAcesso().equals("Vendedor") || lDAO.verificarAcesso().equals("Administrador")) {
+				List<Cliente> listaClientes = new ArrayList<Cliente>();
+				listaClientes = cDAO.listaClientes();
+				model.addAttribute("erro", erro);
+				model.addAttribute("listaClientes", listaClientes);
+				return new ModelAndView("Cliente");
+			}else {
+				erro = "Acesso não autorizado";
+				model.addAttribute("erro", erro);
+				return new ModelAndView("Cliente");
+			}
+		} catch (ClassNotFoundException | SQLException e1) {
+			e1.printStackTrace();
 		}
 		return new ModelAndView();
 	}
@@ -48,28 +57,33 @@ public class ClienteController {
 		String botaoInput= param.get("inputPesquisa");
 		
 		List<Cliente> listaClientes = new ArrayList<Cliente>();
+
 		try {
-			if(botaoInput.isEmpty()) {
-				listaClientes = cDAO.listaClientes();
-			}else {
-				listaClientes = cDAO.pesquisarClientesPorNome(botaoInput);
-				if(listaClientes.isEmpty()) {
+			if(lDAO.verificarAcesso().equals("Vendedor") || lDAO.verificarAcesso().equals("Administrador")) {
+				if(botaoInput.isEmpty()) {
 					listaClientes = cDAO.listaClientes();
-					model.addAttribute("erro", erro);
-					model.addAttribute("listaClientes", listaClientes);
-					return new ModelAndView("Cliente");
 				}else {
+					listaClientes = cDAO.pesquisarClientesPorNome(botaoInput);
+					if(listaClientes.isEmpty()) {
+						listaClientes = cDAO.listaClientes();
+						model.addAttribute("erro", erro);
+						model.addAttribute("listaClientes", listaClientes);
+						return new ModelAndView("Cliente");
+					}else {
+						model.addAttribute("erro", erro);
+						model.addAttribute("listaClientes", listaClientes);
+						return new ModelAndView("Cliente");
+					}
+				}
+				if(botaoEditar != null && !botaoEditar.isEmpty()){
+					id_cliente = Integer.parseInt(param.get("botaoEditar"));
+					clienteEditar(model);
 					model.addAttribute("erro", erro);
 					model.addAttribute("listaClientes", listaClientes);
-					return new ModelAndView("Cliente");
+					return new ModelAndView("ClienteEditar");
 				}
-			}
-			if(botaoEditar != null && !botaoEditar.isEmpty()){
-				id_cliente = Integer.parseInt(param.get("botaoEditar"));
-				clienteEditar(model);
-				model.addAttribute("erro", erro);
-				model.addAttribute("listaClientes", listaClientes);
-				return new ModelAndView("ClienteEditar");
+			}else {
+				erro = "Acesso não autorizado";
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			erro = e.getMessage();
@@ -96,7 +110,7 @@ public class ClienteController {
 	}
 	@RequestMapping(name = "ClienteAdicionarCPF", value="ClienteAdicionarCPF", method =RequestMethod.POST)
 	public ModelAndView clienteAdiconarCPF(ModelMap model, @RequestParam Map<String, String> param) {
-		
+		String erro = "";
 		Cliente cliente = new Cliente();
 		Endereco end = new Endereco();
 			
@@ -113,10 +127,19 @@ public class ClienteController {
 		end.setEstado(param.get("Estado"));
 	
 		try {
-			if (cDAO.verificarDuplicidade(cliente.getCpfCnpj())) {
-				cDAO.adicionarCliente(cliente, end);
-			} else {
-				System.out.println("duplicado");
+			if(lDAO.verificarAcesso().equals("Vendedor") || lDAO.verificarAcesso().equals("Administrador")) {
+				if (cDAO.verificarDuplicidade(cliente.getCpfCnpj())) {
+					cDAO.adicionarCliente(cliente, end);
+					return new ModelAndView("ClienteAdicionarCPF");
+				} else {
+					erro = "CPF já cadastrado";
+					model.addAttribute("erro", erro);
+					return new ModelAndView("ClienteAdicionarCPF");
+				}
+			}else {
+				erro = "Acesso não autorizado";
+				model.addAttribute("erro", erro);
+				return new ModelAndView("ClienteAdicionarCPF");
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -147,9 +170,19 @@ public class ClienteController {
 			end.setCidade(param.get("Cidade"));
 			end.setEstado(param.get("Estado"));
 			try {
-				if (cDAO.verificarDuplicidade(cliente.getCpfCnpj())) {
-					cDAO.adicionarCliente(cliente, end);
-				} else {
+				if(lDAO.verificarAcesso().equals("Vendedor") || lDAO.verificarAcesso().equals("Administrador")) {
+					if (cDAO.verificarDuplicidade(cliente.getCpfCnpj())) {
+						cDAO.adicionarCliente(cliente, end);
+						return new ModelAndView("ClienteAdicionarCNPJ");
+					}else {
+						erro = "CNPJ já cadastrado";
+						model.addAttribute("erro", erro);
+						return new ModelAndView("ClienteAdicionarCNPJ");
+					}
+				}else {
+					erro = "Acesso não autorizado";
+					model.addAttribute("erro", erro);
+					return new ModelAndView("ClienteAdicionarCNPJ");
 				}
 			} catch (ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
@@ -159,13 +192,21 @@ public class ClienteController {
 	}
 	@RequestMapping(name = "ClienteEditar", value = "ClienteEditar", method = RequestMethod.GET)
 	public ModelAndView clienteEditar(ModelMap model) {
+		String erro = "";
+		
 		Cliente cliente = new Cliente();
 		Endereco endereco = new Endereco();
 		
 		try {
-			cliente = cDAO.buscarClientePorId(id_cliente);
-			endereco = cDAO.buscarEnderecoPorId(id_cliente);
-		} catch (ClassNotFoundException e) {
+			if(lDAO.verificarAcesso().equals("Vendedor") || lDAO.verificarAcesso().equals("Administrador")) {
+				cliente = cDAO.buscarClientePorId(id_cliente);
+				endereco = cDAO.buscarEnderecoPorId(id_cliente);
+			}else {
+				erro = "Acesso não autorizado";
+				model.addAttribute("erro", erro);
+				return new ModelAndView("ClienteEditar");
+			}
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}finally {
 			model.addAttribute("cliente", cliente);
@@ -180,31 +221,36 @@ public class ClienteController {
 		String botaoExcluir = param.get("botaoExcluir");
 		String erro = "";
 		try {		
-			Cliente cliente = new Cliente();
-			Endereco endereco = new Endereco();
+			if(lDAO.verificarAcesso().equals("Vendedor") || lDAO.verificarAcesso().equals("Administrador")) {
+				Cliente cliente = new Cliente();
+				Endereco endereco = new Endereco();
+				
+				cliente.setId(Integer.parseInt(param.get("Id")));
+				cliente.setNomeRazaoSocial((param.get("Nome")));
+				cliente.setCpfCnpj(param.get("CPF/CNPJ"));
+				cliente.setTelefone(param.get("Telefone"));
+				cliente.setEmail(param.get("Email"));
 			
-			cliente.setId(Integer.parseInt(param.get("Id")));
-			cliente.setNomeRazaoSocial((param.get("Nome")));
-			cliente.setCpfCnpj(param.get("CPF/CNPJ"));
-			cliente.setTelefone(param.get("Telefone"));
-			cliente.setEmail(param.get("Email"));
-		
-			endereco.setCep(param.get("CEP"));
-			endereco.setLogradouro(param.get("Logradouro"));
-			endereco.setNumero(Integer.parseInt(param.get("Numero")));
-			endereco.setComplemento(param.get("Complemento"));
-			endereco.setCidade(param.get("Cidade"));
-			endereco.setEstado(param.get("Estado"));
-			
-			if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
-				cDAO.editarClientePorId(cliente, endereco);
+				endereco.setCep(param.get("CEP"));
+				endereco.setLogradouro(param.get("Logradouro"));
+				endereco.setNumero(Integer.parseInt(param.get("Numero")));
+				endereco.setComplemento(param.get("Complemento"));
+				endereco.setCidade(param.get("Cidade"));
+				endereco.setEstado(param.get("Estado"));
+				
+				if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
+					cDAO.editarClientePorId(cliente, endereco);
+					return new ModelAndView("Cliente");
+				}
+				if(botaoExcluir != null && !botaoExcluir.isEmpty()) {
+					cDAO.excluirClientePorId(cliente.getId());
+					return new ModelAndView("ClienteEditar");
+				}
+			}else {
+				erro = "Acesso não autorizado";
+				model.addAttribute("erro", erro);
 				return new ModelAndView("ClienteEditar");
 			}
-			if(botaoExcluir != null && !botaoExcluir.isEmpty()) {
-				cDAO.excluirClientePorId(cliente.getId());
-				return new ModelAndView("ClienteEditar");
-			}
-			
 		}catch (ClassNotFoundException | SQLException e) {
 			erro = e.getMessage();
 		}

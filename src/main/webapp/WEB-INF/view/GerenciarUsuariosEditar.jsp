@@ -41,6 +41,7 @@
 						  <option value="Vendedor">Vendedor</option>
 						</select>
 				</div>
+				<c:out value="${erro}"></c:out>
 			</div>
 			<div class="botoes">
 				<input type="submit"  id="botaoSalvar" name="botaoSalvar" value="Salvar">

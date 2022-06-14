@@ -26,13 +26,14 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 		
 		Connection c = gDAO.getConnection();
 
-		PreparedStatement p = c.prepareStatement("EXEC sp_adicionar_produto ?,?,?,?,?");
+		PreparedStatement p = c.prepareStatement("EXEC sp_adicionar_produto ?,?,?,?,?,?");
 	
 		p.setString(1, produto.getNome());
 		p.setString(2, produto.getDescricao());
 		p.setString(3, produto.getNcmSh());
 		p.setDouble(4, produto.getPreco()); 
 		p.setString(5, produto.getCategoria());
+		p.setString(6, produto.getFornecedor());
 		p.executeUpdate(); 
 		
 		c.close();
@@ -60,18 +61,6 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 		
 		return lista;
 	}
-
-	private Produto instanciarProduto(ResultSet rs) throws SQLException, ClassNotFoundException {
-		Produto p = new Produto();
-		p.setId(rs.getInt("id"));
-		p.setNome(rs.getString("nome"));
-		p.setDescricao(rs.getString("descricao"));
-		p.setNcmSh(rs.getString("ncmSh"));
-		p.setPreco(rs.getDouble("preco"));
-		p.setCategoria(rs.getString("id_categoria"));
-		return p;
-	}
-
 	@Override
 	public void excluirPorId(int id) throws SQLException, ClassNotFoundException {
 		
@@ -90,14 +79,15 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 		
 		Connection c = gDAO.getConnection();
 		
-		PreparedStatement ps = c.prepareStatement("EXEC sp_editar_produto ?,?,?,?,?,?");
+		PreparedStatement ps = c.prepareStatement("EXEC sp_editar_produto ?,?,?,?,?,?,?");
 		
 		ps.setString(1, produto.getNome());
 		ps.setString(2, produto.getDescricao());
 		ps.setString(3, produto.getNcmSh());
 		ps.setDouble(4, produto.getPreco());
 		ps.setString(5, produto.getCategoria());
-		ps.setInt(6, produto.getId());
+		ps.setString(6, produto.getFornecedor());
+		ps.setInt(7, produto.getId());
 	
 		
 		ps.executeUpdate();
@@ -158,4 +148,16 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 		}
 		return new Produto();
 	}
+	private Produto instanciarProduto(ResultSet rs) throws SQLException, ClassNotFoundException {
+		Produto p = new Produto();
+		p.setId(rs.getInt("id"));
+		p.setNome(rs.getString("nome"));
+		p.setDescricao(rs.getString("descricao"));
+		p.setNcmSh(rs.getString("ncmSh"));
+		p.setPreco(rs.getDouble("preco"));
+		p.setCategoria(rs.getString("id_categoria"));
+		p.setFornecedor(rs.getString("razaoSocial"));
+		return p;
+	}
+
 }

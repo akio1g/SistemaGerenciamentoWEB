@@ -35,6 +35,7 @@
 					<input type="text" class="tabelaAdicionar" id="Descricao" name="Descricao" placeholder="Descricao" value="<c:out value="${produto.descricao}"></c:out>">
 					<input type="text" class="tabelaAdicionar" id="ncmSh" name="ncmSh" placeholder="Ncm/Sh" value="<c:out value="${produto.ncmSh}"></c:out>">
 					<input type="text" class="tabelaAdicionar" id="preco" name="preco" placeholder="Preço" value="<c:out value="${produto.preco}"></c:out>">
+					<input type="text" class="tabelaAdicionar" id="fornecedor" name="fornecedor" placeholder="Fornecedor" value="<c:out value="${produto.fornecedor}"></c:out>">
 					<label class="dropbox" for="Categoria">Categoria</label>
 						<select class="selectDrop"name="categoria" id="categoria">
 						<option selected="selected" placeholder="${produto.categoria}">
@@ -47,6 +48,7 @@
 						   <option value="Laminas de Segredo">Laminas de Segredo</option>
 						</select>
 				</div>
+				<c:out value="${erro}"></c:out>
 			</div>
 			<div class="botoes">
 				<input type="submit" id="botao" name="botaoSalvar" value="Salvar">

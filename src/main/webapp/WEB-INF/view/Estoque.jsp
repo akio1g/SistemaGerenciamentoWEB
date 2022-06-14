@@ -28,6 +28,7 @@
 	<form action="Estoque" method="post" class="formulario">
 			<div>
 				<input type="text" class="inputPesquisa" id="inputPesquisa" name="inputPesquisa" placeholder="Digite sua pesquisa">
+				<h2>Estoque</h2>
 				<table class="table">	
 					<thead>
 						<tr>
@@ -44,6 +45,7 @@
 						</c:forEach>
 					</tbody>
 				</table>
+				<c:out value="${erro}"></c:out>
 				<div class="botoes">
 					<input type="submit" id="botaoSalvar" name="botaoSalvar" value="Salvar">
 					<a href="Home">Voltar</a>

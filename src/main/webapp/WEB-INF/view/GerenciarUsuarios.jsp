@@ -48,6 +48,7 @@
 							</c:forEach>
 						</tbody>
 					</table>
+					<c:out value="${erro}"></c:out>
 				<div class="botoes">
 					<a href="GerenciarUsuariosAdicionar">Adicionar</a>
 					<a href="Home">Voltar</a>

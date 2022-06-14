@@ -34,6 +34,7 @@
 					<input type="text" class="tabelaAdicionar" id="Descricao" name="Descricao" placeholder="Descricao">
 					<input type="text" class="tabelaAdicionar" id="ncmSh" name="ncmSh" placeholder="ncmSh">
 					<input type="text" class="tabelaAdicionar" id="preco" name="preco"placeholder="Preço">
+						<input type="text" class="tabelaAdicionar" id="fornecedor" name="fornecedor"placeholder="Fornecedor">
 					<label class="dropbox" for="Categoria">Categoria</label>
 						<select class="selectDrop"name="categoria" id="categoria">
 						  <option value="Gorje">Gorje</option>
@@ -45,6 +46,7 @@
 						  <option value="Laminas de Segredo">Laminas de Segredo</option>
 						</select>
 				</div>
+				<c:out value="${erro}"></c:out>
 			</div>
 			<div class="botoes">
 				<input type="submit" id="botao" name="botaoSalvar" value="Salvar">

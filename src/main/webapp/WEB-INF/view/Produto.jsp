@@ -36,6 +36,7 @@
 				<button id="id" name="botaoCategoria" value="6">Codificadas</button>
 				<button id="id" name="botaoCategoria" value="7">Laminas de Segredo</button>
 			</div>	
+			<c:out value="${erro}"></c:out>
 			<div class="botoes">
 				<a href="Home" class="voltarProduto">Voltar</a>
 			</div>
