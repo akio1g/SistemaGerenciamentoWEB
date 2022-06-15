@@ -27,13 +27,35 @@
 	</nav>
 	<div class="formulario">
 		<form action="RegistroVendasAdicionar" method="post" class="form">
-			<div class="bordaTabelaAdicionar">
-				<input type="number" id="botaoQuantidadeItens" name="botaoQuantidadeItens" placeholder="quantidade">
-				<input type="text" id="vendedor" name="vendedor" placeholder="Nome do Vendedor">
-				<input type="text" id="cliente" name="cliente" placeholder="Nome do Cliente">
-			</div>
+			<h2>Adicionar Registro de Venda</h2>
+			<table class="table">
+					<thead>
+						<tr>
+							<th>Vendedor</th>
+							<th>Cliente</th>
+							<th>Data</th>
+						</tr>
+					</thead>
+					<tbody class="nomes">
+						<tr>
+							<td><label class="dropbox" for="vendedor"></label>
+								<select class="selectDrop"name="vendedor" id="vendedor">
+									<c:forEach var="vendedor" items="${listaVendedores}">
+									  	<option><c:out value="${vendedor}"></c:out></option>
+									</c:forEach>
+								</select></td>
+							<td><label class="dropbox" for="Cliente"></label>
+								<select class="selectDrop"name="cliente" id="cliente">
+									<c:forEach var="cliente" items="${listaClientes}">
+									  <option><c:out value="${cliente}"></c:out></option>
+									</c:forEach>
+								</select></td>
+							<td><input type="date" id="botaoData" name="botaoData" value="${Venda.data}"></td>
+						</tr>
+					</tbody>
+			</table>
 			<div class="botoes">
-				<a href="RegistrarVendaAdicionarItens">Salvar</a>
+				<input type="submit" id="botao" name="botaoAdicionar" value="Adicionar">
 				<a href="RegistroVendas">Voltar</a>
 			</div>
 		</form>

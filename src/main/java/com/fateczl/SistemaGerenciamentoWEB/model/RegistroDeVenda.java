@@ -1,25 +1,22 @@
 package com.fateczl.SistemaGerenciamentoWEB.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class RegistroDeVenda {
 	public int id;
 	public String vendedor;
 	public String cliente;
-	public int carrinho;
-	public Date data;
+	public LocalDate data;
 	public double valor;
-	public RegistroDeVenda(int id, String vendedor, String cliente, int carrinho, Date data, double valor) {
+	public RegistroDeVenda() {
+	}
+	public RegistroDeVenda(int id, String vendedor, String cliente, LocalDate data, double valor) {
 		super();
 		this.id = id;
 		this.vendedor = vendedor;
 		this.cliente = cliente;
-		this.carrinho = carrinho;
 		this.data = data;
 		this.valor = valor;
-	}
-	public RegistroDeVenda() {
-		
 	}
 	public int getId() {
 		return id;
@@ -39,16 +36,10 @@ public class RegistroDeVenda {
 	public void setCliente(String cliente) {
 		this.cliente = cliente;
 	}
-	public int getCarrinho() {
-		return carrinho;
-	}
-	public void setCarrinho(int carrinho) {
-		this.carrinho = carrinho;
-	}
-	public Date getData() {
+	public LocalDate getData() {
 		return data;
 	}
-	public void setData(Date data) {
+	public void setData(LocalDate data) {
 		this.data = data;
 	}
 	public double getValor() {
@@ -59,8 +50,8 @@ public class RegistroDeVenda {
 	}
 	@Override
 	public String toString() {
-		return "RegistroDeVenda [id=" + id + ", vendedor=" + vendedor + ", cliente=" + cliente + ", carrinho="
-				+ carrinho + ", data=" + data + ", valor=" + valor + "]";
+		return "RegistroDeVenda [id=" + id + ", vendedor=" + vendedor + ", cliente=" + cliente + ", data=" + data
+				+ ", valor=" + valor + "]";
 	}
 	
 }

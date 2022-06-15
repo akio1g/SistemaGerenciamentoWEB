@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,9 +26,7 @@ public class RegistroVendasController {
 	
 	@Autowired
 	LoginDAO lDAO;
-	private int quantidade_itens;
-	private String vendedor;
-	private String cliente;
+	private int id_registro;
 	
 	@RequestMapping(name="RegistroVendas", value="/RegistroVendas", method=RequestMethod.GET)
 	public ModelAndView init(ModelMap model) {
@@ -52,25 +51,29 @@ public class RegistroVendasController {
 	public ModelAndView listarVendas(ModelMap model, @RequestParam Map<String,String> param) {
 		
 		String erro = "";
-		String botaoInput = param.get("inputPesquisa");
-		
+		String botaoExcluir = param.get("botaoExcluir");
+		String botaoCarrinho = param.get("botaoid");
 		List<RegistroDeVenda> listaVenda = new ArrayList<>();
 		
 		try {
-			if(botaoInput.isEmpty()) {
-				listaVenda = rDAO.listaVendas();
-			}else {
-				listaVenda = rDAO.listaVendaPorVendedor(botaoInput);
-				if(listaVenda.isEmpty()) {
-					listaVenda = rDAO.listaVendas();
-					model.addAttribute("erro", erro);
-					model.addAttribute("listaVenda", listaVenda);
-					return new ModelAndView("RegistroVendas");
-				}else {
-					model.addAttribute("erro", erro);
-					model.addAttribute("listaVenda", listaVenda);
+			if(lDAO.verificarAcesso().equals("Vendedor") || lDAO.verificarAcesso().equals("Administrador")) {
+				if(botaoExcluir != null && !botaoExcluir.isEmpty()) {
+					rDAO.excluir_registroDeVenda(Integer.parseInt(botaoExcluir));
 					return new ModelAndView("RegistroVendas");
 				}
+				if(botaoCarrinho != null && !botaoCarrinho.isEmpty()) {
+					id_registro = Integer.parseInt(botaoCarrinho);
+					adicionarCarrinho(model);
+					return new ModelAndView("CarrinhoAdicionar");
+				}
+				listaVenda = rDAO.listaVendas();
+				model.addAttribute("erro", erro);
+				model.addAttribute("listaVenda", listaVenda);
+				return new ModelAndView("RegistroVendas");
+			}else {
+				erro = "Acesso não autorizado";
+				model.addAttribute("erro", erro);
+				return new ModelAndView("RegistroVendas");
 			}
 		}catch (ClassNotFoundException | SQLException e) {
 			erro = e.getMessage();
@@ -82,35 +85,94 @@ public class RegistroVendasController {
 	}
 	@RequestMapping(name="RegistroVendasAdicionar", value="/RegistroVendasAdicionar", method=RequestMethod.GET)
 	public ModelAndView adicionarVendas(ModelMap model) {
+		String erro = "";
+		List<String> listaVendedores = new ArrayList<>();
+		List<String> listaClientes = new ArrayList<>();
+		
+		try {
+			if(lDAO.verificarAcesso().equals("Vendedor") || lDAO.verificarAcesso().equals("Administrador")) {
+				listaVendedores = rDAO.listaVendedores();
+				listaClientes = rDAO.listaClientes();
+				model.addAttribute("listaClientes", listaClientes);
+				model.addAttribute("listaVendedores", listaVendedores);
+				return new ModelAndView("RegistroVendasAdicionar");
+			}else {
+				erro = "Acesso não autorizado";
+				model.addAttribute("erro", erro);
+				return new ModelAndView("RegistroVendasAdicionar");
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 		return new ModelAndView("RegistroVendasAdicionar");
 		
 	}
 	@RequestMapping(name="RegistroVendasAdicionar", value="/RegistroVendasAdicionar", method=RequestMethod.POST)
 	public ModelAndView adicionarVendas(ModelMap model, @RequestParam Map<String,String> param) {
-		quantidade_itens = Integer.parseInt(param.get("botaoQuantidadeItens"));
-		vendedor = param.get("vendedor");
-		cliente = param.get("cliente");
-		
-		return new ModelAndView("RegistroVendasAdicionar");
-	}
-	@RequestMapping(name="RegistrarVendaAdicionarItens", value="/RegistrarVendaAdicionarItens", method=RequestMethod.GET)
-	public ModelAndView adicionarItensVendas(ModelMap model) {
-		RegistroDeVenda rg = new RegistroDeVenda();
+		String botaoAdicionar = param.get("botaoAdicionar");
+		String vendedor = param.get("vendedor");
+		String cliente = param.get("cliente");
+		String botaoData = param.get("botaoData");
+		String erro = "";
 		try {
-			rg.setCliente(rDAO.buscarCliente(cliente));
-			rg.setVendedor(rDAO.buscarVendedor(vendedor));
+			if(lDAO.verificarAcesso().equals("Vendedor") || lDAO.verificarAcesso().equals("Administrador")) {
+				if(!botaoAdicionar.isEmpty()) {
+					rDAO.adicionar_registroDeVenda(vendedor, cliente, botaoData);
+					erro = "Registro de venda adicionado";
+					model.addAttribute("erro",erro);
+					return new ModelAndView("RegistroVendasAdicionar");
+				}
+			}else {
+				erro = "Acesso não autorizado";
+				model.addAttribute("erro", erro);
+				return new ModelAndView("RegistroVendasAdicionar");
+			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-		model.addAttribute("rg", rg);
-		
-		return new ModelAndView("RegistrarVendaAdicionarItens");
+		return new ModelAndView("RegistroVendasAdicionar");
 	}
-	@RequestMapping(name="RegistrarVendaAdicionarItens", value="/RegistrarVendaAdicionarItens", method=RequestMethod.POST)
-	public ModelAndView adicionarItensVendas(ModelMap model, @RequestParam Map<String,String> param) {
-		List<String> listaNomeitens = new ArrayList<>();
-		List<String> listaQuantidade = new ArrayList<>();
-		
-		return new ModelAndView("RegistrarVendaAdicionarItens");	
+	@RequestMapping(name="CarrinhoAdicionar", value="/CarrinhoAdicionar", method=RequestMethod.GET)
+	public ModelAndView adicionarCarrinho(ModelMap model) {
+		List<String> listaProdutos = new ArrayList<>();
+		String erro = "";
+		try {
+			if(lDAO.verificarAcesso().equals("Vendedor") || lDAO.verificarAcesso().equals("Administrador")) {
+				listaProdutos = rDAO.listaProdutos();
+				model.addAttribute("listaProdutos", listaProdutos);
+				return new ModelAndView("CarrinhoAdicionar");
+			}else {
+				erro = "Acesso não autorizado";
+				model.addAttribute("erro", erro);
+				return new ModelAndView("CarrinhoAdicionar");
+			}
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return new ModelAndView("CarrinhoAdicionar");
+	}
+	@RequestMapping(name="CarrinhoAdicionar", value="/CarrinhoAdicionar", method=RequestMethod.POST)
+	public ModelAndView adicionarCarrinho(ModelMap model, @RequestParam Map<String,String> param, @RequestParam MultiValueMap<String, String> allParam) {
+		String botaoSalvar = param.get("botaoSalvar");
+		List<String> listaProdutos = new ArrayList<>();
+		List<String> quantidade = allParam.get("idQuantidade{}");
+		String erro = "";
+		try {
+			if(lDAO.verificarAcesso().equals("Vendedor") || lDAO.verificarAcesso().equals("Administrador")) {
+				if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
+					listaProdutos = rDAO.listaProdutos();
+					rDAO.adicionar_carrinho(listaProdutos, quantidade, id_registro);
+					return new ModelAndView();
+				}
+			}else {
+				erro = "Acesso não autorizado";
+				model.addAttribute("erro", erro);
+				return new ModelAndView("CarrinhoAdicionar");
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return new ModelAndView("CarrinhoAdicionar");
 	}
 }

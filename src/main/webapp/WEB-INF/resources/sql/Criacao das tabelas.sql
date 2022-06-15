@@ -118,27 +118,23 @@ CREATE TABLE Usuario(
 	CONSTRAINT pk_id_usuario PRIMARY KEY(id)
 )
 go
-CREATE drop TABLE Carrinho (
+CREATE TABLE Carrinho (
 	id int IDENTITY,
-	id_produto int not null,
-	quantidade int not null,
+	nome_produto VARCHAR(max),
+	quantidade INT NOT NULL,
 	valor decimal(7,2),
+	id_registroVenda INT NOT NULL 
 
-	CONSTRAINT pk_id_carrinho PRIMARY KEY(id),
-	CONSTRAINT fk_id_produto_carrinho FOREIGN KEY (id_produto) REFERENCES Produto(id)
+	CONSTRAINT pk_id_carrinho PRIMARY KEY(id)
 )
 GO
-CREATE drop TABLE RegistrosVenda (
+CREATE TABLE RegistrosVenda (
 	id int identity,
-	id_vendedor int,
-	id_cliente int not null,
-	id_carrinho int NOT NULL,
-	dataVenda smalldatetime not null,
-	valor decimal(7,2) NOT NULL,
+	nome_vendedor VARCHAR(max) NOT NULL,
+	nome_cliente VARCHAR(max) NOT NULL,
+	dataVenda DATE,
+	valor decimal(7,2) 
 
-	CONSTRAINT fk_id_vendedor_venda FOREIGN KEY (id_vendedor) REFERENCES Usuario(id),
-	CONSTRAINT fk_id_cliente_venda FOREIGN KEY (id_cliente) REFERENCES Cliente(id),
-	CONSTRAINT fk_id_carrinho_venda FOREIGN KEY (id_carrinho) REFERENCES Carrinho(id),
 	CONSTRAINT pk_id_registroVenda PRIMARY KEY(id)
 )
 CREATE TABLE Acesso(
@@ -205,20 +201,6 @@ INSERT INTO Usuario (nome, login_usuario, senha_usuario, email, id_tipoDeUsuario
 ('Higor', 'Higor123', 'senha123', 'gabriel@bol.com.br', 1),
 ('Gabriel', 'Gabriel123', 'senha123', 'gabriel@bol.com.br', 2),
 ('Breno', 'Breno789', 'senha123', 'breno@bol.com.br', 3)
-GO
-INSERT INTO Carrinho (id_produto, quantidade, valor) VALUES
-	(18,14,(14*(select produto.preco from produto where produto.id = 18))),
-	(17,12,(14*(select produto.preco from produto where produto.id = 17))),
-	(13,63,(14*(select produto.preco from produto where produto.id = 13))),
-	(14,24,(14*(select produto.preco from produto where produto.id = 14))),
-	(15,57,(14*(select produto.preco from produto where produto.id = 15))),
-	(16,100,(14*(select produto.preco from produto where produto.id = 16))),
-	(17,200,(14*(select produto.preco from produto where produto.id = 17))),
-	(18,100,(14*(select produto.preco from produto where produto.id = 18)))
-GO
-INSERT INTO RegistrosVenda (id_vendedor, id_cliente, id_carrinho, dataVenda, valor)VALUES 
-	(2,4,3,'2022-03-12 21:35:16',(select c.valor from carrinho as c where c.id = 3)),
-	(3,6,4,'2022-06-07 19:18:25',(select c.valor from carrinho as c where c.id = 4)),
-	(1,5,5,'2022-06-07 18:05:25',(select c.valor from carrinho as c where c.id = 5)),
-	(1,1,6,'2022-06-07 18:25:21',(select c.valor from carrinho as c where c.id = 6)),
-	(1,2,7,'2022-06-06 12:04:25',(select c.valor from carrinho as c where c.id = 7))
+
+
+SELECT * FROM RegistrosVenda

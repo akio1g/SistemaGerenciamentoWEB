@@ -9,7 +9,7 @@
 	<meta charset="ISO-8859-1">
 	<link rel="stylesheet" type="text/css"
 		href='<c:url value="./resources/css/styles.css"/>'>
-	<title>Registro de Vendas</title>
+	<title>Adicionar Carrinho</title>
 </head>
 
 <body>
@@ -25,42 +25,33 @@
 			<li><a href="GerenciarUsuarios">Gerenciar Usuários</a></li>
 		</ul>
 	</nav>
-	<div class="formulario">
-		<form action="RegistroVendas" method="post" class="form">
-			<h2>Lista de Registros de Venda</h2>
+	<form action="CarrinhoAdicionar" method="post" class="formulario">
 			<div>
-				<table class="table">
+				<h2>Lista de Produtos</h2>
+				<input type="text" class="inputPesquisa" id="inputPesquisa" name="inputPesquisa" placeholder="Digite sua pesquisa">
+				<table class="table">	
 					<thead>
 						<tr>
-							<th></th>
-							<th>Vendedor</th>
-							<th>Cliente</th>
-							<th>Valor</th>	
-							<th>Data</th>
-							<th>Carrinho</th>
+							<th>Quantidade</th>
+							<th>Nome</th>
 						</tr>
 					</thead>
 					<tbody class="nomes">
-						<c:forEach var="Venda" items="${listaVenda}">
-							<tr>
-								<td><button id="botaoExcluir" name="botaoExcluir" value="${Venda.id}">Excluir</button></td>
-								<td><c:out value="${Venda.vendedor}"></c:out></td>
-								<td><c:out value="${Venda.cliente}"></c:out></td>
-								<td><c:out value="${Venda.valor}"></c:out></td>
-								<td><input type="date" id="botaoData" name="botaoData" value="${Venda.data}"></td>
-								<td><button id="botaoid" name="botaoid" value="${Venda.id}">Carrinho</button>
+						<c:forEach var="produto" items="${listaProdutos}">
+							<tr>	
+								<td><input type="number" id="idQuantidade{}" name="idQuantidade{}"> </td>
+								<td><c:out value="${produto}"></c:out></td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 				<c:out value="${erro}"></c:out>
-			</div>
-			<div class="botoes">
-				<a href="RegistroVendasAdicionar">Adicionar</a>
-				<a href="Home">Voltar</a>
+				<div class="botoes">
+					<input type="submit" id="botaoSalvar" name="botaoSalvar" value="Salvar">
+					<a href="RegistroVendas">Voltar</a>
+				</div>
 			</div>
 		</form>
-	</div>
 </body>
 
 </html>

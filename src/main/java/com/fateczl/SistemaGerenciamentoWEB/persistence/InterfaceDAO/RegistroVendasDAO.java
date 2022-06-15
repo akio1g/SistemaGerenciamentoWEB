@@ -9,11 +9,19 @@ import com.fateczl.SistemaGerenciamentoWEB.model.RegistroDeVenda;
 public interface RegistroVendasDAO {
 	public List<RegistroDeVenda> listaVendas() throws SQLException, ClassNotFoundException;
 
-	public List<Carrinho> listarCarrinho(int id) throws SQLException, ClassNotFoundException;
+	public List<String> listaVendedores() throws SQLException, ClassNotFoundException;
 
-	public List<RegistroDeVenda> listaVendaPorVendedor(String nome_vendedor) throws SQLException, ClassNotFoundException;
+	public List<String> listaClientes() throws SQLException, ClassNotFoundException;
 
-	public String buscarVendedor(String nome) throws SQLException, ClassNotFoundException;
+	public void adicionar_registroDeVenda(String nome_vendedor, String nome_cliente, String dataVenda)
+			throws SQLException, ClassNotFoundException;
 
-	public String buscarCliente(String nome) throws SQLException, ClassNotFoundException;
+	public void excluir_registroDeVenda(int id) throws SQLException, ClassNotFoundException;
+
+	public List<String> listaProdutos() throws SQLException, ClassNotFoundException;
+
+	public void adicionar_carrinho(List<String> produtos, List<String> quantidade, int id)
+			throws SQLException, ClassNotFoundException;
+
+	public int buscar_registro_id() throws SQLException, ClassNotFoundException;
 }

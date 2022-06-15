@@ -389,20 +389,6 @@ AS
 	ON e.id_Produto = p.id
 	WHERE p.nome like '%'+@nomeProduto+'%'
 --****************************************************************************--
-
-				----FUNÇÕES DO REGISTRO DE VENDA
-GO
-CREATE PROC sp_listar_vendas
-AS
-	SELECT rv.id, u.nome as vendedor, 
-		   c.nomeRazaoSocial as cliente, 
-		   rv.dataVenda as data, 
-		   rv.id_carrinho as id_carrinho,
-		   rv.valor FROM RegistrosVenda rv 
-	INNER JOIN Usuario u 
-	ON rv.id_vendedor = u.id
-	INNER JOIN Cliente c
-	ON rv.id_cliente = c.id
 --****************************************************************************--
 GO
 CREATE PROC sp_validar_acesso(@login VARCHAR(max), @senha VARCHAR(max))
@@ -477,3 +463,53 @@ GO
 CREATE PROC sp_pesquisar_categoria_por_id(@id INT)
 AS
 	SELECT id, nome FROM Categoria WHERE id = @id
+--******************************************************************************----******************************************************************************--
+GO 
+CREATE PROC sp_adicionar_registroDeVenda(@nome_vendedor VARCHAR(max), @nome_cliente VARCHAR(max), @data DATE)
+AS
+	INSERT INTO RegistrosVenda (nome_vendedor, nome_cliente, dataVenda) VALUES(@nome_vendedor, @nome_cliente, @data)
+
+--******************************************************************************----******************************************************************************--
+GO
+CREATE PROC sp_listar_vendas
+AS
+	SELECT * FROM RegistrosVenda
+--******************************************************************************----******************************************************************************--
+GO
+CREATE PROC sp_listar_vendedores
+AS
+	SELECT nome FROM Usuario WHERE id_tipoDeUsuario = 3
+	--******************************************************************************----******************************************************************************--
+GO
+CREATE PROC sp_listar_clientes
+AS
+	SELECT nomeRazaoSocial FROM Cliente
+--******************************************************************************----******************************************************************************--
+GO
+CREATE PROC sp_excluir_registroDeVenda(@id INT)
+AS
+	DELETE FROM Carrinho WHERE id_registroVenda = @id
+	DELETE FROM RegistrosVenda WHERE id = @id
+	--******************************************************************************----******************************************************************************--
+GO
+CREATE PROC sp_listar_produto_carrinho
+AS
+	SELECT nome FROM Produto
+
+GO
+--******************************************************************************----******************************************************************************--
+CREATE PROC sp_buscar_id_registro
+AS
+	SELECT TOP 1 id FROM RegistrosVenda 
+	ORDER BY id DESC
+--******************************************************************************----******************************************************************************--
+GO
+CREATE PROC sp_adicionar_carrinho(@nome_produto VARCHAR(max), @quantidade INT, @id INT) --Adicionar a quantidade de vezes antes do reset//passar por parametro o tamanho //criar uma tabela com a quantidade armazenada
+AS
+	INSERT INTO Carrinho VALUES(@nome_produto, @quantidade, (SELECT preco FROM Produto WHERE nome = @nome_produto), @id)
+
+	UPDATE RegistrosVenda
+	SET valor += (SELECT preco FROM Produto WHERE nome = @nome_produto)*@quantidade
+	WHERE id = @id
+--******************************************************************************----******************************************************************************--
+SELECT * FROM Carrinho

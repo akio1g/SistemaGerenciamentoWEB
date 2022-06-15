@@ -33,10 +33,9 @@ public class RegistrarVendasDAOImpl implements RegistroVendasDAO{
 			RegistroDeVenda rg = new RegistroDeVenda();
 			
 			rg.setId(rs.getInt("id"));
-			rg.setVendedor(rs.getString("vendedor"));
-			rg.setCliente(rs.getString("cliente"));
-			rg.setData(rs.getDate("data"));
-			rg.setCarrinho(rs.getInt("id_carrinho"));
+			rg.setVendedor(rs.getString("nome_vendedor"));
+			rg.setCliente(rs.getString("nome_cliente"));
+			rg.setData(rs.getDate("dataVenda").toLocalDate());
 			rg.setValor(rs.getDouble("valor"));
 			
 			listaVenda.add(rg);
@@ -48,83 +47,102 @@ public class RegistrarVendasDAOImpl implements RegistroVendasDAO{
 		return listaVenda;
 	}
 	@Override
-	public List<RegistroDeVenda> listaVendaPorVendedor(String nome_vendedor) throws SQLException, ClassNotFoundException{
+	public List<String> listaVendedores() throws SQLException, ClassNotFoundException{
+		List<String> listaVendedores = new ArrayList<>();
+		
 		Connection c = gDAO.getConnection();
 		
-		List<RegistroDeVenda> listaVenda = new ArrayList<>();
-		
-		PreparedStatement p = c.prepareStatement("");
+		PreparedStatement p = c.prepareStatement("EXEC sp_listar_vendedores");
 		ResultSet rs = p.executeQuery();
 		while(rs.next()) {
-			RegistroDeVenda rg = new RegistroDeVenda();
-			
-			rg.setId(rs.getInt("id"));
-			rg.setVendedor(rs.getString("vendedor"));
-			rg.setCliente(rs.getString("cliente"));
-			rg.setData(rs.getDate("data"));
-			rg.setCarrinho(rs.getInt("id_carrinho"));
-			rg.setValor(rs.getDouble("valor"));
-			
-			listaVenda.add(rg);
+			listaVendedores.add(rs.getString("nome"));
 		}
-		rs.close();
-		p.close();	
-		c.close();
+		
+		return listaVendedores;
+	}
+	@Override
+	public List<String> listaClientes() throws SQLException, ClassNotFoundException{
+		List<String> listaClientes = new ArrayList<>();
+		
+		Connection c = gDAO.getConnection();
+		
+		PreparedStatement p = c.prepareStatement("EXEC sp_listar_clientes");
+		ResultSet rs = p.executeQuery();
+		while(rs.next()) {
+			listaClientes.add(rs.getString("nomeRazaoSocial"));
+		}
+		
+		return listaClientes;
+	}
+	@Override
+	public void adicionar_registroDeVenda(String nome_vendedor, String nome_cliente, String dataVenda) throws SQLException, ClassNotFoundException{
 	
-		return listaVenda;
-	}
-	@Override
-	public List<Carrinho> listarCarrinho(int id) throws SQLException, ClassNotFoundException{
 		Connection c = gDAO.getConnection();
 		
-		List<Carrinho> listaCarrinho = new ArrayList<>();
+		PreparedStatement p = c.prepareStatement("EXEC sp_adicionar_registroDeVenda ?,?,?");
+	
+		p.setString(1, nome_vendedor);
+		p.setString(2, nome_cliente);
+		p.setString(3, dataVenda);
 		
-		PreparedStatement p = c.prepareStatement("");
+		p.executeUpdate();
+		
+		p.close();
+		c.close();
+	}
+	@Override
+	public void excluir_registroDeVenda(int id) throws SQLException, ClassNotFoundException{
+		Connection c = gDAO.getConnection();
+		
+		PreparedStatement p = c.prepareStatement("EXEC sp_excluir_registroDeVenda ?");
+		p.setInt(1, id);
+		p.executeUpdate();
+		
+		p.close();
+		c.close();
+	}
+	@Override
+	public List<String> listaProdutos() throws SQLException, ClassNotFoundException{
+		Connection c = gDAO.getConnection();
+		
+		List<String> listaProdutos = new ArrayList<>();
+		
+		PreparedStatement p = c.prepareStatement("EXEC sp_listar_produto_carrinho");
 		ResultSet rs = p.executeQuery();
 		while(rs.next()) {
-			Carrinho carrinho = new Carrinho();
-			
-			carrinho.setId(rs.getInt("id"));
-			carrinho.setProduto(rs.getString("produto"));
-			carrinho.setQuantidade(rs.getInt("quantidade"));
-			carrinho.setValor(rs.getDouble("valor"));
-			
-			listaCarrinho.add(carrinho);
+			listaProdutos.add(rs.getString("nome"));
 		}
 		rs.close();
 		p.close();
 		c.close();
-		return null;
+		return listaProdutos;
+	}
+	@Override
+	public int buscar_registro_id()  throws SQLException, ClassNotFoundException{
+		Connection c = gDAO.getConnection();
 		
+		PreparedStatement p = c.prepareStatement("EXEC sp_buscar_id_registro");
+		ResultSet rs = p.executeQuery();
+		if(rs.next()) {
+			return rs.getInt("id");
+		}
+		return 0;
 	}
 	@Override
-	public String buscarCliente(String nome) throws SQLException, ClassNotFoundException{
+	public void adicionar_carrinho(List<String> produtos, List<String> quantidade, int id) throws SQLException, ClassNotFoundException{
 		Connection c = gDAO.getConnection();
-		String nome_cliente = "";
-		PreparedStatement p = c.prepareStatement("EXEC sp_buscarCliente ?");
-		p.setString(1, nome);
-		ResultSet rs = p.executeQuery();
-		if(rs.next()){
-			nome_cliente = rs.getString("nomeRazaoSocial");
+		
+		for(int i=0; i<produtos.size(); i++) {
+			if(!quantidade.get(i).isEmpty() && quantidade.get(i) != "") {
+				PreparedStatement p = c.prepareStatement("EXEC sp_adicionar_carrinho ?,?,?");
+				p.setString(1, produtos.get(i));
+				p.setInt(2, Integer.parseInt(quantidade.get(i)));
+				p.setInt(3, id);
+				
+				p.executeUpdate();
+				p.close();
+			}
 		}
-		rs.close();
-		p.close();
 		c.close();
-		return nome_cliente;
-	}
-	@Override
-	public String buscarVendedor(String nome) throws SQLException, ClassNotFoundException{
-		Connection c = gDAO.getConnection();
-		String nome_vendedor = "";
-		PreparedStatement p = c.prepareStatement("EXEC sp_buscarVendedor ?");
-		p.setString(1, nome);
-		ResultSet rs = p.executeQuery();
-		if(rs.next()){
-			nome_vendedor = rs.getString("nome");
-		}
-		rs.close();
-		p.close();
-		c.close();
-		return nome_vendedor;
 	}
 }
