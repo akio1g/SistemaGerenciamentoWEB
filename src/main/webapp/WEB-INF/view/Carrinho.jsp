@@ -9,7 +9,7 @@
 	<meta charset="ISO-8859-1">
 	<link rel="stylesheet" type="text/css"
 		href='<c:url value="./resources/css/styles.css"/>'>
-	<title>Adicionar Itens </title>
+	<title>Carrinho</title>
 </head>
 
 <body>
@@ -25,30 +25,34 @@
 			<li><a href="GerenciarUsuarios">Gerenciar Usuários</a></li>
 		</ul>
 	</nav>
-	<div class="formulario">
-		<form action="RegistrarVendaAdicionarItens" method="post" class="form">
-			<div class="bordaTabelaAdicionar">
-				<input type="text" id="vendedor" name="vendedor" value="${rg.vendedor}">
-				<input type="text" id="cliente" name="cliente" value="${rg.cliente}">
-				
+	<form action="Carrinho" method="post" class="formulario">
+			<div>
+				<h2>Carrinho</h2>
 				<table class="table">	
 					<thead>
 						<tr>
 							<th>Quantidade</th>
-							<th>Nome do item</th>
+							<th>Nome</th>
+							<th>Valor</th>
 						</tr>
 					</thead>
 					<tbody class="nomes">
-	
+						<c:forEach var="carrinho" items="${listaCarrinho}">
+							<tr>	
+								<td><c:out value="${carrinho.quantidade}"></c:out></td>
+								<td><c:out value="${carrinho.produto}"></c:out></td>
+								<td><c:out value="${carrinho.valor}"></c:out></td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
-			</div>
-			<div class="botoes">
-				<a href="RegistrarVendasAdicionarItens">Salvar</a>
-				<a href="RegistroVendas">Voltar</a>
+				<c:out value="${erro}"></c:out>
+				<div class="botoes">
+					<a href="CarrinhoAdicionar">Editar</a>
+					<a href="RegistroVendas">Voltar</a>
+				</div>
 			</div>
 		</form>
-	</div>
 </body>
 
 </html>

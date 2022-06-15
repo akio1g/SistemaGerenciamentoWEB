@@ -24,4 +24,6 @@ public interface RegistroVendasDAO {
 			throws SQLException, ClassNotFoundException;
 
 	public int buscar_registro_id() throws SQLException, ClassNotFoundException;
+
+	public List<Carrinho> listaProdutosCarrinho(int id) throws SQLException, ClassNotFoundException;
 }

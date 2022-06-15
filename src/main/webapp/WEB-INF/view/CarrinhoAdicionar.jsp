@@ -39,7 +39,7 @@
 					<tbody class="nomes">
 						<c:forEach var="produto" items="${listaProdutos}">
 							<tr>	
-								<td><input type="number" id="idQuantidade{}" name="idQuantidade{}"> </td>
+								<td><input type="number" id="idQuantidade{}" name="idQuantidade{}" placeholder="0"></td>
 								<td><c:out value="${produto}"></c:out></td>
 							</tr>
 						</c:forEach>
@@ -48,7 +48,7 @@
 				<c:out value="${erro}"></c:out>
 				<div class="botoes">
 					<input type="submit" id="botaoSalvar" name="botaoSalvar" value="Salvar">
-					<a href="RegistroVendas">Voltar</a>
+					<a href="Carrinho">Voltar</a>
 				</div>
 			</div>
 		</form>

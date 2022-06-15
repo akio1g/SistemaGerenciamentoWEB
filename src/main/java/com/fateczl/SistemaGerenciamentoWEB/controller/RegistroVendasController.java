@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fateczl.SistemaGerenciamentoWEB.model.Carrinho;
 import com.fateczl.SistemaGerenciamentoWEB.model.RegistroDeVenda;
 import com.fateczl.SistemaGerenciamentoWEB.persistence.InterfaceDAO.LoginDAO;
 import com.fateczl.SistemaGerenciamentoWEB.persistence.InterfaceDAO.RegistroVendasDAO;
@@ -63,8 +64,8 @@ public class RegistroVendasController {
 				}
 				if(botaoCarrinho != null && !botaoCarrinho.isEmpty()) {
 					id_registro = Integer.parseInt(botaoCarrinho);
-					adicionarCarrinho(model);
-					return new ModelAndView("CarrinhoAdicionar");
+					carrinho(model);
+					return new ModelAndView("Carrinho");
 				}
 				listaVenda = rDAO.listaVendas();
 				model.addAttribute("erro", erro);
@@ -174,5 +175,24 @@ public class RegistroVendasController {
 			e.printStackTrace();
 		}
 		return new ModelAndView("CarrinhoAdicionar");
+	}
+	@RequestMapping(name="Carrinho", value="/Carrinho", method=RequestMethod.GET)
+	public ModelAndView carrinho(ModelMap model) {
+		List<Carrinho> listaCarrinho = new ArrayList<>();
+		String erro = "";
+		try {
+			if(lDAO.verificarAcesso().equals("Vendedor") || lDAO.verificarAcesso().equals("Administrador")) {
+				listaCarrinho = rDAO.listaProdutosCarrinho(id_registro);
+				model.addAttribute("listaCarrinho", listaCarrinho);
+				return new ModelAndView("Carrinho");
+			}else {
+				erro = "Acesso não autorizado";
+				model.addAttribute("erro", erro);
+				return new ModelAndView("RegistroVendas");
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return new ModelAndView("Carrinho");
 	}
 }

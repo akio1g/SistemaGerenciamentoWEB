@@ -145,6 +145,12 @@ CREATE TABLE Acesso(
 	CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
 	CONSTRAINT pk_id_Acesso PRIMARY KEY(id)
 )
+CREATE TABLE TabelaBoolean(
+	 id int identity,
+	 valor INT not null
+
+	 Primary key(id)
+)
 GO
 INSERT INTO Cliente (nomeRazaoSocial,cpfCnpj,telefone,email,inscricaoEstadual) VALUES 
 ('Marcos Josue','19238592832','11983275921','majosue@gmail.com',null),
@@ -192,15 +198,9 @@ INSERT INTO Tipo_De_Usuario(nome) VALUES
 ('Administrador'),
 ('Estoquista'),
 ('Vendedor')
-GO
-exec sp_salvarAutenticacao 'Higor123'
-EXEC sp_salvarAutenticacao 'Gabriel123'
-EXEC sp_salvarAutenticacao 'Breno789'
-
+go
 INSERT INTO Usuario (nome, login_usuario, senha_usuario, email, id_tipoDeUsuario)VALUES
 ('Higor', 'Higor123', 'senha123', 'gabriel@bol.com.br', 1),
 ('Gabriel', 'Gabriel123', 'senha123', 'gabriel@bol.com.br', 2),
 ('Breno', 'Breno789', 'senha123', 'breno@bol.com.br', 3)
 
-
-SELECT * FROM RegistrosVenda

@@ -132,6 +132,10 @@ public class RegistrarVendasDAOImpl implements RegistroVendasDAO{
 	public void adicionar_carrinho(List<String> produtos, List<String> quantidade, int id) throws SQLException, ClassNotFoundException{
 		Connection c = gDAO.getConnection();
 		
+		PreparedStatement ps = c.prepareStatement("Exec sp_tabela_boolean ?");
+		ps.setInt(1, 0);
+		ps.executeUpdate();
+		
 		for(int i=0; i<produtos.size(); i++) {
 			if(!quantidade.get(i).isEmpty() && quantidade.get(i) != "") {
 				PreparedStatement p = c.prepareStatement("EXEC sp_adicionar_carrinho ?,?,?");
@@ -143,6 +147,36 @@ public class RegistrarVendasDAOImpl implements RegistroVendasDAO{
 				p.close();
 			}
 		}
+		PreparedStatement pst = c.prepareStatement("Exec sp_tabela_boolean ?");
+		pst.setInt(1, 1);
+		pst.executeUpdate();
+		
+		ps.close();
+		pst.close();
 		c.close();
+	}
+	@Override
+	public List<Carrinho> listaProdutosCarrinho(int id)throws SQLException, ClassNotFoundException{
+		
+		List<Carrinho> listaProduto = new ArrayList<>();
+		Connection c = gDAO.getConnection();
+		
+		PreparedStatement p = c.prepareStatement("EXEC sp_listar_produtos_carrinho ?");
+		p.setInt(1, id);
+		ResultSet rs = p.executeQuery();
+		while(rs.next()) {
+			Carrinho produto = new Carrinho();
+			
+			produto.setQuantidade(rs.getInt("quantidade"));
+			produto.setProduto(rs.getString("nome_produto"));
+			produto.setValor(rs.getDouble("valor"));
+			
+			listaProduto.add(produto);
+		}
+		
+		rs.close();
+		p.close();
+		c.close();
+		return listaProduto;
 	}
 }

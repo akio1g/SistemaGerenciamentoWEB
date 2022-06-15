@@ -508,8 +508,34 @@ CREATE PROC sp_adicionar_carrinho(@nome_produto VARCHAR(max), @quantidade INT, @
 AS
 	INSERT INTO Carrinho VALUES(@nome_produto, @quantidade, (SELECT preco FROM Produto WHERE nome = @nome_produto), @id)
 
-	UPDATE RegistrosVenda
-	SET valor += (SELECT preco FROM Produto WHERE nome = @nome_produto)*@quantidade
-	WHERE id = @id
+
+	IF(SELECT valor FROM TabelaBoolean) = 0
+	BEGIN
+		DELETE FROM Carrinho WHERE id_registroVenda = @id
+		UPDATE RegistrosVenda
+		SET valor = 0
+		WHERE id = @id
+		EXEC sp_tabela_boolean 1
+	END
+	IF (SELECT valor FROM TabelaBoolean) = 1
+	BEGIN
+		UPDATE RegistrosVenda
+		SET valor += (SELECT preco FROM Produto WHERE nome = @nome_produto)*@quantidade
+		WHERE id = @id
+	END
+GO
 --******************************************************************************----******************************************************************************--
-SELECT * FROM Carrinho
+CREATE PROC sp_tabela_boolean(@valor int)
+AS
+	DELETE FROM TabelaBoolean 
+	INSERT INTO TabelaBoolean VALUES(@valor)
+--******************************************************************************----******************************************************************************--
+GO
+
+EXEC sp_listar_produtos_carrinho 1
+
+CREATE PROC sp_listar_produtos_carrinho(@id int)
+AS
+	SELECT nome_produto, quantidade, valor FROM Carrinho WHERE id_registroVenda = @id 
+
+	SELECT * FROM Usuario
