@@ -9,8 +9,8 @@
 	<meta charset="ISO-8859-1">
 	<link rel="stylesheet" type="text/css"
 		href='<c:url value="./resources/css/styles.css"/>'>
-	<title>Registro de Vendas</title>
-</head>
+	<title>Categorias</title>
+</head> 
 
 <body>
 	<nav class="menu-lateral">
@@ -21,36 +21,36 @@
 			<li><a href="Estoque">Estoque</a></li>
 			<li><a href="RegistroVendas">Registro De Vendas</a></li>
 			<li><a href="Fornecedores">Fornecedores</a></li>
-			<%--<li><a href="Relatorios">Relátorios</a></li>--%>
-			<li><a href="GerenciarUsuarios">Gerenciar Usuários</a></li>
+			<%--<li><a href="Relatorios">Relï¿½torios</a></li>--%>
+			<li><a href="GerenciarUsuarios">Gerenciar Usuarios</a></li>
 		</ul>
 	</nav>
-	<div class="formulario">
-		<form action="RegistroVendas" method="post" class="form">
-			<h2>Lista de Registros de Venda</h2>
+		<div>
+		<form action="Categorias" method="post" class="formulario">
 			<div>
-				<table class="table">
+				<h2>Lista de Categorias</h2>
+				<input type="text" class="inputPesquisa" id="inputPesquisa" name="inputPesquisa" placeholder="Digite sua pesquisa">
+				<table class="table">	
 					<thead>
 						<tr>
-							<th>Vendedor</th>
-							<th>Cliente</th>
-							<th>Valor</th>
+							<th></th>
+							<th>Nome da Categoria</th>
 						</tr>
 					</thead>
 					<tbody class="nomes">
-						<c:forEach var="Venda" items="${listaVenda}">
+						<c:forEach var="categorias" items="${listaCategorias}">
 							<tr>
-								<td><c:out value="${Venda.vendedor}"></c:out></td>
-								<td><c:out value="${Venda.cliente}"></c:out></td>
-								<td><c:out value="${Venda.valor}"></c:out></td>
+								<td><button id="botaoEditar" name="botaoEditar" value="${categorias.id}">Editar</button></td>
+								<td><c:out value="${categorias.nome}"></c:out></td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 				<c:out value="${erro}"></c:out>
-			</div>
-			<div class="botoes">
+				<div class="botoes">
+				<a href="CategoriasAdicionar">Adicionar</a>
 				<a href="Home">Voltar</a>
+			</div>
 			</div>
 		</form>
 	</div>

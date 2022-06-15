@@ -35,17 +35,21 @@
 					<input type="text" class="tabelaAdicionar" id="Descricao" name="Descricao" placeholder="Descricao" value="<c:out value="${produto.descricao}"></c:out>">
 					<input type="text" class="tabelaAdicionar" id="ncmSh" name="ncmSh" placeholder="Ncm/Sh" value="<c:out value="${produto.ncmSh}"></c:out>">
 					<input type="text" class="tabelaAdicionar" id="preco" name="preco" placeholder="Preço" value="<c:out value="${produto.preco}"></c:out>">
-					<input type="text" class="tabelaAdicionar" id="fornecedor" name="fornecedor" placeholder="Fornecedor" value="<c:out value="${produto.fornecedor}"></c:out>">
+					<input type="text" class="tabelaAdicionar" placeholder="Fornecedor" value="<c:out value="${produto.fornecedor}"></c:out>">
+
+					<label class="dropbox" for="Fornecedor">Fornecedor</label>
+						<select class="selectDrop"name="fornecedor" id="fornecedor">
+						<option selected="selected">
+						<c:forEach var="fornecedor" items="${listaFornecedores}">
+						  <option value="${fornecedor.razaoSocial}"><c:out value="${fornecedor.razaoSocial}"></c:out></option>
+						</c:forEach>
+						</select>
 					<label class="dropbox" for="Categoria">Categoria</label>
 						<select class="selectDrop"name="categoria" id="categoria">
-						<option selected="selected" placeholder="${produto.categoria}">
-						  <option value="Gorje">Gorje</option>
-						  <option value="Yale">Yale</option>
-						  <option value="Yale Dupla">Yale Dupla</option>
-						  <option value="Tetra">Tetra</option>
-						  <option value="Pantograficas">Pantograficas</option>
-						  <option value="Codificadas">Codificadas</option>
-						   <option value="Laminas de Segredo">Laminas de Segredo</option>
+						<option selected="selected">
+						<c:forEach var="categoria" items="${listaCategorias}">
+						  <option value="${categoria.nome}"><c:out value="${categoria.nome}"></c:out></option>
+						</c:forEach>
 						</select>
 				</div>
 				<c:out value="${erro}"></c:out>

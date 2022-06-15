@@ -31,8 +31,8 @@
 			<h2>Adicionar Usuario</h2>
 			<div class="bordaTabelaAdicionar">
 					<input type="text" class="tabelaAdicionar" id="nome" name="nome" placeholder="Nome"> 
-					<input type="text" class="tabelaAdicionar" id="login_usuario" name="login_usuario" placeholder="CPF">
-					<input type="text" class="tabelaAdicionar" id="senha_usuario" name="senha_usuario" placeholder="Telefone">
+					<input type="text" class="tabelaAdicionar" id="login_usuario" name="login_usuario" placeholder="Login">
+					<input type="text" class="tabelaAdicionar" id="senha_usuario" name="senha_usuario" placeholder="Senha">
 					<input type="text" class="tabelaAdicionar" id="email" name="email" placeholder="Email">
 					<label class="dropbox" for="tipoDeUsuario">Tipo De Usuario</label>
 						<select class="selectDrop"name="tipoDeUsuario" id="tipoDeUsuario">

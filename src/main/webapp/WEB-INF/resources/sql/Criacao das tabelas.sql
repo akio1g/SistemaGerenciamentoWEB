@@ -118,7 +118,7 @@ CREATE TABLE Usuario(
 	CONSTRAINT pk_id_usuario PRIMARY KEY(id)
 )
 go
-CREATE TABLE Carrinho (
+CREATE drop TABLE Carrinho (
 	id int IDENTITY,
 	id_produto int not null,
 	quantidade int not null,
@@ -128,7 +128,7 @@ CREATE TABLE Carrinho (
 	CONSTRAINT fk_id_produto_carrinho FOREIGN KEY (id_produto) REFERENCES Produto(id)
 )
 GO
-CREATE TABLE RegistrosVenda (
+CREATE drop TABLE RegistrosVenda (
 	id int identity,
 	id_vendedor int,
 	id_cliente int not null,
@@ -216,8 +216,6 @@ INSERT INTO Carrinho (id_produto, quantidade, valor) VALUES
 	(17,200,(14*(select produto.preco from produto where produto.id = 17))),
 	(18,100,(14*(select produto.preco from produto where produto.id = 18)))
 GO
-SELECT * FROM Carrinho
-
 INSERT INTO RegistrosVenda (id_vendedor, id_cliente, id_carrinho, dataVenda, valor)VALUES 
 	(2,4,3,'2022-03-12 21:35:16',(select c.valor from carrinho as c where c.id = 3)),
 	(3,6,4,'2022-06-07 19:18:25',(select c.valor from carrinho as c where c.id = 4)),

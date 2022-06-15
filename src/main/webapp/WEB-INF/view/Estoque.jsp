@@ -27,8 +27,8 @@
 	</nav>
 	<form action="Estoque" method="post" class="formulario">
 			<div>
-				<input type="text" class="inputPesquisa" id="inputPesquisa" name="inputPesquisa" placeholder="Digite sua pesquisa">
 				<h2>Estoque</h2>
+				<input type="text" class="inputPesquisa" id="inputPesquisa" name="inputPesquisa" placeholder="Digite sua pesquisa">
 				<table class="table">	
 					<thead>
 						<tr>

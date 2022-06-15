@@ -6,10 +6,10 @@
 <html>
 
 <head>
-	<meta charset="ISO-8859-1">
-	<link rel="stylesheet" type="text/css"
-		href='<c:url value="./resources/css/styles.css"/>'>
-	<title>Registro de Vendas</title>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css"
+	href='<c:url value="./resources/css/styles.css"/>'>
+<title>Editar Categoria</title>
 </head>
 
 <body>
@@ -26,34 +26,24 @@
 		</ul>
 	</nav>
 	<div class="formulario">
-		<form action="RegistroVendas" method="post" class="form">
-			<h2>Lista de Registros de Venda</h2>
-			<div>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Vendedor</th>
-							<th>Cliente</th>
-							<th>Valor</th>
-						</tr>
-					</thead>
-					<tbody class="nomes">
-						<c:forEach var="Venda" items="${listaVenda}">
-							<tr>
-								<td><c:out value="${Venda.vendedor}"></c:out></td>
-								<td><c:out value="${Venda.cliente}"></c:out></td>
-								<td><c:out value="${Venda.valor}"></c:out></td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
+		
+		<form action="CategoriasEditar" method="post" class="form">
+			<div class="posicionarCheck">
+				<h2>Editar Categoria</h2>
+				<div class="bordaTabelaAdicionar">
+					<input type="hidden" id="id" name="id" value="${categoria.id}">
+					<input type="text" class="tabelaAdicionar" id="nome" name="nome" placeholder="Nome da Categoria" value="<c:out value="${categoria.nome}"></c:out>">
+				</div>
 				<c:out value="${erro}"></c:out>
 			</div>
 			<div class="botoes">
-				<a href="Home">Voltar</a>
+				<input type="submit"  id="botaoSalvar" name="botaoSalvar" value="Salvar">
+				<input type="submit"  id="botaoExcluir" name="botaoExcluir" value="Excluir">
+				<a href="Categorias" class="voltarProduto">Voltar</a>
 			</div>
 		</form>
 	</div>
+	
 </body>
 
 </html>

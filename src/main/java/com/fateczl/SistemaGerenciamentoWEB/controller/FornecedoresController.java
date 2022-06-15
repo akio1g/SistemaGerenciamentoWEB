@@ -132,7 +132,9 @@ public class FornecedoresController {
 					if (fDAO.verificarDuplicidade(fornecedor.getCnpj())) {
 						fDAO.adicionarFornecedor(fornecedor, end);
 					} else {
-						System.out.println("duplicado");
+						erro = "CNPJ já cadastrado";
+						model.addAttribute("erro", erro);
+						return new ModelAndView("FornecedorAdicionar");
 					}
 				}
 			}else {

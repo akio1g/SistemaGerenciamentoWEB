@@ -95,26 +95,7 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 		ps.close();
 		c.close();
 	}
-	@Override
-	public List<Categoria> listarCategorias()  throws SQLException, ClassNotFoundException {
-		Connection c = gDAO.getConnection();
-		
-		List<Categoria> listaCategorias = new ArrayList<>();
-		
-		PreparedStatement ps = c.prepareStatement("EXEC sp_listar_categorias");
-		ResultSet rs = ps.executeQuery();
-		while(rs.next()) {
-			Categoria categoria = new Categoria();
-			categoria.setId(rs.getInt("id"));
-			categoria.setNome(rs.getString("nome"));
-			
-			listaCategorias.add(categoria);
-		}
-		rs.close();
-		ps.close();
-		c.close();
-		return listaCategorias;
-	}
+	
 	@Override
 	public List<Produto> pesquisarProdutoPorNome(String nome) throws SQLException, ClassNotFoundException{
 		
@@ -159,5 +140,112 @@ public class ProdutoDAOImpl implements ProdutoDAO{
 		p.setFornecedor(rs.getString("razaoSocial"));
 		return p;
 	}
+	@Override
+	public void adicionar_categoria(Categoria categoria) throws SQLException, ClassNotFoundException{
+		Connection c = gDAO.getConnection();
+
+		PreparedStatement p = c.prepareStatement("EXEC sp_adicionar_categoria ?");
+		p.setString(1, categoria.getNome());
+		p.executeUpdate();
+		
+		p.close();
+		c.close();
+	}
+	@Override
+	public List<Categoria> pesquisar_categoria_por_nome(String nome) throws SQLException, ClassNotFoundException{
+		Connection c = gDAO.getConnection();
+		
+		List<Categoria> listaCategorias = new ArrayList<>();
+		PreparedStatement p = c.prepareStatement("EXEC sp_pesquisar_categoria_por_nome ?");
+		p.setString(1, nome);
+		ResultSet rs = p.executeQuery();
+		
+		while(rs.next()) {
+			Categoria categoria = new Categoria();
+			
+			categoria.setId(rs.getInt("id"));
+			categoria.setNome(rs.getString("nome"));
+			
+			listaCategorias.add(categoria);
+		}
+		p.close();
+		rs.close();
+		c.close();
+		return listaCategorias;
+	}
+	@Override
+	public Categoria pesquisar_categoria_por_id(int id) throws SQLException, ClassNotFoundException{
+		Connection c = gDAO.getConnection();
+		
+		Categoria categoria = new Categoria();
+		
+		PreparedStatement p = c.prepareStatement("Exec sp_pesquisar_categoria_por_id ?");
+		p.setInt(1, id);
+		ResultSet rs = p.executeQuery();
+		if(rs.next()) {
+			categoria.setId(rs.getInt("id"));
+			categoria.setNome(rs.getString("nome"));
+		}
+		p.close();
+		rs.close();
+		c.close();
+		return categoria;
+	}
+	@Override
+	public List<Categoria> listarCategorias()  throws SQLException, ClassNotFoundException {
+		Connection c = gDAO.getConnection();
+		
+		List<Categoria> listaCategorias = new ArrayList<>();
+		
+		PreparedStatement ps = c.prepareStatement("EXEC sp_listar_categorias");
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()) {
+			Categoria categoria = new Categoria();
+			categoria.setId(rs.getInt("id"));
+			categoria.setNome(rs.getString("nome"));
+			
+			listaCategorias.add(categoria);
+		}
+		rs.close();
+		ps.close();
+		c.close();
+		return listaCategorias;
+	}
+	@Override
+	public void editar_categoria(Categoria categoria) throws SQLException, ClassNotFoundException{
+		Connection c = gDAO.getConnection();
+		
+		PreparedStatement ps = c.prepareStatement("Exec sp_editar_categoria ?,?");
+		ps.setInt(1, categoria.getId());
+		ps.setString(2, categoria.getNome());
+		ps.executeUpdate();
+		
+		ps.close();
+		c.close();
+	}
+	@Override
+	public boolean verificar_duplicidade_categoria(String nome_categoria) throws SQLException, ClassNotFoundException{
+		Connection c = gDAO.getConnection();
+		
+		PreparedStatement ps = c.prepareStatement("EXEC  sp_verificar_duplicidade_categoria ?");
+		ps.setString(1, nome_categoria);;
+		ResultSet rs = ps.executeQuery();
+		if(rs.next()) {
+			return true;
+		}
+		return false;
+	}
+	@Override
+	public void excluir_categoria_por_id(int id) throws SQLException, ClassNotFoundException{
+		Connection c = gDAO.getConnection();
+		
+		PreparedStatement ps = c.prepareStatement("Exec sp_excluir_categoria ?");
+		ps.setInt(1, id);
+		ps.executeUpdate();
+		
+		ps.close();
+		c.close();
+	}
+	
 
 }

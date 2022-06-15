@@ -6,10 +6,10 @@
 <html>
 
 <head>
-	<meta charset="ISO-8859-1">
-	<link rel="stylesheet" type="text/css"
-		href='<c:url value="./resources/css/styles.css"/>'>
-	<title>Produto</title>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css"
+	href='<c:url value="./resources/css/styles.css"/>'>
+<title>Adicionar Categoria</title>
 </head>
 
 <body>
@@ -26,17 +26,17 @@
 		</ul>
 	</nav>
 	<div class="formulario">
-	<form action="Produto" method="post" class="form">
-			<h2>Lista de Categorias</h2>
-			<div class="listaBotoesCategoria">
-				<c:forEach var="categoria" items="${listaCategorias}">
-					<button id="id" name="botaoCategoria" value="${categoria.id}"><c:out value="${categoria.nome}"></c:out></button>
-				</c:forEach>
-			</div>	
-			<c:out value="${erro}"></c:out>
+		<form action="CategoriasAdicionar" method="post" class="form">
+			<div class="posicionarCheck">
+				<h2>Adicionar Categoria</h2>
+				<div class="bordaTabelaAdicionar">
+					<input type="text" class="tabelaAdicionar" id="nome" name="nome" placeholder="Nome da Categoria"> 
+				</div>
+				<c:out value="${erro}"></c:out>
+			</div>
 			<div class="botoes">
-				<a href="Categorias" class="voltarProduto">Categorias</a>
-				<a href="Home" class="voltarProduto">Voltar</a>
+				<input type="submit" id="botao" name="botaoAdicionar" value="Salvar">
+				<a href="Categorias">Voltar</a>
 			</div>
 		</form>
 	</div>

@@ -6,7 +6,6 @@ import java.util.Set;
 public class Categoria {
 	private int id;
 	private String nome;
-	private Set<Produto> produtos = new HashSet<>();
 
 	public Categoria() {
 	}
@@ -32,18 +31,9 @@ public class Categoria {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
-	public Set<Produto> getProdutos() {
-		return produtos;
-	}
-
-	public void setProdutos(Set<Produto> produtos) {
-		this.produtos = produtos;
-	}
-
 	@Override
 	public String toString() {
-		return "Categoria [id=" + id + ", nome=" + nome + ", produtos=" + produtos + "]";
+		return "Categoria [id=" + id + ", nome=" + nome + "]";
 	}
 	
 }

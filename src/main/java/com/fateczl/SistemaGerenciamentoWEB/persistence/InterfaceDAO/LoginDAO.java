@@ -7,4 +7,5 @@ public interface LoginDAO {
 	public void SalvarAutenticacao(String login) throws SQLException, ClassNotFoundException;
 	public String verificarAcesso() throws SQLException, ClassNotFoundException;
 	public void limpar_acesso() throws SQLException, ClassNotFoundException;
+	public void resetar_senha(String email, String login, String senha) throws SQLException, ClassNotFoundException;
 }

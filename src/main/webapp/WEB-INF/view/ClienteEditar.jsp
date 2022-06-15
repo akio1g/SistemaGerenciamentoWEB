@@ -27,6 +27,7 @@
 	</nav>
 	<div class="formulario">
 		<form action="ClienteEditar" method="post" class="form">
+			<h2>Editar Cliente</h2>
 			<div class="posicionarCheck">
 				<div class="bordaTabelaAdicionar">
 					<input type="hidden" id="id" name="Id" value="${cliente.id}">

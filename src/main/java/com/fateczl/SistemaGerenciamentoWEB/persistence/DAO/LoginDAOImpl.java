@@ -61,7 +61,7 @@ public class LoginDAOImpl implements LoginDAO{
 		
 		Connection c = gDAO.getConnection();
 		
-		PreparedStatement p = c.prepareStatement("EXEC sp_validarAcesso ?,?");
+		PreparedStatement p = c.prepareStatement("EXEC sp_validar_acesso ?,?");
 		p.setString(1, nome);
 		p.setString(2, senha);
 		ResultSet rs = p.executeQuery();
@@ -79,7 +79,21 @@ public class LoginDAOImpl implements LoginDAO{
 		Connection c = gDAO.getConnection();
 		
 		PreparedStatement p = c.prepareStatement("EXEC sp_limpar_acesso");
-		p.executeLargeUpdate();
+		p.executeUpdate();
+		
+		p.close();
+		c.close();
+	}
+	@Override
+	public void resetar_senha(String email, String login, String senha) throws SQLException, ClassNotFoundException{
+		Connection c = gDAO.getConnection();
+		
+		PreparedStatement p = c.prepareStatement("EXEC sp_resetar_senha ?,?,?");
+		p.setString(1, login);
+		p.setString(2, email);
+		p.setString(3, senha);
+		
+		p.executeUpdate();
 		
 		p.close();
 		c.close();

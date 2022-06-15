@@ -34,23 +34,24 @@
 					<input type="text" class="tabelaAdicionar" id="Descricao" name="Descricao" placeholder="Descricao">
 					<input type="text" class="tabelaAdicionar" id="ncmSh" name="ncmSh" placeholder="ncmSh">
 					<input type="text" class="tabelaAdicionar" id="preco" name="preco"placeholder="Preço">
-						<input type="text" class="tabelaAdicionar" id="fornecedor" name="fornecedor"placeholder="Fornecedor">
+					<label class="dropbox" for="Fornecedor">Fornecedor</label>
+						<select class="selectDrop"name="fornecedor" id="fornecedor">
+						<c:forEach var="fornecedor" items="${listaFornecedores}">
+						  <option value="${fornecedor.razaoSocial}"><c:out value="${fornecedor.razaoSocial}"></c:out></option>
+						</c:forEach>
+						</select>
 					<label class="dropbox" for="Categoria">Categoria</label>
 						<select class="selectDrop"name="categoria" id="categoria">
-						  <option value="Gorje">Gorje</option>
-						  <option value="Yale">Yale</option>
-						  <option value="Yale Dupla">Yale Dupla</option>
-						  <option value="Tetra">Tetra</option>
-						  <option value="Pantograficas">Pantograficas</option>
-						  <option value="Codificadas">Codificadas</option>
-						  <option value="Laminas de Segredo">Laminas de Segredo</option>
+							<c:forEach var="categoria" items="${listaCategorias}">
+							  	<option value="${categoria.nome}"><c:out value="${categoria.nome}"></c:out></option>
+							</c:forEach>
 						</select>
 				</div>
 				<c:out value="${erro}"></c:out>
 			</div>
 			<div class="botoes">
 				<input type="submit" id="botao" name="botaoSalvar" value="Salvar">
-				<a href="Produto">Voltar</a>
+				<a href="ProdutoListar">Voltar</a>
 			</div>
 		</form>
 	</div>

@@ -99,11 +99,11 @@ AS
 													--FUNÇÕES DO FORNECEDOR--
 --******************************************************************************--
 GO
-CREATE PROC sp_adicionar_fornecedores @RazaoSocial VARCHAR(max), @Cnpj VARCHAR(max), @InscricaoEstadual CHAR(2), @Telefone VARCHAR(MAX),
+CREATE PROC  sp_adicionar_fornecedores @RazaoSocial VARCHAR(max), @Cnpj VARCHAR(max), @InscricaoEstadual CHAR(2), @Telefone VARCHAR(MAX),
 									@Cep VARCHAR(max), @Cidade VARCHAR(MAX), @Estado VARCHAR(max), @Logradouro VARCHAR(max), @Numero INT, @Completo VARCHAR(max)
 AS
 	INSERT INTO Fornecedor VALUES(@RazaoSocial, @Cnpj, @InscricaoEstadual, @Telefone)
-	INSERT INTO Endereco VALUES ((SELECT id FROM Fornecedor WHERE cnpj = @Cnpj), @Cep, @Cidade, @Estado, @Logradouro, @Numero, @Completo)
+	INSERT INTO Endereco_Fornecedor VALUES ((SELECT id FROM Fornecedor WHERE cnpj = @Cnpj), @Cep, @Cidade, @Estado, @Logradouro, @Numero, @Completo)
 --******************************************************************************--
 GO
 CREATE PROC sp_lista_fornecedores
@@ -186,16 +186,7 @@ CREATE PROC sp_adicionar_produto (@nome VARCHAR(max), @descricao VARCHAR(max), @
 AS
 	DECLARE @aux INT, @aux2 INT
 
-	SET @aux = 
-		CASE
-			WHEN (@categoria = 'Gorje') THEN 1
-			WHEN (@categoria = 'Yale') THEN 2
-			WHEN (@categoria = 'Yale Dupla') THEN 3
-			WHEN (@categoria = 'Tetra') THEN 4
-			WHEN (@categoria = 'Pantograficas') THEN 5
-			WHEN (@categoria = 'Codificadas') THEN 6
-			WHEN (@categoria = 'Laminas de Segredo') THEN 7
-		END	
+	SET @aux = (SELECT id FROM Categoria WHERE nome = @categoria)
 	
 	SET @aux2 = (SELECT id FROM Fornecedor WHERE razaoSocial = @fornecedor)
 
@@ -217,7 +208,6 @@ AS
 	GROUP BY nome
 --******************************************************************************--
 GO
-
 CREATE PROC sp_listar_produto_por_categoria(@id_categoria INT)
 AS
 	SELECT p.id, p.nome, p.descricao, p.ncmSh, p.preco, p.id_categoria, f.razaoSocial FROM Produto as p
@@ -227,8 +217,8 @@ AS
 	ON p.id_fornecedor = f.id
 	WHERE cp.id = @id_categoria
 --******************************************************************************--
-Go
-CREATE PROC sp_editar_produto(@nome VARCHAR(max), @descricao VARCHAR(max), @ncmSh VARCHAR(max), @preco VARCHAR(max), @categoria VARCHAR(20),@fornecedor VARCHAR(max), @id_produto INT)
+GO
+CREATE PROC sp_editar_produto(@nome VARCHAR(max), @descricao VARCHAR(max), @ncmSh VARCHAR(max), @preco VARCHAR(max), @categoria VARCHAR(max),@fornecedor VARCHAR(max), @id_produto INT)
 AS
 	IF(@nome != '')
 	BEGIN
@@ -249,16 +239,7 @@ AS
 	IF(@categoria != '')
 	BEGIN
 		UPDATE Produto
-		SET id_categoria =
-			CASE
-				WHEN @categoria = 'Gorje' THEN 1
-				WHEN @categoria = 'Yale' THEN 2
-				WHEN @categoria = 'Yale Dupla' THEN 3
-				WHEN @categoria = 'Tetra' THEN 4
-				WHEN @categoria = 'Pantograficas' THEN 5
-				WHEN @categoria = 'Codificadas' THEN 6
-				WHEN @categoria = 'Laminas de Segredo' THEN 7
-			END			
+		SET id_categoria =	(SELECT id FROM Categoria WHERE nome = @categoria)
 		WHERE id = @id_produto
 	IF(@fornecedor != '')
 	BEGIN
@@ -449,4 +430,50 @@ CREATE PROC sp_limpar_acesso
 AS
 	DELETE FROM Acesso
 --******************************************************************************--
+GO
+CREATE PROC sp_resetar_senha(@login VARCHAR(MAX), @email VARCHAR(MAX), @senha VARCHAR(MAX))
+AS
+	UPDATE Usuario
+	SET senha_usuario = @senha
+	WHERE login_usuario = @login and email = @email	
+--******************************************************************************--
+GO
+CREATE PROC sp_adicionar_categoria(@nome_categoria VARCHAR(MAX))
+AS
+	IF(@nome_categoria) NOT IN (SELECT nome FROM Categoria)
+	BEGIN
+		INSERT INTO Categoria VALUES(@nome_categoria)
+	END
 
+--******************************************************************************--
+GO
+CREATE PROC sp_editar_categoria(@id_categoria INT, @nome_categoria VARCHAR(max))
+
+AS
+	UPDATE Categoria
+	SET nome = @nome_categoria
+	WHERE id = @id_categoria
+--******************************************************************************--
+GO
+CREATE PROC sp_excluir_categoria(@id_categoria INT)
+AS
+	IF @id_categoria NOT IN(SELECT id_categoria FROM Produto)
+	BEGIN
+		DELETE FROM Categoria WHERE id = @id_categoria
+	END
+--******************************************************************************--
+GO 
+CREATE PROC sp_verificar_duplicidade_categoria(@nome VARCHAR(max))
+AS
+	SELECT nome FROM Categoria WHERE nome = @nome
+--******************************************************************************--
+GO
+CREATE PROC sp_pesquisar_categoria_por_nome(@nome VARCHAR(max))
+AS
+	SELECT id, nome FROM Categoria WHERE nome like '%'+@nome+'%'
+
+GO
+--******************************************************************************--
+CREATE PROC sp_pesquisar_categoria_por_id(@id INT)
+AS
+	SELECT id, nome FROM Categoria WHERE id = @id

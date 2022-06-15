@@ -13,4 +13,10 @@ public interface ProdutoDAO {
 	public void editarProduto(Produto p) throws ClassNotFoundException, SQLException;
 	List<Categoria> listarCategorias() throws SQLException, ClassNotFoundException;
 	public List<Produto> pesquisarProdutoPorNome(String nome) throws SQLException, ClassNotFoundException;
+	public boolean verificar_duplicidade_categoria(String nome_categoria) throws SQLException, ClassNotFoundException;
+	public void adicionar_categoria(Categoria categoria) throws SQLException, ClassNotFoundException;
+	public List<Categoria> pesquisar_categoria_por_nome(String nome) throws SQLException, ClassNotFoundException;
+	public Categoria pesquisar_categoria_por_id(int id) throws SQLException, ClassNotFoundException;
+	public void editar_categoria(Categoria categoria) throws SQLException, ClassNotFoundException;
+	public void excluir_categoria_por_id(int id) throws SQLException, ClassNotFoundException;
 }

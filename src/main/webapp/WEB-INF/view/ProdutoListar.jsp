@@ -28,6 +28,7 @@
 	<div class="formulario">
 		<form action="ProdutoListar" method="post" class="form">
 			<div>
+				<h2>Lista de Produtos</h2>
 				<input type="text" class="inputPesquisa" id="inputPesquisa" name="inputPesquisa" placeholder="Digite sua pesquisa">
 				<table class="table">	
 					<thead>
