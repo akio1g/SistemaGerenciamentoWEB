@@ -243,12 +243,9 @@ AS
 		WHERE id = @id_produto
 	IF(@fornecedor != '')
 	BEGIN
-		IF @fornecedor IN (SELECT razaoSocial FROM Fornecedor)
-		BEGIN
-			UPDATE Produto
-			SET id_fornecedor = (SELECT id FROM Fornecedor WHERE razaoSocial = @fornecedor)
-			WHERE id = @id_produto
-		END
+		UPDATE Produto
+		SET id_fornecedor = (SELECT id FROM Fornecedor WHERE razaoSocial = @fornecedor)
+		WHERE id = @id_produto
 	END
 END
 --******************************************************************************--
@@ -531,11 +528,8 @@ AS
 	INSERT INTO TabelaBoolean VALUES(@valor)
 --******************************************************************************----******************************************************************************--
 GO
-
-EXEC sp_listar_produtos_carrinho 1
-
 CREATE PROC sp_listar_produtos_carrinho(@id int)
 AS
 	SELECT nome_produto, quantidade, valor FROM Carrinho WHERE id_registroVenda = @id 
 
-	SELECT * FROM Usuario
+	

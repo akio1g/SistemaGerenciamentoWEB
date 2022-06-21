@@ -117,6 +117,17 @@ CREATE TABLE Usuario(
 	CONSTRAINT fk_id_tipoDeUsuario FOREIGN KEY(id_tipoDeUsuario) REFERENCES Tipo_De_Usuario(id),
 	CONSTRAINT pk_id_usuario PRIMARY KEY(id)
 )
+GO
+CREATE TRIGGER t_verificar_administrador
+ON Usuario
+INSTEAD OF DELETE
+AS
+BEGIN
+	IF((SELECT Count(id_tipoDeUsuario) FROM Usuario WHERE id_tipoDeUsuario = 1) > 1)
+	BEGIN
+		DELETE FROM Usuario WHERE id = (SELECT id FROM deleted)
+	END
+END
 go
 CREATE TABLE Carrinho (
 	id int IDENTITY,

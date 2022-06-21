@@ -37,14 +37,14 @@
 					<input type="text" class="tabelaAdicionar" id="preco" name="preco" placeholder="Preço" value="<c:out value="${produto.preco}"></c:out>">
 					<input type="text" class="tabelaAdicionar" placeholder="Fornecedor" value="<c:out value="${produto.fornecedor}"></c:out>">
 
-					<label class="dropbox" for="Fornecedor">Fornecedor</label>
+					<label class="dropbox" for="Fornecedor" style="text-align: center;">Fornecedor</label>
 						<select class="selectDrop"name="fornecedor" id="fornecedor">
 						<option selected="selected">
 						<c:forEach var="fornecedor" items="${listaFornecedores}">
 						  <option value="${fornecedor.razaoSocial}"><c:out value="${fornecedor.razaoSocial}"></c:out></option>
 						</c:forEach>
 						</select>
-					<label class="dropbox" for="Categoria">Categoria</label>
+					<label class="dropbox" for="Categoria" style="text-align: center;">Categoria</label>
 						<select class="selectDrop"name="categoria" id="categoria">
 						<option selected="selected">
 						<c:forEach var="categoria" items="${listaCategorias}">
