@@ -164,7 +164,7 @@ public class RegistroVendasController {
 				if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
 					listaProdutos = rDAO.listaProdutos();
 					rDAO.adicionar_carrinho(listaProdutos, quantidade, id_registro);
-					return new ModelAndView();
+					return new ModelAndView("RegistroVendas");
 				}
 			}else {
 				erro = "Acesso não autorizado";

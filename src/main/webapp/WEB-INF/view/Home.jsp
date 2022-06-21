@@ -22,10 +22,8 @@
 				<li><a href="Estoque">Estoque</a></li>
 				<li><a href="RegistroVendas">Registro De Vendas</a></li>
 				<li><a href="Fornecedores">Fornecedores</a></li>
-				<%--<li><a href="Relatorios">Relátorios</a></li>--%>
+				<li><a href="RelatorioListar">Relátorios</a></li>
 				<li><a href="GerenciarUsuarios">Gerenciar Usuários</a></li>
-				<li></li>
-				<li></li>
 			</ul>
 		</nav>
 			<div class="informacaoEmpresa">

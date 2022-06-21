@@ -273,6 +273,7 @@ AS
 	INNER JOIN Fornecedor f 
 	ON p.id_fornecedor = f.id
 	WHERE p.id = @id_produto
+--******************************************************************************--
 							--FUNÇÕES USUARIO--
 GO
 CREATE PROC sp_listar_usuarios
@@ -343,9 +344,8 @@ AS
 	INNER JOIN Tipo_de_Usuario t 
 	ON u.id_tipoDeUsuario = t.id 
 	WHERE u.nome like '%'+@nome+'%'
-	--******************************************************************************--
-GO
 --******************************************************************************--
+GO
 CREATE PROC sp_pesquisar_Usuario_Por_Id(@id_usuario INT)
 AS
 	SELECT  u.id,  u.nome, u.email,t.nome as tipo_de_usuario FROM Usuario u 
@@ -386,7 +386,6 @@ AS
 	ON e.id_Produto = p.id
 	WHERE p.nome like '%'+@nomeProduto+'%'
 --****************************************************************************--
---****************************************************************************--
 GO
 CREATE PROC sp_validar_acesso(@login VARCHAR(max), @senha VARCHAR(max))
 AS
@@ -425,9 +424,11 @@ CREATE PROC sp_adicionar_categoria(@nome_categoria VARCHAR(MAX))
 AS
 	IF(@nome_categoria) NOT IN (SELECT nome FROM Categoria)
 	BEGIN
-		INSERT INTO Categoria VALUES(@nome_categoria)
+		IF @nome_categoria != ''
+		BEGIN
+			INSERT INTO Categoria VALUES(@nome_categoria)
+		END
 	END
-
 --******************************************************************************--
 GO
 CREATE PROC sp_editar_categoria(@id_categoria INT, @nome_categoria VARCHAR(max))
@@ -471,12 +472,17 @@ GO
 CREATE PROC sp_listar_vendas
 AS
 	SELECT * FROM RegistrosVenda
+
+GO
+CREATE PROC sp_listar_relatorios
+AS
+	SELECT id, nome_cliente, valor FROM RegistrosVenda
 --******************************************************************************----******************************************************************************--
 GO
 CREATE PROC sp_listar_vendedores
 AS
 	SELECT nome FROM Usuario WHERE id_tipoDeUsuario = 3
-	--******************************************************************************----******************************************************************************--
+--******************************************************************************----******************************************************************************--
 GO
 CREATE PROC sp_listar_clientes
 AS
@@ -487,14 +493,13 @@ CREATE PROC sp_excluir_registroDeVenda(@id INT)
 AS
 	DELETE FROM Carrinho WHERE id_registroVenda = @id
 	DELETE FROM RegistrosVenda WHERE id = @id
-	--******************************************************************************----******************************************************************************--
+--******************************************************************************----******************************************************************************--
 GO
 CREATE PROC sp_listar_produto_carrinho
 AS
 	SELECT nome FROM Produto
-
-GO
 --******************************************************************************----******************************************************************************--
+GO
 CREATE PROC sp_buscar_id_registro
 AS
 	SELECT TOP 1 id FROM RegistrosVenda 
@@ -503,9 +508,6 @@ AS
 GO
 CREATE PROC sp_adicionar_carrinho(@nome_produto VARCHAR(max), @quantidade INT, @id INT) --Adicionar a quantidade de vezes antes do reset//passar por parametro o tamanho //criar uma tabela com a quantidade armazenada
 AS
-	INSERT INTO Carrinho VALUES(@nome_produto, @quantidade, (SELECT preco FROM Produto WHERE nome = @nome_produto), @id)
-
-
 	IF(SELECT valor FROM TabelaBoolean) = 0
 	BEGIN
 		DELETE FROM Carrinho WHERE id_registroVenda = @id
@@ -514,14 +516,15 @@ AS
 		WHERE id = @id
 		EXEC sp_tabela_boolean 1
 	END
-	IF (SELECT valor FROM TabelaBoolean) = 1
+	IF(SELECT valor FROM TabelaBoolean) = 1
 	BEGIN
-		UPDATE RegistrosVenda
-		SET valor += (SELECT preco FROM Produto WHERE nome = @nome_produto)*@quantidade
-		WHERE id = @id
+		IF(@quantidade > 0)
+		BEGIN
+			INSERT INTO Carrinho VALUES(@nome_produto, @quantidade, (SELECT preco FROM Produto WHERE nome = @nome_produto), @id)
+		END
 	END
-GO
 --******************************************************************************----******************************************************************************--
+GO
 CREATE PROC sp_tabela_boolean(@valor int)
 AS
 	DELETE FROM TabelaBoolean 
@@ -531,5 +534,21 @@ GO
 CREATE PROC sp_listar_produtos_carrinho(@id int)
 AS
 	SELECT nome_produto, quantidade, valor FROM Carrinho WHERE id_registroVenda = @id 
+--******************************************************************************----******************************************************************************--
+GO
+CREATE PROC sp_buscar_registro_por_id(@id INT)
+AS
+	SELECT * FROM RegistrosVenda WHERE id = @id
+--******************************************************************************----******************************************************************************--
+GO
+CREATE PROC sp_atualizar_registro(@id INT)
+AS	
+	DECLARE @valor DECIMAL(7,2)
+	SET @valor = (SELECT SUM(valor*quantidade) FROM Carrinho WHERE id_registroVenda = @id) 
+	
+	UPDATE RegistrosVenda
+	SET valor = @valor
+	WHERE id = @id
 
+	select * from Carrinho
 	

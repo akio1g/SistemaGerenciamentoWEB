@@ -148,6 +148,7 @@ CREATE TABLE RegistrosVenda (
 
 	CONSTRAINT pk_id_registroVenda PRIMARY KEY(id)
 )
+GO
 CREATE TABLE Acesso(
 	id int identity,
 	id_usuario INT NOT NULL,
@@ -156,6 +157,7 @@ CREATE TABLE Acesso(
 	CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
 	CONSTRAINT pk_id_Acesso PRIMARY KEY(id)
 )
+GO
 CREATE TABLE TabelaBoolean(
 	 id int identity,
 	 valor INT not null

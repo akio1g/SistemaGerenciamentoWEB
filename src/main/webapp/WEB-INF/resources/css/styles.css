@@ -58,6 +58,7 @@ li a:hover{
 .table{
 	border: 0.5px solid black;
     width: 100%;
+    margin: 10px;
 }
 .nomes{
 	text-align: center;
@@ -176,4 +177,15 @@ li a:hover{
 .btn-login:hover {
     color: rgb(255, 255, 255);
     background: rgb(0, 0, 0);
+}
+.tableRegistro{
+	border: 0.5px solid black;
+    width: 300px;
+    margin-left: 70px;
+    margin-bottom: 5px;
+}
+.valorTotal{
+	border: 0.5px solid black;
+    text-align: right;
+    margin-left: 300px;
 }

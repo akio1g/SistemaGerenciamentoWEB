@@ -129,6 +129,28 @@ public class RegistrarVendasDAOImpl implements RegistroVendasDAO{
 		return 0;
 	}
 	@Override
+	public RegistroDeVenda buscar_registro_por_id(int id) throws SQLException, ClassNotFoundException{
+		Connection c = gDAO.getConnection();
+		
+		PreparedStatement p = c.prepareStatement("Exec sp_buscar_registro_por_id ?");
+		
+		p.setInt(1, id);
+		ResultSet rs = p.executeQuery();
+		if(rs.next()) {
+			RegistroDeVenda r = new RegistroDeVenda();
+			r.setId(rs.getInt("id"));
+			r.setCliente(rs.getString("nome_cliente"));
+			r.setVendedor(rs.getString("nome_vendedor"));
+			r.setData(rs.getDate("dataVenda").toLocalDate());
+			r.setValor(rs.getDouble("valor"));
+			
+			c.close();
+			p.close();
+			return r;
+		}
+		return null;
+	}
+	@Override
 	public void adicionar_carrinho(List<String> produtos, List<String> quantidade, int id) throws SQLException, ClassNotFoundException{
 		Connection c = gDAO.getConnection();
 		
@@ -147,8 +169,8 @@ public class RegistrarVendasDAOImpl implements RegistroVendasDAO{
 				p.close();
 			}
 		}
-		PreparedStatement pst = c.prepareStatement("Exec sp_tabela_boolean ?");
-		pst.setInt(1, 1);
+		PreparedStatement pst = c.prepareStatement("Exec sp_atualizar_registro ?");
+		pst.setInt(1, id);
 		pst.executeUpdate();
 		
 		ps.close();
