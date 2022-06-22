@@ -58,20 +58,7 @@ public class EstoqueController{
 		
 		try {
 			if(lDAO.verificarAcesso().equals("Estoquista") || lDAO.verificarAcesso().equals("Administrador")) {
-				if(botaoInput.isEmpty()) {
-					listaEstoque = eDAO.listarEstoque();
-				}else {
-					listaEstoque = eDAO.listarProdutoPorNome(botaoInput);
-					if(listaEstoque.isEmpty()) {
-						listaEstoque = eDAO.listarEstoque();
-						model.addAttribute("listaEstoque", listaEstoque);
-						return new ModelAndView("Estoque");
-					}else {
-						model.addAttribute("erro", erro);
-						model.addAttribute("listaEstoque", listaEstoque);
-						return new ModelAndView("Estoque");
-					}
-				}
+				listaEstoque = eDAO.listarEstoque();
 				if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
 					List<Estoque> listaAtualizada = new ArrayList<Estoque>();
 					for(int i=0; i< listaEstoque.size(); i++) {
@@ -81,6 +68,9 @@ public class EstoqueController{
 						listaAtualizada.add(novoItem);
 					}
 					eDAO.editarEstoque(listaAtualizada);
+					model.addAttribute("erro", erro);
+					model.addAttribute("listaEstoque", listaEstoque);
+					return new ModelAndView("Estoque");
 				}
 			}else {
 				erro = "Acesso não autorizado";
