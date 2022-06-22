@@ -7,9 +7,11 @@ CREATE PROC sp_adicionar_cliente @nomeRazaoSocial VARCHAR(max), @CpfCnpj VARCHAR
 							     @Cep VARCHAR(max), @cidade VARCHAR(max), @estado VARCHAR(max), 
 							     @logradouro VARCHAR(max), @numero INT, @complemento VARCHAR(max)
 AS
-	INSERT INTO Cliente VALUES(@nomeRazaoSocial, @CpfCnpj, @Telefone, @Email, @InscricaoEstadual)
-	INSERT INTO Endereco VALUES((SELECT id FROM Cliente WHERE cpfCnpj = @CpfCnpj), @Cep, @cidade, @estado, @logradouro, @numero, @complemento)
-
+	IF(@nomeRazaoSocial != '' AND @CpfCnpj != '')
+	BEGIN
+		INSERT INTO Cliente VALUES(@nomeRazaoSocial, @CpfCnpj, @Telefone, @Email, @InscricaoEstadual)
+		INSERT INTO Endereco VALUES((SELECT id FROM Cliente WHERE cpfCnpj = @CpfCnpj), @Cep, @cidade, @estado, @logradouro, @numero, @complemento)
+	END
 --******************************************************************************--
 GO
 CREATE PROC sp_lista_clientes 
@@ -94,7 +96,8 @@ AS
 
 
 
-
+	SELECT TRIM( nomeRazaoSocial) FROM Cliente
+		SELECT( nomeRazaoSocial) FROM Cliente
 
 													--FUNÇÕES DO FORNECEDOR--
 --******************************************************************************--
@@ -102,8 +105,11 @@ GO
 CREATE PROC  sp_adicionar_fornecedores @RazaoSocial VARCHAR(max), @Cnpj VARCHAR(max), @InscricaoEstadual CHAR(2), @Telefone VARCHAR(MAX),
 									@Cep VARCHAR(max), @Cidade VARCHAR(MAX), @Estado VARCHAR(max), @Logradouro VARCHAR(max), @Numero INT, @Completo VARCHAR(max)
 AS
-	INSERT INTO Fornecedor VALUES(@RazaoSocial, @Cnpj, @InscricaoEstadual, @Telefone)
-	INSERT INTO Endereco_Fornecedor VALUES ((SELECT id FROM Fornecedor WHERE cnpj = @Cnpj), @Cep, @Cidade, @Estado, @Logradouro, @Numero, @Completo)
+	IF(@RazaoSocial != '' AND @Cnpj != '')
+	BEGIN
+		INSERT INTO Fornecedor VALUES(@RazaoSocial, @Cnpj, @InscricaoEstadual, @Telefone)
+		INSERT INTO Endereco_Fornecedor VALUES ((SELECT id FROM Fornecedor WHERE cnpj = @Cnpj), @Cep, @Cidade, @Estado, @Logradouro, @Numero, @Completo)
+	END
 --******************************************************************************--
 GO
 CREATE PROC sp_lista_fornecedores
@@ -190,7 +196,10 @@ AS
 	
 	SET @aux2 = (SELECT id FROM Fornecedor WHERE razaoSocial = @fornecedor)
 
-	INSERT INTO Produto VALUES(@nome, @descricao, @ncmSh, @preco, @aux, @aux2)
+	IF @nome != ''
+	BEGIN
+		INSERT INTO Produto VALUES(@nome, @descricao, @ncmSh, @preco, @aux, @aux2)
+	END
 --******************************************************************************--
 GO
 CREATE PROC sp_listar_produto
@@ -295,8 +304,10 @@ AS
 				WHEN @tipo_usuario = 'Vendedor' THEN 3
 			END		
 
-	INSERT INTO Usuario VALUES(@nome, @login_usuario, @senha_usuario, @email, @aux)
-	 
+	IF(@nome != '' AND @senha_usuario != '' AND @login_usuario != '')
+	BEGIN
+		INSERT INTO Usuario VALUES(@nome, @login_usuario, @senha_usuario, @email, @aux)
+	END
 --******************************************************************************--
 GO
 CREATE PROC sp_excluir_usuario_por_id (@id_usuario INT)
@@ -434,9 +445,12 @@ GO
 CREATE PROC sp_editar_categoria(@id_categoria INT, @nome_categoria VARCHAR(max))
 
 AS
-	UPDATE Categoria
-	SET nome = @nome_categoria
-	WHERE id = @id_categoria
+	IF(@nome_categoria != '')
+	BEGIN
+		UPDATE Categoria
+		SET nome = @nome_categoria
+		WHERE id = @id_categoria
+	END
 --******************************************************************************--
 GO
 CREATE PROC sp_excluir_categoria(@id_categoria INT)
@@ -551,4 +565,4 @@ AS
 	WHERE id = @id
 
 	select * from Carrinho
-	
+	--******************************************************************************----******************************************************************************--

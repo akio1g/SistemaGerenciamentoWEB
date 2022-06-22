@@ -28,4 +28,6 @@ public interface RegistroVendasDAO {
 	public List<Carrinho> listaProdutosCarrinho(int id) throws SQLException, ClassNotFoundException;
 	
 	public RegistroDeVenda buscar_registro_por_id(int id) throws SQLException, ClassNotFoundException;
+
+	public List<String> listaProdutoPorNome(String nome) throws SQLException, ClassNotFoundException;
 }

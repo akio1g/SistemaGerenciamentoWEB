@@ -118,6 +118,20 @@ public class RegistrarVendasDAOImpl implements RegistroVendasDAO{
 		return listaProdutos;
 	}
 	@Override
+	public List<String> listaProdutoPorNome(String nome) throws SQLException, ClassNotFoundException{
+		Connection c = gDAO.getConnection();
+		List<String> listaProduto = new ArrayList<>();
+	
+		PreparedStatement p = c.prepareStatement("Exec sp_listar_produto_por_nome ?");
+		p.setString(1, nome);
+		ResultSet rs = p.executeQuery();
+		
+		while(rs.next()) {
+			listaProduto.add(rs.getString("nome"));
+		}
+		return listaProduto;
+	}
+	@Override
 	public int buscar_registro_id()  throws SQLException, ClassNotFoundException{
 		Connection c = gDAO.getConnection();
 		
