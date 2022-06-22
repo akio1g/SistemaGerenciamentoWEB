@@ -7,7 +7,7 @@ CREATE PROC sp_adicionar_cliente @nomeRazaoSocial VARCHAR(max), @CpfCnpj VARCHAR
 							     @Cep VARCHAR(max), @cidade VARCHAR(max), @estado VARCHAR(max), 
 							     @logradouro VARCHAR(max), @numero INT, @complemento VARCHAR(max)
 AS
-	IF(@nomeRazaoSocial != '' AND @CpfCnpj != '')
+	IF(@nomeRazaoSocial != '' AND @CpfCnpj != '' AND @nomeRazaoSocial NOT IN (SELECT nomeRazaoSocial FROM Cliente))
 	BEGIN
 		INSERT INTO Cliente VALUES(@nomeRazaoSocial, @CpfCnpj, @Telefone, @Email, @InscricaoEstadual)
 		INSERT INTO Endereco VALUES((SELECT id FROM Cliente WHERE cpfCnpj = @CpfCnpj), @Cep, @cidade, @estado, @logradouro, @numero, @complemento)
@@ -41,7 +41,7 @@ CREATE PROC sp_update_cliente @id INT, @nomeRazaoSocial VARCHAR(max), @CpfCnpj V
 							  @Cep VARCHAR(max), @cidade VARCHAR(max), @estado VARCHAR(max), 
 							  @logradouro VARCHAR(max), @numero INT, @complemento VARCHAR(max)
 AS
-	IF (@nomeRazaoSocial != '')
+	IF (@nomeRazaoSocial != '' AND @nomeRazaoSocial NOT IN (SELECT nomeRazaoSocial FROM Cliente))
 	BEGIN
 		UPDATE Cliente SET nomeRazaoSocial = @nomeRazaoSocial WHERE id = @id
 	END
@@ -105,7 +105,7 @@ GO
 CREATE PROC  sp_adicionar_fornecedores @RazaoSocial VARCHAR(max), @Cnpj VARCHAR(max), @InscricaoEstadual CHAR(2), @Telefone VARCHAR(MAX),
 									@Cep VARCHAR(max), @Cidade VARCHAR(MAX), @Estado VARCHAR(max), @Logradouro VARCHAR(max), @Numero INT, @Completo VARCHAR(max)
 AS
-	IF(@RazaoSocial != '' AND @Cnpj != '')
+	IF(@RazaoSocial != '' AND @Cnpj != '' AND @RazaoSocial NOT IN (SELECT razaoSocial FROM Fornecedor))
 	BEGIN
 		INSERT INTO Fornecedor VALUES(@RazaoSocial, @Cnpj, @InscricaoEstadual, @Telefone)
 		INSERT INTO Endereco_Fornecedor VALUES ((SELECT id FROM Fornecedor WHERE cnpj = @Cnpj), @Cep, @Cidade, @Estado, @Logradouro, @Numero, @Completo)
@@ -135,7 +135,7 @@ GO
 CREATE PROC sp_update_fornecedor  @id INT, @RazaoSocial VARCHAR(max), @Cnpj VARCHAR(max), @InscricaoEstadual CHAR(2), @Telefone VARCHAR(MAX),
 								@Cep VARCHAR(max), @Cidade VARCHAR(MAX), @Estado VARCHAR(max), @Logradouro VARCHAR(max), @Numero INT, @Complemento VARCHAR(max)
 AS
-	IF (@RazaoSocial != '')
+	IF (@RazaoSocial != '' and @RazaoSocial not in (SELECT razaoSocial FROM Fornecedor))
 	BEGIN
 		UPDATE Fornecedor SET razaoSocial = @RazaoSocial WHERE id = @id
 	END
@@ -196,7 +196,7 @@ AS
 	
 	SET @aux2 = (SELECT id FROM Fornecedor WHERE razaoSocial = @fornecedor)
 
-	IF @nome != ''
+	IF @nome != '' and @nome not in (SELECT nome FROM Produto)
 	BEGIN
 		INSERT INTO Produto VALUES(@nome, @descricao, @ncmSh, @preco, @aux, @aux2)
 	END
@@ -229,7 +229,7 @@ AS
 GO
 CREATE PROC sp_editar_produto(@nome VARCHAR(max), @descricao VARCHAR(max), @ncmSh VARCHAR(max), @preco VARCHAR(max), @categoria VARCHAR(max),@fornecedor VARCHAR(max), @id_produto INT)
 AS
-	IF(@nome != '')
+	IF(@nome != '' and @nome NOT IN (SELECT nome FROM Produto))
 	BEGIN
 		UPDATE Produto SET nome = @nome WHERE id = @id_produto
 	END
@@ -304,7 +304,7 @@ AS
 				WHEN @tipo_usuario = 'Vendedor' THEN 3
 			END		
 
-	IF(@nome != '' AND @senha_usuario != '' AND @login_usuario != '')
+	IF(@nome != '') AND (@senha_usuario != '') AND (@login_usuario != '') AND( @nome NOT IN (SELECT nome FROM Usuario)) AND (@login_usuario NOT IN(SELECT login_usuario FROM Usuario))
 	BEGIN
 		INSERT INTO Usuario VALUES(@nome, @login_usuario, @senha_usuario, @email, @aux)
 	END
@@ -317,7 +317,7 @@ AS
 GO
 CREATE PROC sp_editar_usuario(@id_usuario INT, @nome VARCHAR(50), @email VARCHAR(100), @tipo_usuario VARCHAR(13))
 AS
-	IF(@nome != '')
+	IF(@nome != '' and @nome NOT IN (SELECT nome FROM Usuario))
 	BEGIN
 		UPDATE Usuario
 		SET nome = @nome
@@ -445,7 +445,7 @@ GO
 CREATE PROC sp_editar_categoria(@id_categoria INT, @nome_categoria VARCHAR(max))
 
 AS
-	IF(@nome_categoria != '')
+	IF(@nome_categoria != '' and @nome_categoria NOT IN (SELECT nome FROM Categoria))
 	BEGIN
 		UPDATE Categoria
 		SET nome = @nome_categoria

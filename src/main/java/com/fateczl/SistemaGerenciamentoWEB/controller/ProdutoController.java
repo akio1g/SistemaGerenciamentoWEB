@@ -100,7 +100,7 @@ public class ProdutoController {
 				
 				if(botaoSalvar != null && !botaoSalvar.isEmpty()) {
 					pDAO.adicionarProduto(produto);
-					return new ModelAndView("Produto");
+					return new ModelAndView("ProdutoAdicionar");
 				}
 			}else {
 				erro = "Acesso não autorizado";

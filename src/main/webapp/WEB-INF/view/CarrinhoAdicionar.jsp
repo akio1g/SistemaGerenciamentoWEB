@@ -28,7 +28,6 @@
 	<form action="CarrinhoAdicionar" method="post" class="formulario">
 			<div>
 				<h2>Lista de Produtos</h2>
-				<input type="text" class="inputPesquisa" id="inputPesquisa" name="inputPesquisa" placeholder="Digite sua pesquisa">
 				<table class="table">	
 					<thead>
 						<tr>
